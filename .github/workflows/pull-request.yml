@@ -1,0 +1,373 @@
+name: Pull Request Validation
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+    types: [opened, synchronize, reopened]
+
+env:
+  NODE_VERSION: '18'
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  # PR Validation
+  validate-pr:
+    name: Validate Pull Request
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: aura-frontend/package-lock.json
+
+    # Backend Validation
+    - name: Install Backend Dependencies
+      run: |
+        cd aura-backend
+        python -m pip install --upgrade pip
+        pip install -r api-gateway/requirements.txt
+        pip install -r service-desk-host/requirements.txt
+        pip install flake8 black isort pytest
+
+    - name: Backend Code Quality Check
+      run: |
+        cd aura-backend
+        echo "🔍 Running Black formatter check..."
+        black --check --diff .
+        
+        echo "🔍 Running isort import sorting check..."
+        isort --check-only --diff .
+        
+        echo "🔍 Running Flake8 linting..."
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+
+    # Frontend Validation
+    - name: Install Frontend Dependencies
+      run: |
+        cd aura-frontend
+        npm ci
+
+    - name: Frontend Code Quality Check
+      run: |
+        cd aura-frontend
+        echo "🔍 Running ESLint..."
+        npm run lint || echo "ESLint issues found"
+        
+        echo "🔍 Building application..."
+        npm run build
+      env:
+        CI: false
+
+    # Changed Files Analysis
+    - name: Get changed files
+      id: changed-files
+      uses: tj-actions/changed-files@v40
+      with:
+        files: |
+          aura-backend/**/*.py
+          aura-frontend/**/*.{js,jsx,ts,tsx}
+          deploy/**/*.{sh,yml,yaml,json}
+          .github/workflows/**/*.yml
+
+    - name: List changed files
+      if: steps.changed-files.outputs.any_changed == 'true'
+      run: |
+        echo "Changed files:"
+        echo "${{ steps.changed-files.outputs.all_changed_files }}"
+
+    # Run tests on changed code
+    - name: Run Backend Tests (if Python files changed)
+      if: contains(steps.changed-files.outputs.all_changed_files, 'aura-backend/')
+      run: |
+        cd aura-backend
+        python -m pytest -v --tb=short
+
+    - name: Run Frontend Tests (if JS/TS files changed)
+      if: contains(steps.changed-files.outputs.all_changed_files, 'aura-frontend/')
+      run: |
+        cd aura-frontend
+        npm test -- --watchAll=false --verbose
+      env:
+        CI: true
+
+    # Security check for new dependencies
+    - name: Check for new Python dependencies
+      if: contains(steps.changed-files.outputs.all_changed_files, 'requirements.txt')
+      run: |
+        cd aura-backend
+        pip install safety
+        safety check --json || echo "Security issues found in Python dependencies"
+
+    - name: Check for new Node.js dependencies
+      if: contains(steps.changed-files.outputs.all_changed_files, 'package.json') || contains(steps.changed-files.outputs.all_changed_files, 'package-lock.json')
+      run: |
+        cd aura-frontend
+        npm audit --audit-level=moderate || echo "Security issues found in Node.js dependencies"
+
+    # Docker build test for deployment changes
+    - name: Test Docker builds (if deployment files changed)
+      if: contains(steps.changed-files.outputs.all_changed_files, 'deploy/') || contains(steps.changed-files.outputs.all_changed_files, 'Dockerfile')
+      run: |
+        echo "🐳 Testing Docker builds..."
+        
+        # Test API Gateway build
+        docker build -f aura-backend/api-gateway/Dockerfile -t test-api-gateway aura-backend/
+        
+        # Test Service Desk build
+        docker build -f aura-backend/service-desk-host/Dockerfile -t test-service-desk aura-backend/
+        
+        # Test Frontend build
+        docker build -t test-frontend aura-frontend/
+        
+        echo "✅ All Docker builds successful"
+
+  # Check PR Description and Guidelines
+  check-pr-guidelines:
+    name: Check PR Guidelines
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Check PR Title
+      uses: amannn/action-semantic-pull-request@v5
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        types: |
+          feat
+          fix
+          docs
+          style
+          refactor
+          perf
+          test
+          build
+          ci
+          chore
+        requireScope: false
+
+    - name: Check PR Size
+      uses: noqcks/xanitizer-action@v1
+      with:
+        additions-limit: 1000
+        deletions-limit: 1000
+        files-limit: 50
+      continue-on-error: true
+
+    - name: Comment PR Guidelines
+      uses: actions/github-script@v7
+      if: github.event.action == 'opened'
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: `## 🚀 Pull Request Guidelines Checklist
+            
+            Thank you for contributing to the Aura project! Please ensure your PR meets the following criteria:
+            
+            ### ✅ Code Quality
+            - [ ] Code follows the project's coding standards
+            - [ ] All tests pass locally
+            - [ ] New features include appropriate tests
+            - [ ] Documentation is updated (if applicable)
+            
+            ### 🔒 Security
+            - [ ] No sensitive information (API keys, passwords) in code
+            - [ ] Dependencies are up to date and secure
+            - [ ] Input validation is implemented for new endpoints
+            
+            ### 🏗️ Architecture
+            - [ ] Changes align with microservices architecture
+            - [ ] Database changes are backward compatible
+            - [ ] API changes maintain backward compatibility
+            
+            ### 📋 Testing
+            - [ ] Unit tests cover new functionality
+            - [ ] Integration tests updated (if applicable)
+            - [ ] Manual testing completed
+            
+            ### 📚 Documentation
+            - [ ] README updated (if applicable)
+            - [ ] API documentation updated
+            - [ ] Deployment scripts updated (if applicable)
+            
+            ### 🎯 Ready for Review
+            - [ ] PR is ready for review (not a draft)
+            - [ ] All CI checks are passing
+            - [ ] PR has clear description of changes
+            
+            The automated CI/CD pipeline will run additional checks. Please ensure all checks pass before requesting review.`
+          })
+
+  # Dependency Check
+  dependency-check:
+    name: Dependency Vulnerability Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v2
+      if: always()
+      with:
+        sarif_file: 'trivy-results.sarif'
+
+  # Build Verification
+  build-verification:
+    name: Build Verification
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build and test images
+      run: |
+        echo "🔨 Building all Docker images..."
+        
+        # Build API Gateway
+        docker build -f aura-backend/api-gateway/Dockerfile -t aura-api-gateway:pr-test aura-backend/
+        
+        # Build Service Desk
+        docker build -f aura-backend/service-desk-host/Dockerfile -t aura-service-desk:pr-test aura-backend/
+        
+        # Build Frontend
+        docker build -t aura-frontend:pr-test aura-frontend/
+        
+        # Build Database container
+        docker build -t aura-databases:pr-test deploy/containers/multi-database/
+        
+        echo "✅ All images built successfully"
+
+    - name: Test Docker Compose Configuration
+      run: |
+        echo "🧪 Testing Docker Compose configuration..."
+        cd deploy/environments/local
+        docker-compose config
+        echo "✅ Docker Compose configuration is valid"
+
+  # Documentation Check
+  docs-check:
+    name: Documentation Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Check for README updates
+      id: readme-check
+      uses: tj-actions/changed-files@v40
+      with:
+        files: |
+          README.md
+          docs/**/*.md
+          aura-backend/README*.md
+
+    - name: Validate Markdown
+      if: steps.readme-check.outputs.any_changed == 'true'
+      uses: DavidAnson/markdownlint-action@v1
+      with:
+        files: '**/*.md'
+        ignore: 'node_modules'
+        config: |
+          {
+            "MD013": { "line_length": 120 },
+            "MD033": false,
+            "MD041": false
+          }
+
+    - name: Check links in documentation
+      if: steps.readme-check.outputs.any_changed == 'true'
+      uses: gaurav-nelson/github-action-markdown-link-check@v1
+      with:
+        use-quiet-mode: 'yes'
+        use-verbose-mode: 'yes'
+        config-file: '.github/mlc_config.json'
+      continue-on-error: true
+
+  # Performance Impact Check
+  performance-check:
+    name: Performance Impact Assessment
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+
+    - name: Install dependencies and build
+      run: |
+        cd aura-frontend
+        npm ci
+        npm run build
+      env:
+        CI: false
+
+    - name: Analyze bundle size
+      uses: preactjs/compressed-size-action@v2
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        pattern: "./aura-frontend/build/static/js/*.js"
+        strip-hash: "\\.[\\w\\d]+\\."
+        minimum-change-threshold: 100
+
+  # Final Summary
+  pr-summary:
+    name: PR Validation Summary
+    runs-on: ubuntu-latest
+    needs: [validate-pr, check-pr-guidelines, dependency-check, build-verification, docs-check, performance-check]
+    if: always()
+    
+    steps:
+    - name: Summary
+      run: |
+        echo "## 📊 Pull Request Validation Summary"
+        echo "- Code Validation: ${{ needs.validate-pr.result }}"
+        echo "- Guidelines Check: ${{ needs.check-pr-guidelines.result }}"
+        echo "- Security Scan: ${{ needs.dependency-check.result }}"
+        echo "- Build Verification: ${{ needs.build-verification.result }}"
+        echo "- Documentation: ${{ needs.docs-check.result }}"
+        echo "- Performance: ${{ needs.performance-check.result }}"
+        
+        # Determine overall status
+        if [[ "${{ needs.validate-pr.result }}" == "success" && 
+              "${{ needs.build-verification.result }}" == "success" ]]; then
+          echo "✅ PR validation completed successfully!"
+          echo "The pull request is ready for human review."
+        else
+          echo "❌ PR validation failed!"
+          echo "Please review the failed checks and make necessary corrections."
+          exit 1
+        fi

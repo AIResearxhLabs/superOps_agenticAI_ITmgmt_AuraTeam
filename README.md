@@ -128,9 +128,11 @@ Ensure you have the following installed on your system:
 | **npm** | 8+ | Comes with Node.js | |
 | **Git** | Latest | [Download Git](https://git-scm.com/) | |
 
-### Optional (for containers)
-- **Docker** 20.10+ - [Download Docker](https://docker.com/get-started)
+### Required for AWS Deployment
+- **Docker** 20.10+ - [Download Docker](https://docker.com/get-started) - **Required for AWS deployment**
 - **Docker Compose** 2.0+ - Usually included with Docker Desktop
+- **AWS CLI** 2.0+ - [Install AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
+- **jq** - JSON processor - `brew install jq` (macOS) or `sudo apt-get install jq` (Ubuntu)
 
 ### Python Version Compatibility
 
@@ -1348,35 +1350,735 @@ curl -X POST http://localhost:8000/api/tickets \
 3. **Knowledge Base** (`/knowledge-base`) - Searchable help articles
 4. **AI Chatbot** (`/chatbot`) - Interactive assistance
 
+## ☁️ AWS Cloud Deployment
+
+Deploy your Aura application to AWS with **backend-only** or **complete fullstack** (backend + frontend) deployment options.
+
+### 🚀 **Deployment Options**
+
+| Deployment Type | Description | Access | Use Case |
+|----------------|-------------|---------|----------|
+| **Backend Only** | API services only | API endpoints | API development & testing |
+| **Fullstack** | Complete application | Web UI + APIs | Complete application deployment |
+
+### 🎯 **Quick Deployment Commands**
+
+```bash
+# Backend-only deployment
+./deploy/scripts/deploy.sh dev aws backend
+
+# Complete application with frontend
+./deploy/scripts/deploy.sh dev aws fullstack
+
+# Frontend-only deployment (requires backend running)
+./deploy/scripts/deploy.sh dev aws frontend
+```
+
+**💰 Cost:** ~$15-20/month for development environment  
+**🌐 Access:** Remote access enabled from anywhere on internet  
+**⚡ Setup Time:** ~5 minutes
+
+### Prerequisites for AWS Deployment
+
+#### Required AWS Tools
+
+| Tool | Version | Installation | Purpose |
+|------|---------|--------------|---------|
+| **AWS CLI** | 2.0+ | [Install AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) | Manage AWS resources |
+| **jq** | Latest | `brew install jq` (macOS) or `sudo apt-get install jq` (Ubuntu) | JSON parsing for scripts |
+| **Docker** | 20.10+ | [Download Docker](https://docker.com/get-started) | Container builds and ECR |
+
+#### AWS Account Setup
+
+1. **Create an AWS Account** (if you don't have one)
+   - Sign up at [aws.amazon.com](https://aws.amazon.com)
+   - Set up billing and enable necessary services
+
+2. **Configure AWS Credentials**
+   ```bash
+   # Install AWS CLI first, then configure
+   aws configure
+   
+   # You'll need:
+   # - AWS Access Key ID
+   # - AWS Secret Access Key  
+   # - Default region: us-east-2
+   # - Default output format: json
+   ```
+
+3. **Verify AWS Configuration**
+   ```bash
+   # Check your AWS identity
+   aws sts get-caller-identity
+   
+   # Should return your Account ID, User ARN, and User ID
+   ```
+
+### 🐳 **Docker Desktop Setup (Required for AWS Deployment)**
+
+**Before proceeding with AWS deployment, ensure Docker Desktop is running:**
+
+#### **Start Docker Desktop**
+
+| Platform | Instructions |
+|----------|-------------|
+| **macOS** | 1. Open **Docker Desktop** from Applications<br>2. Wait for Docker icon in menu bar to show "Docker Desktop is running"<br>3. Verify: `docker --version` and `docker-compose --version` |
+| **Windows** | 1. Open **Docker Desktop** from Start Menu<br>2. Wait for system tray icon to show "Docker Desktop is running"<br>3. Verify: `docker --version` and `docker-compose --version` |
+| **Linux** | 1. Start Docker service: `sudo systemctl start docker`<br>2. Verify: `docker --version` and `docker-compose --version`<br>3. Add user to docker group: `sudo usermod -aG docker $USER` |
+
+#### **Common Docker Issues & Solutions**
+
+| Issue | Solution |
+|-------|----------|
+| **"Docker daemon not running"** | Start Docker Desktop application and wait for it to fully initialize |
+| **"Cannot connect to Docker daemon"** | Restart Docker Desktop, check system resources (RAM/disk space) |
+| **Permission denied (Linux)** | Run `sudo usermod -aG docker $USER` then logout/login |
+| **Docker Desktop won't start** | Check available disk space, restart computer, update Docker Desktop |
+| **Port conflicts** | Stop conflicting services or change Docker port mappings |
+
+#### **Verify Docker Setup**
+
+```bash
+# Check Docker is running
+docker --version
+docker-compose --version
+
+# Test Docker functionality
+docker run hello-world
+
+# Should output: "Hello from Docker!"
+```
+
+### 🚀 **Demo Deployment Process** (Recommended)
+
+#### Cost Comparison
+
+| Deployment Type | Monthly Cost | Features | Use Case |
+|-----------------|--------------|----------|----------|
+| **🎯 Demo** | **$15-20** | All app features, remote access | Demonstrations, testing, POC |
+| **🏢 Production** | **$50-80** | Enterprise security, private networks | Production workloads |
+
+#### Step 1: Set Up AWS Infrastructure (Demo)
+
+**Cost-optimized setup** for demonstration purposes:
+
+```bash
+# Navigate to project root
+cd /path/to/superOps_agenticAI_ITmgmt_AuraTeam
+
+# Set up cost-optimized AWS infrastructure for demo
+./deploy/scripts/setup-aws-infrastructure-demo.sh dev
+
+# This creates (cost-optimized):
+# ✅ Uses AWS Default VPC (no custom VPC cost)
+# ✅ Public subnets only (no NAT Gateway = saves $32/month)
+# ✅ Minimal security groups with remote access
+# ✅ ECS Fargate cluster
+# ✅ IAM roles for ECS tasks
+# ✅ CloudWatch log groups
+# ✅ SSM parameters for secrets
+# 🌐 Remote access enabled from anywhere
+```
+
+**What the demo infrastructure script does:**
+- ✅ Uses AWS Default VPC (free, already exists)
+- ✅ Deploys in public subnets with internet access
+- ✅ Creates minimal security groups (ports 8000, 8001 open)
+- ✅ Sets up ECS Fargate cluster (pay-per-use)
+- ✅ Configures IAM roles with least-privilege access
+- ✅ Creates CloudWatch log groups for monitoring
+- ✅ Creates SSM parameter for OpenAI API key (secure storage)
+- 💰 **No NAT Gateway** (saves $32/month)
+- 🌐 **Remote access enabled** for global demonstrations
+
+#### Step 2: Configure Secrets
+
+**Update your OpenAI API key** in AWS Systems Manager:
+
+```bash
+# Replace 'your_actual_openai_api_key' with your real API key
+aws ssm put-parameter \
+  --name '/aura/dev/openai-api-key' \
+  --value 'your_actual_openai_api_key' \
+  --type 'SecureString' \
+  --overwrite \
+  --region us-east-2
+```
+
+**Alternative: Use AWS Console**
+1. Go to [AWS Systems Manager Parameter Store](https://us-east-2.console.aws.amazon.com/systems-manager/parameters)
+2. Find parameter `/aura/dev/openai-api-key`
+3. Edit and update with your actual OpenAI API key
+
+#### Step 3: Deploy Application
+
+**Deploy the microservices** to AWS ECS:
+
+```bash
+# Deploy to development environment
+./deploy/scripts/deploy.sh dev aws
+
+# This script will:
+# - Create ECR repositories for Docker images
+# - Build and push Docker images to ECR
+# - Register ECS task definition
+# - Create/update ECS service
+# - Configure load balancing and networking
+```
+
+**What the deployment script does:**
+- ✅ Creates Amazon ECR repositories for each service
+- ✅ Builds Docker images for API Gateway, Service Desk, and Database services
+- ✅ Pushes images to ECR with proper tagging
+- ✅ Registers ECS task definition with proper resource allocation
+- ✅ Creates ECS service with auto-scaling and health checks
+- ✅ Configures networking and security groups
+
+#### Step 4: Verify Deployment
+
+**Check deployment status:**
+
+```bash
+# Check ECS cluster status
+aws ecs describe-clusters --clusters aura-dev-cluster --region us-east-2
+
+# Check service status
+aws ecs describe-services \
+  --cluster aura-dev-cluster \
+  --services aura-app-service \
+  --region us-east-2
+
+# View application logs
+aws logs describe-log-streams \
+  --log-group-name /ecs/aura-app-dev \
+  --region us-east-2
+```
+
+**Access your deployed application:**
+- The deployment creates a **public IP** for ECS tasks
+- **API Gateway**: `http://<public-ip>:8000`
+- **Service Desk**: `http://<public-ip>:8001`
+- **API Documentation**: `http://<public-ip>:8000/docs`
+
+### AWS Environment Management
+
+#### Multiple Environments
+
+Deploy to different environments:
+
+```bash
+# Development
+./deploy/scripts/setup-aws-infrastructure.sh dev
+./deploy/scripts/deploy.sh dev aws
+
+# Staging  
+./deploy/scripts/setup-aws-infrastructure.sh staging
+./deploy/scripts/deploy.sh staging aws
+
+# Production
+./deploy/scripts/setup-aws-infrastructure.sh prod
+./deploy/scripts/deploy.sh prod aws
+```
+
+#### Configuration Files
+
+Environment-specific settings are stored in:
+- `deploy/environments/dev/.env` - Development settings
+- `deploy/environments/staging/.env` - Staging settings (create as needed)
+- `deploy/environments/prod/.env` - Production settings (create as needed)
+
+#### Monitoring and Logs
+
+**CloudWatch Integration:**
+- **Log Groups**: `/ecs/aura-app-{environment}`
+- **Metrics**: ECS service metrics, container health
+- **Alarms**: Set up alerts for failures or high resource usage
+
+**View logs:**
+```bash
+# Stream real-time logs
+aws logs tail /ecs/aura-app-dev --follow --region us-east-2
+
+# View specific service logs
+aws logs filter-log-events \
+  --log-group-name /ecs/aura-app-dev \
+  --log-stream-name-prefix api-gateway \
+  --region us-east-2
+```
+
+### Cleanup and Cost Management
+
+#### Stop Services (to save costs)
+
+```bash
+# Scale ECS service to 0 (stops running tasks)
+aws ecs update-service \
+  --cluster aura-dev-cluster \
+  --service aura-app-service \
+  --desired-count 0 \
+  --region us-east-2
+
+# This stops compute charges but keeps infrastructure
+```
+
+#### Complete Cleanup
+
+```bash
+# Clean up local deployment
+./deploy/scripts/deploy.sh cleanup local
+
+# For AWS cleanup, use AWS Console to delete:
+# 1. ECS Services and Clusters
+# 2. ECR Repositories  
+# 3. VPC and associated resources (VPC, Subnets, NAT Gateway, etc.)
+# 4. IAM Roles (if not used by other services)
+# 5. CloudWatch Log Groups
+```
+
+### 🏢 **Production Deployment** (Enterprise-Grade)
+
+**Perfect for:** Production workloads, enterprise environments, high-security requirements
+
+**💰 Cost:** ~$50-80/month  
+**🔒 Security:** Private subnets, NAT Gateway, enterprise security  
+**🏗️ Setup Time:** ~15 minutes
+
+#### Step 1: Set Up AWS Infrastructure (Production)
+
+**Enterprise-grade setup** with full security and isolation:
+
+```bash
+# Navigate to project root
+cd /path/to/superOps_agenticAI_ITmgmt_AuraTeam
+
+# Set up full production AWS infrastructure
+./deploy/scripts/setup-aws-infrastructure.sh prod
+
+# This creates (production-grade):
+# ✅ Custom VPC with public and private subnets
+# ✅ Internet Gateway and NAT Gateway
+# ✅ Enterprise security groups
+# ✅ ECS Fargate cluster with private networking
+# ✅ IAM roles with fine-grained permissions
+# ✅ CloudWatch log groups with extended retention
+# ✅ SSM parameters for secure secret management
+# 🔒 Services isolated in private subnets
+```
+
+**What the production infrastructure script includes:**
+- ✅ Custom VPC with public/private subnets across 2 AZs
+- ✅ NAT Gateway for secure outbound internet access
+- ✅ Enterprise security groups with minimal required access
+- ✅ ECS Fargate cluster with private networking
+- ✅ IAM roles with least-privilege security model
+- ✅ CloudWatch log groups with 30-day retention
+- ✅ Application Load Balancer for high availability
+- 🔒 **Services in private subnets** (enterprise security)
+- 🏗️ **Production-ready architecture**
+
+#### Production Deployment Features
+
+| Feature | Demo Setup | Production Setup |
+|---------|------------|------------------|
+| **Network Security** | Public subnets | Private subnets with NAT Gateway |
+| **Load Balancing** | Direct IP access | Application Load Balancer |
+| **SSL/TLS** | HTTP only | HTTPS with SSL certificates |
+| **Monitoring** | Basic logs | Advanced CloudWatch metrics |
+| **Backup Strategy** | Manual | Automated database backups |
+| **Auto-scaling** | Manual scaling | Auto-scaling groups |
+| **High Availability** | Single AZ | Multi-AZ deployment |
+
+### Troubleshooting AWS Deployment
+
+#### Common Issues
+
+**1. AWS CLI Not Configured**
+```bash
+# Error: "Unable to locate credentials"
+# Solution: Configure AWS CLI
+aws configure
+```
+
+**2. Insufficient Permissions**
+```bash
+# Error: "User is not authorized to perform..."
+# Solution: Ensure your AWS user has ECS, EC2, and IAM permissions
+```
+
+**3. ECS Service Won't Start**
+```bash
+# Check ECS service events
+aws ecs describe-services \
+  --cluster aura-dev-cluster \
+  --services aura-app-service \
+  --region us-east-2
+
+# Common causes:
+# - Missing OpenAI API key in SSM
+# - Security group blocking traffic
+# - Docker image build failures
+```
+
+**4. Health Check Failures**
+```bash
+# Check container logs
+aws logs tail /ecs/aura-app-dev --follow --region us-east-2
+
+# Common causes:
+# - Database connection issues
+# - Missing environment variables
+# - Service startup taking too long
+```
+
+#### Deployment Comparison
+
+| Issue | Demo Solution | Production Solution |
+|-------|---------------|-------------------|
+| **Cost Optimization** | Use `setup-aws-infrastructure-demo.sh` | Use `setup-aws-infrastructure.sh` |
+| **Remote Access** | Direct public IP access | Access via Load Balancer URL |
+| **Security** | Basic security groups | Enterprise security with private subnets |
+| **Monitoring** | CloudWatch logs only | Full CloudWatch metrics + alarms |
+
+#### Getting Help
+
+**AWS Resources:**
+- [ECS Documentation](https://docs.aws.amazon.com/ecs/)
+- [ECR Documentation](https://docs.aws.amazon.com/ecr/)
+- [AWS CLI Reference](https://docs.aws.amazon.com/cli/)
+
+---
+
+## 🚀 CI/CD Pipeline & Development Workflow
+
+We've implemented a comprehensive CI/CD pipeline with GitHub Actions, automated testing, code quality checks, and seamless deployment to AWS. This section covers the complete development workflow from local development to production deployment.
+
+### 📋 Development Workflow Overview
+
+```mermaid
+graph LR
+    A[Local Development] --> B[Feature Branch]
+    B --> C[Code Quality Checks]
+    C --> D[Pull Request]
+    D --> E[Automated Testing]
+    E --> F[Code Review]
+    F --> G[Merge to Main]
+    G --> H[Deploy to AWS]
+```
+
+### 🛠️ Setup Development Environment
+
+#### Quick Setup (Recommended)
+```bash
+# One-command setup for complete development environment
+./scripts/dev-setup.sh
+
+# This automatically:
+# ✅ Checks all prerequisites
+# ✅ Sets up Python virtual environment
+# ✅ Installs all dependencies
+# ✅ Configures environment files
+# ✅ Builds Docker images
+# ✅ Creates helper scripts
+```
+
+#### Manual Setup
+```bash
+# 1. Install dependencies
+npm run install-all
+
+# 2. Start development environment
+npm run dev:local
+
+# 3. Start frontend (separate terminal)
+npm start
+
+# 4. Verify everything is working
+npm run health
+```
+
+### 🧪 Testing & Quality Assurance
+
+#### Comprehensive Test Suite
+```bash
+# Run all tests with coverage reports
+./scripts/test-runner.sh
+
+# Run specific test suites
+./scripts/test-runner.sh --backend-only
+./scripts/test-runner.sh --frontend-only
+./scripts/test-runner.sh --integration-only
+
+# Run with security and performance tests
+./scripts/test-runner.sh --all
+```
+
+#### Pre-commit Hooks
+Set up automatic code quality checks before every commit:
+
+```bash
+# Install pre-commit hook
+cp scripts/pre-commit-hook.sh .git/hooks/pre-commit
+
+# The hook automatically runs:
+# ✅ Code formatting (Black, Prettier)
+# ✅ Linting (Flake8, ESLint)
+# ✅ Security scans
+# ✅ Basic tests
+# ✅ Commit message validation
+```
+
+#### Code Quality Commands
+```bash
+# Lint all code
+npm run lint
+
+# Fix linting issues automatically
+npm run lint:fix
+
+# Run security scans
+npm run security:scan
+
+# Check test coverage
+npm run test:coverage
+```
+
+### 🔄 GitHub Actions CI/CD Pipeline
+
+Our CI/CD pipeline automatically triggers on:
+- **Push to `main`** → Deploy to Production
+- **Push to `develop`** → Deploy to Development
+- **Pull Requests** → Run validation checks
+- **Manual Dispatch** → Deploy to any environment
+
+#### Pipeline Stages
+
+| Stage | Description | Triggers | Duration |
+|-------|-------------|----------|----------|
+| **Code Quality** | Linting, formatting, security scans | All pushes & PRs | ~3 minutes |
+| **Testing** | Unit, integration, and security tests | All pushes & PRs | ~5 minutes |
+| **Build Images** | Docker image builds and tests | Push to main/develop | ~7 minutes |
+| **Deploy Dev** | Deploy to development environment | Push to develop | ~5 minutes |
+| **Deploy Staging** | Deploy to staging environment | Push to main | ~8 minutes |
+| **Deploy Prod** | Deploy to production (manual approval) | Manual dispatch | ~10 minutes |
+
+#### Automated Checks
+- ✅ **Python:** Black, isort, Flake8, mypy, pytest
+- ✅ **JavaScript:** ESLint, Prettier, TypeScript, Jest
+- ✅ **Security:** CodeQL, Trivy, dependency audits
+- ✅ **Docker:** Multi-platform builds, security scans
+- ✅ **Performance:** Bundle size analysis, response time tests
+
+### 🚀 Deployment Workflows
+
+#### Development Environment
+```bash
+# Deploy to AWS development environment
+npm run deploy:dev
+
+# Or manually
+./deploy/scripts/deploy.sh dev aws backend
+```
+
+#### Staging Environment
+```bash
+# Deploy to AWS staging environment
+npm run deploy:staging
+
+# Or manually
+./deploy/scripts/deploy.sh staging aws fullstack
+```
+
+#### Production Environment
+```bash
+# Deploy to AWS production environment (requires approval)
+npm run deploy:prod
+
+# Or manually
+./deploy/scripts/deploy.sh prod aws fullstack
+```
+
+#### Manual Deployment via GitHub Actions
+1. Go to **Actions** tab in your GitHub repository
+2. Select **CI/CD Pipeline** workflow
+3. Click **Run workflow**
+4. Select environment and deployment type
+5. Click **Run workflow**
+
+### 📊 Monitoring & Status Checks
+
+#### AWS Deployment Status
+```bash
+# Check AWS deployment status
+./scripts/aws-status-check.sh
+
+# With performance tests and logs
+./scripts/aws-status-check.sh --performance --logs --resources
+
+# For specific environment
+./scripts/aws-status-check.sh --cluster aura-staging-cluster
+```
+
+#### Health Check Endpoints
+- **Local:** `http://localhost:8000/health`
+- **Development:** Check AWS deployment IP
+- **Production:** Check production domain
+
+#### Monitoring Dashboard
+Access comprehensive monitoring at:
+- **CloudWatch Logs:** AWS Console → CloudWatch → Log Groups
+- **Application Metrics:** AWS Console → ECS → Clusters
+- **Test Reports:** GitHub Actions → Artifacts
+
+### 🔧 Developer Productivity Scripts
+
+| Script | Purpose | Usage |
+|--------|---------|--------|
+| `./scripts/dev-setup.sh` | Complete environment setup | One-time setup |
+| `./scripts/test-runner.sh` | Comprehensive testing | Before commits |
+| `./scripts/pre-commit-hook.sh` | Pre-commit quality checks | Automatic |
+| `./scripts/aws-status-check.sh` | AWS deployment status | Production monitoring |
+
+#### Quick Commands (npm scripts)
+```bash
+# Development
+npm run setup              # Complete setup
+npm run dev:local          # Start local environment
+npm run health             # Check service health
+
+# Testing
+npm run test               # Run all tests
+npm test:coverage          # Test with coverage
+npm run validate           # Lint + Test + Build
+
+# Deployment
+npm run deploy:dev         # Deploy to development
+npm run deploy:staging     # Deploy to staging
+npm run deploy:prod        # Deploy to production
+
+# Maintenance
+npm run clean              # Clean all artifacts
+npm run security:scan      # Security audit
+npm run env:check          # Environment verification
+```
+
+### 🔐 Security & Best Practices
+
+#### Secrets Management
+- ✅ **Environment Variables:** Stored in GitHub Secrets
+- ✅ **AWS Credentials:** IAM roles with least privilege
+- ✅ **API Keys:** AWS Systems Manager Parameter Store
+- ✅ **Database Credentials:** Auto-generated and rotated
+
+#### Code Security
+- ✅ **Pre-commit Hooks:** Prevent secrets in commits
+- ✅ **Dependency Scanning:** Automated vulnerability detection
+- ✅ **Code Analysis:** Static analysis with CodeQL
+- ✅ **Container Scanning:** Trivy security scans
+
+#### Production Safety
+- ✅ **Environment Separation:** Isolated AWS accounts/regions
+- ✅ **Blue-Green Deployment:** Zero-downtime deployments
+- ✅ **Rollback Capability:** Automatic rollback on failure
+- ✅ **Health Checks:** Comprehensive monitoring
+
+### 📈 Performance Optimization
+
+#### Build Optimization
+- ✅ **Docker Layer Caching:** Faster builds
+- ✅ **Multi-stage Builds:** Smaller images
+- ✅ **Dependency Caching:** npm/pip cache
+- ✅ **Parallel Testing:** Faster CI/CD
+
+#### Runtime Performance
+- ✅ **AWS Fargate:** Auto-scaling containers
+- ✅ **CloudWatch Monitoring:** Performance metrics
+- ✅ **Load Testing:** Automated performance validation
+- ✅ **CDN Integration:** Static asset optimization
+
+### 🚨 Troubleshooting CI/CD Issues
+
+#### Common Issues & Solutions
+
+| Issue | Symptoms | Solution |
+|-------|----------|----------|
+| **Build Failures** | Docker build errors | Check Dockerfile syntax, base image availability |
+| **Test Failures** | CI tests failing locally passing | Environment differences, check test isolation |
+| **Deployment Timeout** | ECS service not starting | Check resource limits, health check configuration |
+| **Secret Access** | AWS parameter access denied | Verify IAM permissions, secret name format |
+
+#### Debug Commands
+```bash
+# Local debugging
+docker-compose logs                    # Check container logs
+./scripts/test-runner.sh --backend-only # Test specific components
+npm run env:check                      # Verify environment
+
+# AWS debugging
+./scripts/aws-status-check.sh --logs   # Check CloudWatch logs
+aws ecs describe-services              # Check ECS service status
+aws logs tail /ecs/aura-app-dev        # Stream live logs
+```
+
+### 📚 CI/CD Documentation
+
+- **Pipeline Configuration:** `.github/workflows/ci-cd.yml`
+- **Pull Request Validation:** `.github/workflows/pull-request.yml`
+- **Deployment Scripts:** `deploy/scripts/`
+- **Development Scripts:** `scripts/`
+- **Docker Configurations:** `*/Dockerfile`, `docker-compose.yml`
+
 ## 🤝 Contributing
 
 ### Development Workflow
 
 1. **Fork** the repository
 2. **Create** a feature branch: `git checkout -b feature/amazing-feature`
-3. **Make** your changes
-4. **Test** thoroughly (frontend + backend)
-5. **Commit** your changes: `git commit -m 'Add amazing feature'`
-6. **Push** to branch: `git push origin feature/amazing-feature`
-7. **Open** a Pull Request
+3. **Set up environment:** `./scripts/dev-setup.sh`
+4. **Make** your changes with proper testing
+5. **Run quality checks:** `npm run validate`
+6. **Commit** with conventional commits: `git commit -m 'feat: add amazing feature'`
+7. **Push** to branch: `git push origin feature/amazing-feature`
+8. **Open** a Pull Request with comprehensive description
 
-### Code Style
+### Code Style Standards
 
-- **Backend**: Follow PEP 8 (Python)
-- **Frontend**: Use ESLint and Prettier
-- **Commits**: Use conventional commit messages
+- **Backend**: PEP 8 (Python) with Black formatter and isort
+- **Frontend**: ESLint + Prettier with enterprise configuration
+- **Infrastructure**: Consistent naming conventions (kebab-case)
+- **Commits**: Conventional Commits (feat, fix, docs, etc.)
+- **Documentation**: Keep README and inline docs updated
+
+### Pull Request Requirements
+
+✅ **Before Opening PR:**
+- [ ] All tests pass locally
+- [ ] Code follows style guidelines
+- [ ] Documentation updated
+- [ ] No secrets or sensitive data in commits
+- [ ] Feature works in local environment
+
+✅ **Automated Checks:**
+- [ ] Code quality validation passes
+- [ ] Security scans pass
+- [ ] All tests pass
+- [ ] Docker builds succeed
+- [ ] Performance benchmarks met
 
 ### Running Code Quality Checks
 
 ```bash
-# Backend linting
-cd aura-backend
-flake8 .
+# Complete validation (recommended before PR)
+npm run validate
 
-# Frontend linting
-cd aura-frontend
-npm run lint
-npm run lint:fix
+# Individual checks
+npm run lint                 # Code linting
+npm run test                 # All tests
+npm run security:scan        # Security audit
+npm run build               # Build verification
+
+# Auto-fix issues
+npm run lint:fix            # Fix linting issues
+npm run format              # Format all code
 ```
 
 ---
@@ -1387,9 +2089,20 @@ If you encounter any issues or need assistance:
 
 1. **Check this README** for common solutions
 2. **Review the troubleshooting section** above
-3. **Open an issue** on GitHub with detailed information
-4. **Include logs** from both frontend and backend when reporting issues
+3. **Check AWS deployment logs** if using cloud deployment
+4. **Open an issue** on GitHub with detailed information
+5. **Include logs** from both frontend and backend when reporting issues
+
+### AWS-Specific Support
+
+For AWS deployment issues:
+1. **Check AWS service status** at [status.aws.amazon.com](https://status.aws.amazon.com)
+2. **Review CloudWatch logs** for detailed error messages
+3. **Verify AWS permissions** and service limits
+4. **Contact AWS support** for infrastructure-related issues
 
 ---
 
 **🚀 Happy Coding! Welcome to the Aura AI-Powered IT Management Suite!**
+
+**☁️ Ready for the Cloud? Deploy to AWS with our automated scripts!**

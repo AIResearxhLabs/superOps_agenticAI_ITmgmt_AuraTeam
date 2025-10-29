@@ -16,14 +16,14 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy shared modules first (for better caching)
-COPY ../shared /app/shared
+COPY shared /app/shared
 
 # Copy requirements and install Python dependencies
-COPY requirements.txt .
+COPY api-gateway/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
-COPY . .
+COPY api-gateway/ .
 
 # Create non-root user
 RUN adduser --disabled-password --gecos '' appuser && \

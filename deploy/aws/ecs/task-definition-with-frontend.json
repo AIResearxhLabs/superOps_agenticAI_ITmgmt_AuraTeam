@@ -1,0 +1,266 @@
+{
+  "family": "aura-app-dev",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "2048",
+  "memory": "4096",
+  "executionRoleArn": "arn:aws:iam::753353727891:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::753353727891:role/ecsTaskRole",
+  "containerDefinitions": [
+    {
+      "name": "databases",
+      "image": "753353727891.dkr.ecr.us-east-2.amazonaws.com/aura-databases:latest",
+      "cpu": 512,
+      "memory": 1024,
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 5432,
+          "protocol": "tcp",
+          "name": "postgres"
+        },
+        {
+          "containerPort": 6379,
+          "protocol": "tcp",
+          "name": "redis"
+        },
+        {
+          "containerPort": 27017,
+          "protocol": "tcp",
+          "name": "mongodb"
+        }
+      ],
+      "environment": [
+        {
+          "name": "POSTGRES_USER",
+          "value": "aura_user"
+        },
+        {
+          "name": "POSTGRES_PASSWORD",
+          "value": "aura_password"
+        },
+        {
+          "name": "POSTGRES_MULTIPLE_DATABASES",
+          "value": "aura_servicedesk,aura_infratalent,aura_threatintel"
+        }
+      ],
+      "command": ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/aura-app-dev",
+          "awslogs-region": "us-east-2",
+          "awslogs-stream-prefix": "databases",
+          "awslogs-create-group": "true"
+        }
+      },
+      "healthCheck": {
+        "command": [
+          "CMD-SHELL",
+          "pg_isready -h 127.0.0.1 -p 5432 -U aura_user && redis-cli -h 127.0.0.1 -p 6379 ping | grep PONG && echo 'Databases healthy'"
+        ],
+        "interval": 30,
+        "timeout": 15,
+        "retries": 5,
+        "startPeriod": 180
+      }
+    },
+    {
+      "name": "api-gateway",
+      "image": "753353727891.dkr.ecr.us-east-2.amazonaws.com/aura-api-gateway:latest",
+      "cpu": 256,
+      "memory": 512,
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 8000,
+          "protocol": "tcp",
+          "name": "api-gateway"
+        }
+      ],
+      "environment": [
+        {
+          "name": "SERVICE_DESK_URL",
+          "value": "http://127.0.0.1:8001"
+        },
+        {
+          "name": "REDIS_URL",
+          "value": "redis://127.0.0.1:6379"
+        },
+        {
+          "name": "ENVIRONMENT",
+          "value": "aws-dev"
+        },
+        {
+          "name": "DEBUG",
+          "value": "false"
+        },
+        {
+          "name": "LOG_LEVEL",
+          "value": "INFO"
+        },
+        {
+          "name": "HOST",
+          "value": "0.0.0.0"
+        },
+        {
+          "name": "PORT",
+          "value": "8000"
+        }
+      ],
+      "dependsOn": [
+        {
+          "containerName": "databases",
+          "condition": "HEALTHY"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/aura-app-dev",
+          "awslogs-region": "us-east-2",
+          "awslogs-stream-prefix": "api-gateway",
+          "awslogs-create-group": "true"
+        }
+      },
+      "healthCheck": {
+        "command": [
+          "CMD-SHELL",
+          "python -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=10)\" || exit 1"
+        ],
+        "interval": 30,
+        "timeout": 15,
+        "retries": 3,
+        "startPeriod": 90
+      }
+    },
+    {
+      "name": "service-desk-host",
+      "image": "753353727891.dkr.ecr.us-east-2.amazonaws.com/aura-service-desk-host:latest",
+      "cpu": 256,
+      "memory": 512,
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 8001,
+          "protocol": "tcp",
+          "name": "service-desk"
+        }
+      ],
+      "environment": [
+        {
+          "name": "DATABASE_URL",
+          "value": "postgresql://aura_user:aura_password@127.0.0.1:5432/aura_servicedesk"
+        },
+        {
+          "name": "MONGODB_URL",
+          "value": "mongodb://127.0.0.1:27017/aura_servicedesk"
+        },
+        {
+          "name": "REDIS_URL",
+          "value": "redis://127.0.0.1:6379"
+        },
+        {
+          "name": "ENVIRONMENT",
+          "value": "aws-dev"
+        },
+        {
+          "name": "DEBUG",
+          "value": "false"
+        },
+        {
+          "name": "LOG_LEVEL",
+          "value": "INFO"
+        },
+        {
+          "name": "HOST",
+          "value": "0.0.0.0"
+        },
+        {
+          "name": "PORT",
+          "value": "8001"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "OPENAI_API_KEY",
+          "valueFrom": "arn:aws:ssm:us-east-2:753353727891:parameter/aura/dev/openai-api-key"
+        }
+      ],
+      "dependsOn": [
+        {
+          "containerName": "databases",
+          "condition": "HEALTHY"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/aura-app-dev",
+          "awslogs-region": "us-east-2",
+          "awslogs-stream-prefix": "service-desk",
+          "awslogs-create-group": "true"
+        }
+      },
+      "healthCheck": {
+        "command": [
+          "CMD-SHELL",
+          "python -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:8001/health', timeout=10)\" || exit 1"
+        ],
+        "interval": 30,
+        "timeout": 15,
+        "retries": 3,
+        "startPeriod": 90
+      }
+    },
+    {
+      "name": "frontend",
+      "image": "753353727891.dkr.ecr.us-east-2.amazonaws.com/aura-frontend:latest",
+      "cpu": 256,
+      "memory": 512,
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "protocol": "tcp",
+          "name": "frontend"
+        }
+      ],
+      "environment": [
+        {
+          "name": "REACT_APP_API_BASE_URL",
+          "value": "http://127.0.0.1:8000"
+        }
+      ],
+      "dependsOn": [
+        {
+          "containerName": "api-gateway",
+          "condition": "HEALTHY"
+        },
+        {
+          "containerName": "service-desk-host",
+          "condition": "HEALTHY"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/aura-app-dev",
+          "awslogs-region": "us-east-2",
+          "awslogs-stream-prefix": "frontend",
+          "awslogs-create-group": "true"
+        }
+      },
+      "healthCheck": {
+        "command": [
+          "CMD-SHELL",
+          "curl -f http://127.0.0.1:80/health || exit 1"
+        ],
+        "interval": 30,
+        "timeout": 10,
+        "retries": 3,
+        "startPeriod": 60
+      }
+    }
+  ]
+}

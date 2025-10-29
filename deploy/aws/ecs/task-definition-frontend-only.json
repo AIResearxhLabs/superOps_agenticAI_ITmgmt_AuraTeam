@@ -1,0 +1,38 @@
+{
+  "family": "aura-frontend-dev",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "512",
+  "memory": "1024",
+  "executionRoleArn": "arn:aws:iam::753353727891:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::753353727891:role/ecsTaskRole",
+  "containerDefinitions": [
+    {
+      "name": "aura-frontend",
+      "image": "753353727891.dkr.ecr.us-east-2.amazonaws.com/aura-frontend:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        {
+          "name": "NODE_ENV",
+          "value": "production"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/aura-frontend-dev",
+          "awslogs-region": "us-east-2",
+          "awslogs-stream-prefix": "frontend"
+        }
+      },
+      "cpu": 512,
+      "memory": 1024
+    }
+  ]
+}

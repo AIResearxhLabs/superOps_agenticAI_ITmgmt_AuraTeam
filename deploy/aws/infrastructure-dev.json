@@ -1,0 +1,11 @@
+{
+  "environment": "dev",
+  "region": "us-east-2",
+  "vpc_id": "vpc-04f7dafcbe4b54569",
+  "public_subnets": ["subnet-0f76acbbc8beefc65", "subnet-07ccdd72531c7b937"],
+  "private_subnets": ["subnet-08bfe9cb869363a24", "subnet-0d0f9b7d403f562bd"],
+  "security_group_id": "sg-0dc519ef5d0897269",
+  "ecs_cluster": "aura-dev-cluster",
+  "internet_gateway_id": "igw-03f03c55efa5b3ed4",
+  "nat_gateway_id": "nat-07ec5cb0cc762ca24"
+}

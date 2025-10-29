@@ -1,0 +1,11 @@
+{
+  "setup_type": "demo",
+  "environment": "dev",
+  "region": "us-east-2",
+  "vpc_id": "vpc-000c17240547387ca",
+  "public_subnets": ["subnet-02c34f64bac62119a", "subnet-09e2d1efe9310d0a0"],
+  "security_group_id": "sg-0ff9c840c69ecb0ff",
+  "ecs_cluster": "aura-dev-cluster",
+  "cost_optimized": true,
+  "remote_access_enabled": true
+}

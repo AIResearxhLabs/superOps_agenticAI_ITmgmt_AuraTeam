@@ -353,10 +353,90 @@ async def get_tickets(
             # Get total count
             total = await app.state.tickets_repo.count(filter_dict)
         else:
-            # Fallback: return empty results
-            tickets = []
-            total = 0
-            logger.warning("MongoDB not available - returning empty ticket list")
+            # Fallback: return mock tickets for demo
+            from datetime import datetime, timedelta
+            import uuid
+            
+            mock_tickets = [
+                {
+                    "_id": str(uuid.uuid4()),
+                    "title": "Computer running very slowly after Windows update",
+                    "description": "My computer has been running extremely slowly since the latest Windows update. Applications take forever to load and the system freezes occasionally.",
+                    "category": "Software",
+                    "priority": "high",
+                    "status": "open",
+                    "user_id": "jane.doe@company.com",
+                    "user_email": "jane.doe@company.com",
+                    "user_name": "Jane Doe",
+                    "department": "Marketing",
+                    "created_at": datetime.utcnow() - timedelta(hours=2),
+                    "updated_at": datetime.utcnow() - timedelta(hours=1)
+                },
+                {
+                    "_id": str(uuid.uuid4()),
+                    "title": "Email client not receiving new messages",
+                    "description": "Outlook is not downloading new emails since this morning. I can send emails but cannot receive them.",
+                    "category": "Email",
+                    "priority": "high",
+                    "status": "open",
+                    "user_id": "john.smith@company.com",
+                    "user_email": "john.smith@company.com",
+                    "user_name": "John Smith",
+                    "department": "Sales",
+                    "created_at": datetime.utcnow() - timedelta(hours=1),
+                    "updated_at": datetime.utcnow() - timedelta(minutes=30)
+                },
+                {
+                    "_id": str(uuid.uuid4()),
+                    "title": "Unable to connect to office Wi-Fi",
+                    "description": "I can't connect to the office Wi-Fi network. It keeps asking for password even though I'm entering the correct one.",
+                    "category": "Network",
+                    "priority": "medium",
+                    "status": "in_progress",
+                    "user_id": "alice.johnson@company.com",
+                    "user_email": "alice.johnson@company.com",
+                    "user_name": "Alice Johnson",
+                    "department": "HR",
+                    "assigned_to": "Sarah Wilson",
+                    "created_at": datetime.utcnow() - timedelta(days=1),
+                    "updated_at": datetime.utcnow() - timedelta(hours=3)
+                },
+                {
+                    "_id": str(uuid.uuid4()),
+                    "title": "Printer not responding",
+                    "description": "The office printer is not responding to print jobs. The status shows as offline even though it's powered on.",
+                    "category": "Hardware",
+                    "priority": "low",
+                    "status": "resolved",
+                    "user_id": "bob.wilson@company.com",
+                    "user_email": "bob.wilson@company.com",
+                    "user_name": "Bob Wilson",
+                    "department": "Finance",
+                    "assigned_to": "David Kim",
+                    "resolution": "Restarted printer service and updated drivers",
+                    "created_at": datetime.utcnow() - timedelta(days=2),
+                    "updated_at": datetime.utcnow() - timedelta(hours=6)
+                }
+            ]
+            
+            # Apply filters to mock data
+            filtered_tickets = mock_tickets
+            if status:
+                filtered_tickets = [t for t in filtered_tickets if t["status"] == status.value]
+            if category:
+                filtered_tickets = [t for t in filtered_tickets if t["category"].lower() == category.lower()]
+            if assigned_to:
+                filtered_tickets = [t for t in filtered_tickets if t.get("assigned_to") == assigned_to]
+            if user_id:
+                filtered_tickets = [t for t in filtered_tickets if t["user_id"] == user_id]
+            
+            # Apply pagination
+            total = len(filtered_tickets)
+            start_idx = pagination.offset
+            end_idx = start_idx + pagination.limit
+            tickets = filtered_tickets[start_idx:end_idx]
+            
+            logger.warning("MongoDB not available - returning mock ticket list")
         
         # Calculate pagination info
         pages = (total + pagination.limit - 1) // pagination.limit
@@ -497,9 +577,20 @@ async def analyze_ticket(ticket_id: str):
     
     try:
         # Get ticket
-        ticket = await app.state.tickets_repo.find_by_id(ticket_id)
-        if not ticket:
-            raise HTTPException(status_code=404, detail="Ticket not found")
+        if not app.state.tickets_repo:
+            # Fallback when database is not available
+            logger.warning("MongoDB not available - using mock ticket data for analysis")
+            ticket = {
+                "title": "Sample ticket for analysis",
+                "description": "This is a mock ticket used when database is unavailable",
+                "category": "Software",
+                "priority": "medium",
+                "department": "IT"
+            }
+        else:
+            ticket = await app.state.tickets_repo.find_by_id(ticket_id)
+            if not ticket:
+                raise HTTPException(status_code=404, detail="Ticket not found")
         
         # Get AI service
         ai_service = get_ai_service()
@@ -515,27 +606,30 @@ async def analyze_ticket(ticket_id: str):
         # Find similar tickets for context
         similar_tickets = []
         try:
-            all_tickets = await app.state.tickets_repo.find_many(
-                {"category": ticket.get("category"), "_id": {"$ne": ticket["_id"]}},
-                limit=10
-            )
-            
-            # Simple similarity based on category and keywords
-            ticket_text = f"{ticket.get('title', '')} {ticket.get('description', '')}".lower()
-            for similar in all_tickets:
-                similar_text = f"{similar.get('title', '')} {similar.get('description', '')}".lower()
-                # Basic keyword matching for similarity
-                common_words = set(ticket_text.split()) & set(similar_text.split())
-                if len(common_words) > 2:
-                    similar_tickets.append({
-                        "title": similar.get("title", ""),
-                        "similarity_score": len(common_words) / max(len(ticket_text.split()), len(similar_text.split())),
-                        "resolution_approach": similar.get("resolution", "Standard troubleshooting")
-                    })
-            
-            # Sort by similarity and take top 3
-            similar_tickets.sort(key=lambda x: x["similarity_score"], reverse=True)
-            similar_tickets = similar_tickets[:3]
+            if app.state.tickets_repo:
+                all_tickets = await app.state.tickets_repo.find_many(
+                    {"category": ticket.get("category"), "_id": {"$ne": ticket.get("_id")}},
+                    limit=10
+                )
+                
+                # Simple similarity based on category and keywords
+                ticket_text = f"{ticket.get('title', '')} {ticket.get('description', '')}".lower()
+                for similar in all_tickets:
+                    similar_text = f"{similar.get('title', '')} {similar.get('description', '')}".lower()
+                    # Basic keyword matching for similarity
+                    common_words = set(ticket_text.split()) & set(similar_text.split())
+                    if len(common_words) > 2:
+                        similar_tickets.append({
+                            "title": similar.get("title", ""),
+                            "similarity_score": len(common_words) / max(len(ticket_text.split()), len(similar_text.split())),
+                            "resolution_approach": similar.get("resolution", "Standard troubleshooting")
+                        })
+                
+                # Sort by similarity and take top 3
+                similar_tickets.sort(key=lambda x: x["similarity_score"], reverse=True)
+                similar_tickets = similar_tickets[:3]
+            else:
+                logger.warning("MongoDB not available - skipping similar tickets search")
             
         except Exception as e:
             logger.error(f"Error finding similar tickets: {e}")

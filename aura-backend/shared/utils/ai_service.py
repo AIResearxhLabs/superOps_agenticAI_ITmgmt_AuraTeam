@@ -18,12 +18,16 @@ class AIService:
     
     def __init__(self, api_key: str = None):
         self.api_key = api_key or os.getenv("OPENAI_API_KEY")
-        if not self.api_key:
-            logger.warning("OpenAI API key not provided. AI features will be disabled.")
+        if not self.api_key or self.api_key == "your_openai_api_key_here":
+            logger.warning("OpenAI API key not provided or is placeholder. AI features will use fallback mode.")
             self.client = None
         else:
-            self.client = AsyncOpenAI(api_key=self.api_key)
-            logger.info("OpenAI client initialized successfully")
+            try:
+                self.client = AsyncOpenAI(api_key=self.api_key)
+                logger.info("OpenAI client initialized successfully")
+            except Exception as e:
+                logger.error(f"Failed to initialize OpenAI client: {e}")
+                self.client = None
     
     async def generate_completion(
         self,
@@ -97,6 +101,9 @@ class AIService:
     ) -> Dict[str, Any]:
         """Classify text into predefined categories"""
         
+        if not self.client:
+            return self._fallback_classify_text(text, categories)
+        
         categories_str = ", ".join(categories)
         prompt = f"""
         Classify the following text into one of these categories: {categories_str}
@@ -127,19 +134,48 @@ class AIService:
             
         except json.JSONDecodeError:
             logger.error("Failed to parse classification response as JSON")
-            return {
-                "category": categories[0] if categories else "unknown",
-                "confidence": 0.0,
-                "all_categories": categories
-            }
+            # Use fallback classification
+            return self._fallback_classify_text(text, categories)
         except Exception as e:
             logger.error(f"Error in text classification: {e}")
-            return {
-                "category": categories[0] if categories else "unknown",
-                "confidence": 0.0,
-                "all_categories": categories
-            }
+            # Use fallback classification
+            return self._fallback_classify_text(text, categories)
     
+    def _fallback_classify_text(self, text: str, categories: List[str]) -> Dict[str, Any]:
+        """Fallback classification based on keywords when AI service is unavailable"""
+        text_lower = text.lower()
+        category_scores = {}
+        
+        # Simple keyword matching for common categories
+        keyword_map = {
+            "Hardware": ["hardware", "computer", "laptop", "desktop", "monitor", "keyboard", "mouse", "printer", "device"],
+            "Software": ["software", "application", "app", "program", "install", "update", "windows", "microsoft", "adobe"],
+            "Network": ["network", "internet", "wifi", "connection", "vpn", "ethernet", "router", "slow"],
+            "Email": ["email", "outlook", "gmail", "mail", "inbox", "send", "receive"],
+            "Access": ["access", "login", "password", "account", "permission", "locked", "authentication"],
+            "Security": ["security", "virus", "malware", "antivirus", "firewall", "breach", "hack"],
+            "Other": []
+        }
+        
+        for category, keywords in keyword_map.items():
+            if category in categories:
+                score = sum(1 for keyword in keywords if keyword in text_lower)
+                category_scores[category] = score
+        
+        # Find best match
+        if category_scores:
+            best_category = max(category_scores.keys(), key=lambda k: category_scores[k])
+            confidence = min(0.9, category_scores[best_category] * 0.2 + 0.3)
+        else:
+            best_category = categories[0] if categories else "Other"
+            confidence = 0.5
+        
+        return {
+            "category": best_category,
+            "confidence": confidence,
+            "all_categories": categories
+        }
+
     async def extract_intent(self, text: str) -> Dict[str, Any]:
         """Extract intent and entities from text"""
         

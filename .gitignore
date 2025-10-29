@@ -209,6 +209,7 @@ __marimo__/
 
 #Frontend code
 aura-frontend/node_modules/
+node_modules/
 
 #cline files
 .clineprompts/
