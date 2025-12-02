@@ -294,70 +294,82 @@ const TicketDetail = () => {
               {aiAnalysis && (
                 <Box>
                   {/* Suggested Processor */}
-                  <Paper sx={{ p: 2, mb: 2, border: '1px solid', borderColor: 'primary.light' }}>
-                    <Typography variant="subtitle2" sx={{ mb: 1, display: 'flex', alignItems: 'center' }}>
-                      <PersonIcon sx={{ mr: 1, fontSize: 18 }} />
-                      Suggested Processor
-                    </Typography>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                      <Avatar sx={{ width: 24, height: 24, fontSize: '0.75rem' }}>
-                        {(aiAnalysis.suggested_processor?.name || 'U').charAt(0)}
-                      </Avatar>
-                      <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                        {aiAnalysis.suggested_processor.name}
+                  {aiAnalysis.suggested_processor && (
+                    <Paper sx={{ p: 2, mb: 2, border: '1px solid', borderColor: 'primary.light' }}>
+                      <Typography variant="subtitle2" sx={{ mb: 1, display: 'flex', alignItems: 'center' }}>
+                        <PersonIcon sx={{ mr: 1, fontSize: 18 }} />
+                        Suggested Processor
                       </Typography>
-                      <Chip 
-                        label={`${Math.round(aiAnalysis.suggested_processor.confidence * 100)}%`}
-                        size="small"
-                        color="primary"
-                      />
-                    </Box>
-                    <Typography variant="caption" color="text.secondary">
-                      {aiAnalysis.suggested_processor.reason}
-                    </Typography>
-                  </Paper>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                        <Avatar sx={{ width: 24, height: 24, fontSize: '0.75rem' }}>
+                          {(aiAnalysis.suggested_processor?.name || 'U').charAt(0).toUpperCase()}
+                        </Avatar>
+                        <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                          {aiAnalysis.suggested_processor?.name || 'Unassigned'}
+                        </Typography>
+                        {aiAnalysis.suggested_processor?.confidence !== undefined && (
+                          <Chip 
+                            label={`${Math.round((aiAnalysis.suggested_processor.confidence || 0) * 100)}%`}
+                            size="small"
+                            color="primary"
+                          />
+                        )}
+                      </Box>
+                      {aiAnalysis.suggested_processor?.reason && (
+                        <Typography variant="caption" color="text.secondary">
+                          {aiAnalysis.suggested_processor.reason}
+                        </Typography>
+                      )}
+                    </Paper>
+                  )}
 
                   {/* Self-Fix Suggestions */}
-                  <Paper sx={{ p: 2, mb: 2, border: '1px solid', borderColor: 'success.light' }}>
-                    <Typography variant="subtitle2" sx={{ mb: 1, display: 'flex', alignItems: 'center' }}>
-                      <LightbulbIcon sx={{ mr: 1, fontSize: 18 }} />
-                      Self-Fix Suggestions
-                    </Typography>
-                    <List dense>
-                      {aiAnalysis.self_fix_suggestions.map((suggestion, index) => (
-                        <ListItem key={index} sx={{ px: 0 }}>
-                          <ListItemIcon sx={{ minWidth: 24 }}>
-                            <CheckCircleIcon sx={{ fontSize: 16, color: 'success.main' }} />
-                          </ListItemIcon>
-                          <ListItemText 
-                            primary={suggestion}
-                            primaryTypographyProps={{ variant: 'caption' }}
-                          />
-                        </ListItem>
-                      ))}
-                    </List>
-                  </Paper>
+                  {aiAnalysis.self_fix_suggestions && Array.isArray(aiAnalysis.self_fix_suggestions) && aiAnalysis.self_fix_suggestions.length > 0 && (
+                    <Paper sx={{ p: 2, mb: 2, border: '1px solid', borderColor: 'success.light' }}>
+                      <Typography variant="subtitle2" sx={{ mb: 1, display: 'flex', alignItems: 'center' }}>
+                        <LightbulbIcon sx={{ mr: 1, fontSize: 18 }} />
+                        Self-Fix Suggestions
+                      </Typography>
+                      <List dense>
+                        {aiAnalysis.self_fix_suggestions.map((suggestion, index) => (
+                          <ListItem key={index} sx={{ px: 0 }}>
+                            <ListItemIcon sx={{ minWidth: 24 }}>
+                              <CheckCircleIcon sx={{ fontSize: 16, color: 'success.main' }} />
+                            </ListItemIcon>
+                            <ListItemText 
+                              primary={suggestion}
+                              primaryTypographyProps={{ variant: 'caption' }}
+                            />
+                          </ListItem>
+                        ))}
+                      </List>
+                    </Paper>
+                  )}
 
                   {/* Estimated Resolution Time */}
-                  <Paper sx={{ p: 2, mb: 2, border: '1px solid', borderColor: 'warning.light' }}>
-                    <Typography variant="subtitle2" sx={{ mb: 1, display: 'flex', alignItems: 'center' }}>
-                      <AccessTimeIcon sx={{ mr: 1, fontSize: 18 }} />
-                      Estimated Resolution Time
-                    </Typography>
-                    <Typography variant="body2">{aiAnalysis.estimated_resolution_time}</Typography>
-                  </Paper>
+                  {aiAnalysis.estimated_resolution_time && (
+                    <Paper sx={{ p: 2, mb: 2, border: '1px solid', borderColor: 'warning.light' }}>
+                      <Typography variant="subtitle2" sx={{ mb: 1, display: 'flex', alignItems: 'center' }}>
+                        <AccessTimeIcon sx={{ mr: 1, fontSize: 18 }} />
+                        Estimated Resolution Time
+                      </Typography>
+                      <Typography variant="body2">{aiAnalysis.estimated_resolution_time}</Typography>
+                    </Paper>
+                  )}
 
                   {/* Priority Recommendation */}
-                  <Paper sx={{ p: 2, mb: 2, border: '1px solid', borderColor: 'info.light' }}>
-                    <Typography variant="subtitle2" sx={{ mb: 1, display: 'flex', alignItems: 'center' }}>
-                      <FlagIcon sx={{ mr: 1, fontSize: 18 }} />
-                      Priority Recommendation
-                    </Typography>
-                    <Typography variant="body2">{aiAnalysis.priority_recommendation}</Typography>
-                  </Paper>
+                  {aiAnalysis.priority_recommendation && (
+                    <Paper sx={{ p: 2, mb: 2, border: '1px solid', borderColor: 'info.light' }}>
+                      <Typography variant="subtitle2" sx={{ mb: 1, display: 'flex', alignItems: 'center' }}>
+                        <FlagIcon sx={{ mr: 1, fontSize: 18 }} />
+                        Priority Recommendation
+                      </Typography>
+                      <Typography variant="body2">{aiAnalysis.priority_recommendation}</Typography>
+                    </Paper>
+                  )}
 
                   {/* Similar Tickets */}
-                  {aiAnalysis.similar_tickets.length > 0 && (
+                  {aiAnalysis.similar_tickets && Array.isArray(aiAnalysis.similar_tickets) && aiAnalysis.similar_tickets.length > 0 && (
                     <Paper sx={{ p: 2, mb: 2, border: '1px solid', borderColor: 'grey.300' }}>
                       <Typography variant="subtitle2" sx={{ mb: 1, display: 'flex', alignItems: 'center' }}>
                         <TrendingUpIcon sx={{ mr: 1, fontSize: 18 }} />
@@ -367,8 +379,8 @@ const TicketDetail = () => {
                         {aiAnalysis.similar_tickets.map((similar, index) => (
                           <ListItem key={index} sx={{ px: 0 }}>
                             <ListItemText 
-                              primary={similar.title}
-                              secondary={`Similarity: ${Math.round(similar.similarity_score * 100)}% - ${similar.resolution_approach}`}
+                              primary={similar?.title || 'Untitled Ticket'}
+                              secondary={`Similarity: ${Math.round((similar?.similarity_score || 0) * 100)}% - ${similar?.resolution_approach || 'No approach specified'}`}
                               primaryTypographyProps={{ variant: 'caption', fontWeight: 600 }}
                               secondaryTypographyProps={{ variant: 'caption' }}
                             />
@@ -379,7 +391,7 @@ const TicketDetail = () => {
                   )}
 
                   {/* Additional Insights */}
-                  {aiAnalysis.additional_insights.length > 0 && (
+                  {aiAnalysis.additional_insights && Array.isArray(aiAnalysis.additional_insights) && aiAnalysis.additional_insights.length > 0 && (
                     <Paper sx={{ p: 2, border: '1px solid', borderColor: 'grey.300' }}>
                       <Typography variant="subtitle2" sx={{ mb: 1 }}>
                         Additional Insights

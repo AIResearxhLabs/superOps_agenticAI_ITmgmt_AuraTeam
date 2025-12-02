@@ -773,6 +773,1182 @@ Contact IT for file sharing issues or questions.
         "author": "IT Support Team"
     },
     {
+        "title": "Account Lockout and Security Policies",
+        "content": """
+# Account Lockout Resolution Guide
+
+## Understanding Account Lockouts
+
+### Why Accounts Get Locked
+- Multiple failed login attempts (typically 5-10 attempts)
+- Expired passwords not updated
+- Cached credentials in applications
+- Compromised account security measures
+- Automatic security policy enforcement
+
+## Immediate Steps When Locked Out
+
+### Self-Service Options
+1. Wait 30 minutes for automatic unlock (if policy allows)
+2. Use self-service password reset portal
+3. Call IT Help Desk for immediate unlock
+4. Verify you're using correct credentials
+
+### Common Causes to Check
+- Saved passwords in browsers or apps
+- Mobile devices with old passwords
+- Mapped network drives with cached credentials
+- Third-party applications (email clients, cloud storage)
+
+## Security Policy Guidelines
+
+### Password Requirements
+- Minimum 12 characters (complex mode)
+- Must include: uppercase, lowercase, numbers, special characters
+- Cannot reuse last 12 passwords
+- Expires every 90 days
+- Cannot contain username or common words
+
+### Failed Login Attempts
+- **Threshold**: 5 failed attempts
+- **Lockout Duration**: 30 minutes
+- **Reset**: Automatically after duration or by IT
+- **Warning**: 3 failed attempts triggers notification
+
+## Preventing Future Lockouts
+
+### Best Practices
+1. Update password everywhere after reset
+2. Remove saved passwords from browsers
+3. Disconnect mapped drives before password change
+4. Update mobile devices immediately
+5. Use password manager for security
+
+### Applications to Update
+- Email clients (Outlook, mobile mail)
+- VPN connections
+- Cloud storage (OneDrive, SharePoint)
+- Collaboration tools (Teams, Slack)
+- Remote desktop connections
+
+## Troubleshooting Persistent Lockouts
+
+### Finding the Source
+1. Check Windows Event Viewer (Security logs)
+2. Review recent login attempts
+3. Identify which device/application is causing lockouts
+4. Disable automatic reconnection temporarily
+
+### Advanced Solutions
+1. Clear credential cache: `cmdkey /list` and delete entries
+2. Reset network credentials in Control Panel
+3. Remove and re-add network printers
+4. Update all service accounts if applicable
+
+## Security Alerts
+
+### When to Contact Security Team
+- Lockouts when you haven't attempted login
+- Suspicious account activity notifications
+- Multiple lockouts in short timeframe
+- Lockouts from unfamiliar locations
+- Account showing unusual access patterns
+
+## Account Types and Policies
+
+### Standard User Accounts
+- 30-minute lockout duration
+- 5 failed attempt threshold
+- Self-service reset available
+
+### Privileged/Admin Accounts
+- Stricter security policies
+- Immediate IT involvement required
+- No self-service options
+- Enhanced monitoring and logging
+
+## Emergency Access
+
+### Critical Situations
+1. Contact IT Help Desk immediately
+2. Provide alternate contact verification
+3. Manager approval may be required
+4. Temporary credentials may be issued
+5. Full security review post-incident
+
+## Compliance and Reporting
+- All lockouts are logged for security audit
+- Repeated lockouts trigger security review
+- Report suspicious activity immediately
+- Comply with security training requirements
+
+## Support Resources
+- IT Help Desk: Available 24/7
+- Self-Service Portal: https://accounts.company.com
+- Security Team: security@company.com
+        """,
+        "category": "Account Management",
+        "tags": ["account", "lockout", "security", "password", "policy", "compliance"],
+        "author": "IT Security Team"
+    },
+    {
+        "title": "Email Spam and Phishing Protection",
+        "content": """
+# Email Security and Phishing Prevention
+
+## Identifying Phishing Emails
+
+### Common Red Flags
+- Urgent or threatening language
+- Requests for sensitive information
+- Suspicious sender addresses
+- Generic greetings ("Dear Customer")
+- Spelling and grammar errors
+- Unexpected attachments or links
+- Mismatched URLs (hover to check)
+
+### Types of Phishing Attacks
+
+#### Spear Phishing
+- Targeted attacks on specific individuals
+- Personalized with company/personal information
+- Often impersonates known contacts or executives
+
+#### Whaling
+- Targets high-level executives
+- Sophisticated social engineering
+- Significant financial or data theft potential
+
+#### Clone Phishing
+- Duplicates legitimate emails
+- Replaces links/attachments with malicious ones
+- Appears to come from trusted source
+
+## What to Do If You Receive Phishing
+
+### Immediate Actions
+1. **DO NOT** click any links or attachments
+2. **DO NOT** reply or provide information
+3. Report the email to security@company.com
+4. Use "Report Phishing" button in Outlook
+5. Delete the email after reporting
+
+### If You Clicked a Link
+1. Disconnect from network immediately
+2. Contact IT Security right away
+3. Do not attempt to "undo" actions
+4. Change passwords as directed by IT
+5. Monitor accounts for suspicious activity
+
+### If You Provided Information
+1. Contact IT Security immediately (CRITICAL)
+2. Change all passwords instantly
+3. Monitor financial accounts closely
+4. Enable MFA on all accounts
+5. File internal incident report
+
+## Email Filtering and Protection
+
+### Company Anti-Spam Features
+- Real-time threat detection
+- Automatic quarantine of suspicious emails
+- Link and attachment scanning
+- Sender verification (SPF, DKIM, DMARC)
+- Machine learning threat analysis
+
+### Managing Your Spam Filter
+
+#### Checking Quarantine
+1. Go to https://protection.company.com
+2. Review quarantined messages
+3. Release legitimate emails if needed
+4. Report false positives
+
+#### Safe Senders List
+1. Open Outlook Settings
+2. Go to Mail > Junk Email
+3. Add trusted domains/addresses
+4. Review list quarterly
+
+#### Block Senders
+1. Right-click suspicious email
+2. Select "Block Sender"
+3. Report to IT if persistent
+4. Never engage with spammer
+
+## Best Practices for Email Security
+
+### Verify Before You Trust
+- Check sender's full email address
+- Verify unexpected requests through alternative channels
+- Call the person directly for sensitive requests
+- Don't trust caller ID or email display names
+
+### Safe Link Practices
+1. Hover over links to preview URL
+2. Type addresses manually for banking/sensitive sites
+3. Look for HTTPS and valid certificates
+4. Be wary of shortened URLs
+5. Use link scanning tools when uncertain
+
+### Attachment Safety
+- Only open expected attachments
+- Scan with antivirus before opening
+- Be cautious of executable files (.exe, .bat, .cmd)
+- Watch for double extensions (.pdf.exe)
+- Verify with sender if unexpected
+
+## Common Phishing Scenarios
+
+### "Account Verification Required"
+- Claims account will be suspended
+- Requests password or personal info
+- Creates sense of urgency
+- **Action**: Contact IT directly to verify
+
+### "Package Delivery Notification"
+- Fake shipping notifications
+- Contains tracking link or attachment
+- Often targets employees expecting deliveries
+- **Action**: Check tracking directly on shipper's website
+
+### "IT Department Request"
+- Impersonates IT support
+- Requests credentials for "system maintenance"
+- May ask for remote access
+- **Action**: Contact IT through official channels
+
+### "Executive Request"
+- Appears from CEO/Manager
+- Urgent financial request or wire transfer
+- Unusual timing or request method
+- **Action**: Verify through phone call or in-person
+
+## Reporting and Response
+
+### How to Report
+1. Forward suspicious email to: phishing@company.com
+2. Use Outlook's "Report Phishing" button
+3. Include full email headers
+4. Do not modify the original email
+5. Await confirmation from security team
+
+### After Reporting
+- Security team will analyze threat
+- You'll receive feedback on the report
+- Protections will be updated if needed
+- Company-wide alert may be issued
+- Training updates may be provided
+
+## Training and Awareness
+
+### Regular Security Training
+- Quarterly phishing simulation tests
+- Monthly security awareness newsletters
+- Annual comprehensive security training
+- Ad-hoc alerts for emerging threats
+
+### Self-Assessment
+- Take periodic phishing quizzes
+- Review security awareness portal
+- Attend optional security workshops
+- Stay informed about current threats
+
+## Mobile Email Security
+
+### Additional Mobile Risks
+- Smaller screens make verification harder
+- Limited security indicators visible
+- Auto-download of images/attachments
+- Multiple email accounts on one device
+
+### Mobile Best Practices
+1. Don't click links in mobile emails when possible
+2. Use official apps only
+3. Keep apps and OS updated
+4. Enable device encryption
+5. Use strong device passwords/biometrics
+
+## Support and Resources
+- Security Awareness Portal: https://security.company.com
+- Report Phishing: phishing@company.com
+- IT Security Team: security@company.com
+- Emergency Security Hotline: Available 24/7
+        """,
+        "category": "Security",
+        "tags": ["email", "phishing", "security", "spam", "threat", "awareness"],
+        "author": "IT Security Team"
+    },
+    {
+        "title": "Hardware Request and Replacement Process",
+        "content": """
+# Hardware Request and Replacement Guide
+
+## New Equipment Requests
+
+### Eligibility for New Hardware
+- New employees (onboarding)
+- Role changes requiring different equipment
+- Project-specific needs
+- Equipment at end-of-life (3-4 years)
+- Performance issues affecting productivity
+
+### Standard Equipment Packages
+
+#### Developer Package
+- High-performance laptop (32GB RAM)
+- Dual 27" monitors
+- Mechanical keyboard
+- Ergonomic mouse
+- Laptop stand and docking station
+
+#### Office Worker Package
+- Standard laptop (16GB RAM)
+- Single 24" monitor
+- Standard keyboard and mouse
+- Basic accessories
+
+#### Executive Package
+- Premium laptop (16GB RAM)
+- 27" monitor
+- Premium peripherals
+- Mobile accessories (charger, case)
+- Conference room equipment access
+
+## Request Process
+
+### Step 1: Submit Request
+1. Open IT Service Portal
+2. Select "Hardware Request"
+3. Choose equipment category
+4. Provide business justification
+5. Include manager approval
+
+### Step 2: Approval Workflow
+- **Standard Requests**: IT Manager approval (1-2 days)
+- **High-Value Items**: Department VP approval (3-5 days)
+- **Specialized Equipment**: Additional technical review
+
+### Step 3: Procurement
+- In-stock items: 1-3 business days
+- Special orders: 1-2 weeks
+- Custom builds: 2-4 weeks
+- International shipping: 3-6 weeks
+
+### Step 4: Delivery and Setup
+- Self-service pickup from IT
+- Desk delivery for executives
+- White-glove setup available
+- Remote setup assistance provided
+
+## Equipment Replacement
+
+### When to Request Replacement
+
+#### Performance Issues
+- Frequent crashes or freezes
+- Extremely slow performance
+- Failed diagnostics
+- Cannot run required software
+
+#### Physical Damage
+- Cracked screens
+- Liquid damage
+- Keyboard/trackpad failure
+- Port damage
+- Battery issues (won't hold charge)
+
+#### End of Life
+- 4+ years old
+- No longer supported by manufacturer
+- Cannot upgrade to required OS
+- Repair costs exceed replacement value
+
+### Replacement Process
+1. Document issue thoroughly
+2. Submit repair ticket first
+3. IT evaluates repair vs. replace
+4. Backup your data
+5. Receive replacement equipment
+6. Return old equipment
+
+## Temporary Equipment Loans
+
+### Loaner Laptops
+- Available while yours is being repaired
+- Standard configuration only
+- Must sign loan agreement
+- Return within 3 days of resolution
+
+### Travel Equipment
+- Lightweight laptops for travel
+- International power adapters
+- Mobile hotspots
+- Available 2 weeks in advance
+
+### Event Equipment
+- Presentation equipment
+- Demo devices
+- Conference equipment
+- Reserve at least 1 week ahead
+
+## Peripherals and Accessories
+
+### Available Without Approval
+- Standard mouse and keyboard
+- Monitor cables and adapters
+- Headsets for video calls
+- Webcam covers
+- Cable management accessories
+
+### Requires Approval
+- External hard drives
+- USB hubs and docks
+- Premium headphones
+- Ergonomic equipment
+- Specialty adapters
+
+### Ergonomic Equipment
+- Ergonomic assessment required
+- Standing desk converters
+- Ergonomic keyboards and mice
+- Monitor arms
+- Footrests and cushions
+
+## Equipment Return Process
+
+### When Leaving Company
+1. Receive return checklist from HR
+2. Backup personal data (if allowed)
+3. Remove personal information
+4. Return all company equipment
+5. Obtain return receipt
+
+### Equipment to Return
+- Laptop and charger
+- Monitors and cables
+- Keyboards and mice
+- Mobile devices
+- Access badges and keys
+- Any other company property
+
+### Data Wiping
+- IT will securely wipe all devices
+- Data cannot be recovered after wipe
+- Personal files will be permanently deleted
+- Ensure you have backups before returning
+
+## Asset Management
+
+### Equipment Tracking
+- All equipment has asset tags
+- Never remove or damage asset tags
+- Report missing tags immediately
+- Equipment tracked in CMDB system
+
+### Your Responsibilities
+- Keep equipment secure
+- Report theft immediately
+- Don't modify hardware without approval
+- Use equipment for business purposes only
+- Maintain equipment in good condition
+
+### Relocation
+- Notify IT before moving offices
+- Equipment must be tracked
+- Some equipment may need reconfiguration
+- Allow 3-5 days for moves
+
+## Lost or Stolen Equipment
+
+### Immediate Actions (CRITICAL)
+1. Report to IT Security immediately
+2. File police report if stolen
+3. Provide incident details
+4. Remote wipe will be initiated
+5. Change all passwords
+
+### Replacement After Loss
+- Investigation required
+- Police report may be needed
+- Replacement timeline varies
+- Cost recovery may apply
+- Security review conducted
+
+## Warranty and Repairs
+
+### Manufacturer Warranty
+- 3-year warranty on most equipment
+- Covers manufacturing defects
+- Does not cover accidental damage
+- Extended warranty available
+
+### Out-of-Warranty Repairs
+- Cost evaluation by IT
+- May require approval
+- Consider replacement if cost high
+- User error damage may be charged
+
+## BYOD (Bring Your Own Device)
+
+### Company Policy
+- BYOD allowed for specific roles
+- Must meet security requirements
+- IT support limited
+- Company data must be segregated
+
+### Requirements
+- Modern OS (within 2 versions)
+- Antivirus installed
+- Encrypted storage
+- MDM enrollment
+- Passcode/biometric required
+
+## Sustainability and Recycling
+
+### Equipment Disposal
+- All equipment recycled responsibly
+- Certified e-waste recycling
+- Data destruction certified
+- Environmental compliance
+
+### Equipment Donation
+- Old but functional equipment donated
+- Partnered with local schools
+- Community organizations
+- Refurbishment programs
+
+## Support and Contacts
+- Hardware Requests: hardware@company.com
+- IT Help Desk: 24/7 support available
+- Emergency Device Loss: security@company.com
+- Asset Management: assets@company.com
+        """,
+        "category": "Hardware",
+        "tags": ["hardware", "equipment", "request", "replacement", "laptop", "peripherals"],
+        "author": "IT Support Team"
+    },
+    {
+        "title": "Cloud Storage and Backup Best Practices",
+        "content": """
+# Cloud Storage and Backup Guide
+
+## Company Cloud Storage Solutions
+
+### OneDrive for Business
+- **Storage**: 1TB per user
+- **Purpose**: Personal work files
+- **Sync**: Automatic with desktop client
+- **Access**: Web, desktop, mobile
+- **Retention**: 93 days in recycle bin
+
+### SharePoint Online
+- **Storage**: 25TB per site collection
+- **Purpose**: Team collaboration
+- **Features**: Version control, permissions
+- **Integration**: Teams, Office apps
+- **Retention**: Custom retention policies
+
+### Teams Files
+- **Backend**: SharePoint storage
+- **Purpose**: Channel/chat file sharing
+- **Access**: Teams app, SharePoint
+- **Organization**: By team/channel
+- **Collaboration**: Real-time co-authoring
+
+## File Organization Best Practices
+
+### Folder Structure Guidelines
+- Use clear, descriptive names
+- Create logical hierarchies
+- Limit nesting to 3-4 levels
+- Use consistent naming conventions
+- Include dates for time-sensitive files
+
+### Naming Conventions
+```
+[Project]_[Document Type]_[Version]_[Date]
+Example: AuraProject_Requirements_v2_2024-11-23
+```
+
+### What to Store Where
+
+#### OneDrive (Personal)
+- Draft documents
+- Personal work files
+- Files you own
+- Templates
+- Reference materials
+
+#### SharePoint/Teams (Shared)
+- Team projects
+- Shared documentation
+- Collaborative workspaces
+- Department resources
+- Published/approved documents
+
+## Data Backup Strategy
+
+### 3-2-1 Backup Rule
+- **3** copies of data
+- **2** different storage types
+- **1** copy off-site
+
+### Automatic Backups
+- OneDrive: Continuous sync
+- SharePoint: Built-in versioning
+- Email: Daily backups
+- Databases: Real-time replication
+
+### Manual Backup Recommendations
+- Critical project files: Weekly
+- Important documents: Monthly
+- Archive data: Quarterly
+- Personal data: User responsibility
+
+## File Recovery Options
+
+### OneDrive Recovery
+1. Go to OneDrive recycle bin
+2. Files kept for 93 days
+3. Restore to original location
+4. Contact IT if deleted permanently
+
+### SharePoint Version History
+1. Right-click file > Version History
+2. View all previous versions
+3. Restore or download old version
+4. Major versions kept indefinitely
+
+### Deleted Item Recovery
+- **First-stage**: User recycle bin (93 days)
+- **Second-stage**: Site collection recycle bin (93 days)
+- **Beyond retention**: Contact IT for backup restore
+- **Permanent deletion**: After 186 days total
+
+## Sharing and Permissions
+
+### Internal Sharing
+- Share with specific people
+- Set view or edit permissions
+- Set expiration dates if needed
+- Monitor sharing regularly
+
+### External Sharing
+- Requires business justification
+- Limited to approved partners
+- Automatic expiration (30 days)
+- Extra security measures applied
+- Audited and logged
+
+### Permission Levels
+
+#### Read
+- View files only
+- Download copies
+- Cannot make changes
+- Ideal for reference materials
+
+#### Edit
+- Modify files
+- Delete files
+- Share with others
+- Full collaboration access
+
+#### Owner
+- Full control
+- Manage permissions
+- Delete permanently
+- Configure settings
+
+## Sync Settings and Performance
+
+### Optimizing OneDrive Sync
+- Select folders to sync
+- Use Files On-Demand
+- Limit bandwidth if needed
+- Sync during off-hours
+- Pause sync when needed
+
+### Files On-Demand
+- Cloud-only: No local storage used
+- Locally available: Always on device
+- Free up space automatically
+- Download on-access
+
+### Sync Troubleshooting
+1. Check internet connection
+2. Verify storage space
+3. Restart OneDrive client
+4. Reset sync if needed
+5. Contact IT for persistent issues
+
+## Storage Quota Management
+
+### Monitoring Usage
+- Check OneDrive storage meter
+- Review SharePoint site usage
+- Clean up unnecessary files
+- Archive old projects
+- Compress large files when appropriate
+
+### Requesting Additional Storage
+- Submit justification to IT
+- Explain business need
+- Provide usage statistics
+- Clean up existing files first
+- Alternative solutions may be offered
+
+## Mobile Access
+
+### Mobile Apps
+- OneDrive mobile app
+- SharePoint mobile app
+- Teams mobile app
+- Office mobile apps
+- Offline access available
+
+### Mobile Best Practices
+- Enable PIN/biometric protection
+- Download important files offline
+- Use Wi-Fi for large uploads
+- Clear cache periodically
+- Report lost devices immediately
+
+## Compliance and Security
+
+### Data Classification
+- **Public**: Can be shared freely
+- **Internal**: Company employees only
+- **Confidential**: Limited access
+- **Restricted**: Highly sensitive
+
+### Retention Policies
+- Email: 7 years
+- Financial records: 10 years
+- HR records: 7 years after termination
+- General business: 3 years
+- IT logs: 1 year
+
+### Legal Hold
+- Preserves data for litigation
+- Prevents deletion
+- Managed by legal team
+- User cannot override
+- Contact legal for questions
+
+## Advanced Features
+
+### Version Control
+- Track all changes
+- See who made changes
+- Restore previous versions
+- Compare versions
+- Major/minor versions
+
+### Co-Authoring
+- Multiple users edit simultaneously
+- See changes in real-time
+- Automatic conflict resolution
+- Works in Office apps
+- Available on web and desktop
+
+### Metadata and Search
+- Add custom properties
+- Tag files for easy finding
+- Search by content
+- Filter by metadata
+- Save search queries
+
+## Troubleshooting Common Issues
+
+### Sync Conflicts
+- Review conflict files
+- Choose correct version
+- Merge changes if needed
+- Prevent with co-authoring
+- Contact IT for help
+
+### Access Denied
+- Check sharing permissions
+- Verify account access
+- Request access from owner
+- Check group membership
+- Contact IT if persistent
+
+### Missing Files
+- Check recycle bin
+- Review version history
+- Verify sync status
+- Check other devices
+- Contact IT for backup restore
+
+## Best Practices Summary
+
+### Do's
+✓ Organize files logically
+✓ Use descriptive names
+✓ Enable auto-save
+✓ Check sync status regularly
+✓ Clean up old files
+✓ Use version control
+✓ Set appropriate permissions
+
+### Don'ts
+✗ Store personal files on company storage
+✗ Share sensitive data externally without approval
+✗ Ignore sync errors
+✗ Bypass security measures
+✗ Delete files without consideration
+✗ Use consumer cloud services for company data
+
+## Support Resources
+- OneDrive Help: https://onedrive.company.com/help
+- SharePoint Help: https://sharepoint.company.com/help
+- IT Help Desk: Available 24/7
+- Storage Requests: storage@company.com
+- Data Recovery: backup@company.com
+        """,
+        "category": "Software",
+        "tags": ["cloud", "storage", "backup", "onedrive", "sharepoint", "data", "recovery"],
+        "author": "IT Support Team"
+    },
+    {
+        "title": "Data Loss Prevention and Compliance",
+        "content": """
+# Data Loss Prevention (DLP) Policies
+
+## Understanding DLP
+
+### What is DLP?
+Data Loss Prevention (DLP) is a security strategy that detects and prevents sensitive data from leaving the organization through unauthorized channels.
+
+### Why DLP Matters
+- Protects sensitive company information
+- Ensures regulatory compliance
+- Prevents data breaches
+- Maintains customer trust
+- Reduces legal liability
+
+## Types of Sensitive Data
+
+### Personal Identifiable Information (PII)
+- Social Security Numbers
+- Driver's License Numbers
+- Passport Numbers
+- Credit Card Information
+- Bank Account Numbers
+- Employee IDs
+- Health Records
+
+### Business Confidential
+- Trade secrets
+- Financial reports
+- Strategic plans
+- Customer databases
+- Proprietary algorithms
+- M&A information
+- Contract details
+
+### Regulated Data
+- GDPR protected data
+- HIPAA health information
+- PCI-DSS payment data
+- SOX financial records
+- ITAR controlled technology
+- Export controlled data
+
+## DLP Controls in Place
+
+### Email Protection
+- Outbound email scanning
+- Attachment inspection
+- Link analysis
+- Recipient verification
+- Encryption enforcement
+- External warning banners
+
+### File Sharing
+- OneDrive/SharePoint scanning
+- External sharing restrictions
+- Link expiration enforcement
+- Download prevention options
+- Watermarking for sensitive docs
+
+### Endpoint Protection
+- USB device control
+- Screen capture prevention
+- Print restrictions
+- Copy/paste limitations
+- Browser upload blocking
+
+## DLP Policy Violations
+
+### What Happens When DLP Triggers
+
+#### Warning
+- User receives notification
+- Can override with justification
+- Action is logged and reviewed
+- Manager may be notified
+
+#### Block
+- Action is prevented
+- User receives explanation
+- IT Security notified
+- Alternative options provided
+
+#### Quarantine
+- Content held for review
+- Security team evaluates
+- Released or permanently blocked
+- User notified of decision
+
+### Common DLP Triggers
+- Emailing credit card numbers
+- Sharing files with personal email
+- Uploading to unauthorized cloud services
+- Copying data to USB drives
+- Printing confidential documents
+- Taking screenshots of sensitive data
+
+## Handling Sensitive Data
+
+### Email Best Practices
+- Use encrypted email for sensitive data
+- Verify recipient before sending
+- Use internal systems when possible
+- Don't forward external emails with PII
+- Remove sensitive info from replies
+
+### File Sharing Guidelines
+- Use approved sharing methods only
+- Set appropriate permissions
+- Apply expiration dates
+- Never use personal email/cloud services
+- Verify recipient authorization
+
+### Data Transfer Methods
+
+#### Approved Methods
+- Company email (internal)
+- OneDrive/SharePoint (secured links)
+- Secure File Transfer (SFTP)
+- Encrypted email (for external)
+- Approved collaboration platforms
+
+#### Prohibited Methods
+- Personal email (Gmail, Yahoo, etc.)
+- Consumer cloud storage (Dropbox, Google Drive)
+- Unencrypted external drives
+- Public file sharing sites
+- Unsecured messaging apps
+
+## Working with Regulated Data
+
+### GDPR Compliance
+- Know what data you have
+- Limit data collection
+- Obtain proper consent
+- Allow data access requests
+- Delete data when required
+- Report breaches within 72 hours
+
+### HIPAA Compliance
+- Access only necessary health information
+- Use encrypted communications
+- Log all access to patient records
+- Complete required training
+- Report suspected breaches
+
+### PCI-DSS Compliance
+- Never store full credit card data
+- Use approved payment systems
+- Limit payment data access
+- Follow data retention rules
+- Complete annual training
+
+## Data Classification
+
+### How to Classify
+1. Identify data type
+2. Assess sensitivity level
+3. Apply appropriate label
+4. Follow handling procedures
+5. Review classification periodically
+
+### Classification Labels
+
+#### Public
+- Marketing materials
+- Press releases
+- Public website content
+- **Handling**: No restrictions
+
+#### Internal
+- General business documents
+- Internal announcements
+- Training materials
+- **Handling**: Company employees only
+
+#### Confidential
+- Financial reports
+- Customer information
+- Business strategies
+- **Handling**: Need-to-know basis
+
+#### Restricted
+- Trade secrets
+- Legal documents
+- Executive communications
+- **Handling**: Explicit authorization required
+
+## Responding to DLP Alerts
+
+### If You Receive a Warning
+1. Read the warning carefully
+2. Verify the data in question
+3. Determine if sharing is necessary
+4. Use approved alternative if available
+5. Provide justification if overriding
+
+### If Content is Blocked
+1. Review the blocked content
+2. Remove or redact sensitive information
+3. Try again with cleaned content
+4. Contact IT if you need the data shared
+5. Never attempt to bypass controls
+
+### If You Made a Mistake
+1. Report the incident immediately
+2. Contact IT Security
+3. Provide full details
+4. Follow remediation instructions
+5. Complete incident report if required
+
+## Remote Work Considerations
+
+### Home Network Security
+- Use company VPN always
+- Don't use public Wi-Fi for sensitive work
+- Secure your home network
+- Use encrypted communications
+- Avoid using personal devices
+
+### Physical Security
+- Lock computer when away
+- Don't work in public spaces with sensitive data
+- Use privacy screens
+- Secure printed documents
+- Shred confidential papers
+
+### Device Security
+- Enable full disk encryption
+- Use strong passwords
+- Keep software updated
+- Report lost/stolen devices immediately
+- Don't share devices with family
+
+## Training and Awareness
+
+### Required Training
+- Annual security awareness training
+- Role-specific data handling training
+- Compliance training (as applicable)
+- Incident response procedures
+- Policy updates and changes
+
+### Self-Assessment
+- Review data classification guide
+- Test your knowledge with quizzes
+- Attend optional security workshops
+- Stay informed about new threats
+- Report concerns or questions
+
+## Incident Reporting
+
+### What to Report
+- Suspected data breach
+- Lost/stolen devices
+- Suspicious emails or calls
+- Policy violations observed
+- System anomalies
+- DLP false positives
+
+### How to Report
+1. Contact IT Security immediately
+2. Email: security@company.com
+3. Phone: 24/7 Security Hotline
+4. Use incident reporting portal
+5. Don't delay - report right away
+
+### After Reporting
+- Security team will investigate
+- You may be contacted for details
+- Follow any instructions given
+- Don't discuss incident publicly
+- Complete any required documentation
+
+## Consequences of Policy Violations
+
+### Severity Levels
+
+#### Minor (Unintentional)
+- Security awareness retraining
+- Manager notification
+- Increased monitoring
+
+#### Moderate (Negligence)
+- Formal warning
+- Mandatory retraining
+- Access restrictions
+- Performance documentation
+
+#### Major (Intentional)
+- Disciplinary action up to termination
+- Legal consequences possible
+- Law enforcement involvement
+- Financial liability
+
+## Support and Resources
+
+### Getting Help
+- Data Classification Guide: Available on intranet
+- DLP Policy: https://policies.company.com/dlp
+- IT Security Team: security@company.com
+- Compliance Team: compliance@company.com
+- Privacy Officer: privacy@company.com
+
+### Additional Resources
+- Security Awareness Portal
+- Monthly security newsletters
+- Compliance training modules
+- Policy documentation
+- FAQ database
+
+## Key Takeaways
+
+### Remember
+✓ Think before you share
+✓ Classify data properly
+✓ Use approved channels only
+✓ Report incidents immediately
+✓ When in doubt, ask
+✓ Security is everyone's responsibility
+
+### Never
+✗ Share sensitive data via personal email
+✗ Upload company data to personal cloud
+✗ Bypass security controls
+✗ Ignore DLP warnings
+✗ Share login credentials
+✗ Work with sensitive data in public
+        """,
+        "category": "Security",
+        "tags": ["dlp", "data", "security", "compliance", "privacy", "gdpr", "protection"],
+        "author": "IT Security Team"
+    },
+    {
         "title": "Printer Driver Installation Guide",
         "content": """
 # Comprehensive Printer Driver Installation
@@ -917,9 +2093,9 @@ async def populate_knowledge_base():
         # Add each article
         for i, article_data in enumerate(SAMPLE_ARTICLES, 1):
             # Check if article with same title already exists
-            existing = await kb_repo.find_one({"title": article_data["title"]})
+            existing_articles = await kb_repo.find_many({"title": article_data["title"]}, limit=1)
             
-            if existing:
+            if existing_articles and len(existing_articles) > 0:
                 print(f"   ⏭️  Article '{article_data['title']}' already exists, skipping...")
                 continue
             

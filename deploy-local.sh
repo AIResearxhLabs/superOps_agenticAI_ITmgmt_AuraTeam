@@ -229,6 +229,52 @@ show_logs() {
     docker compose -f deploy/environments/local/docker-compose.yml logs --tail=50
 }
 
+# Function to start services in dev mode (with hot-reload)
+start_dev_mode() {
+    print_status "Starting services in DEVELOPMENT MODE with hot-reload..."
+    print_warning "This mode is for active development. Use 'deploy' for production testing."
+    
+    # Stop any production mode containers first
+    docker compose -f deploy/environments/local/docker-compose.yml down 2>/dev/null || true
+    
+    # Start dev mode services
+    docker compose -f deploy/environments/local/docker-compose.dev.yml up -d
+    
+    print_success "All services started in development mode"
+    
+    echo ""
+    print_status "🔥 HOT-RELOAD ENABLED:"
+    echo "   • Frontend: Changes to aura-frontend/src/ will auto-reload"
+    echo "   • Backend: Changes to aura-backend/ will auto-reload"
+    echo "   • No rebuild needed for code changes!"
+    echo ""
+}
+
+# Function to stop dev mode
+stop_dev_mode() {
+    print_status "Stopping development mode services..."
+    docker compose -f deploy/environments/local/docker-compose.dev.yml down
+    print_success "Development mode services stopped"
+}
+
+# Function to show dev mode status
+show_dev_status() {
+    print_status "Development Mode Service Status:"
+    docker compose -f deploy/environments/local/docker-compose.dev.yml ps
+    
+    echo ""
+    print_status "Development Mode URLs:"
+    echo "🔥 Frontend (React Dev):  http://localhost:3000  [HOT-RELOAD ENABLED]"
+    echo "🔧 API Gateway:           http://localhost:8000  [HOT-RELOAD ENABLED]"
+    echo "🎫 Service Desk API:      http://localhost:8001  [HOT-RELOAD ENABLED]"
+    echo "🗄️  PostgreSQL:           localhost:5432"
+    echo "📊 MongoDB:               localhost:27017"
+    echo "⚡ Redis:                 localhost:6379"
+    echo "🐰 RabbitMQ Management:   http://localhost:15672 (guest/guest)"
+    echo ""
+    print_status "💡 Tip: Edit files in your local editor and see changes instantly!"
+}
+
 # Main deployment function
 main() {
     echo "🚀 Aura IT Management System - Local Deployment"
@@ -237,6 +283,21 @@ main() {
     
     # Parse command line arguments
     case "${1:-deploy}" in
+        "dev")
+            check_docker
+            check_docker_compose
+            create_env_file
+            cleanup
+            start_dev_mode
+            sleep 5  # Give services a moment to start
+            show_dev_status
+            
+            echo ""
+            print_success "🎉 Development mode started successfully!"
+            print_status "Edit your code and see changes instantly without rebuilding!"
+            print_status "Use './deploy-local.sh logs' to follow logs"
+            print_status "Use './deploy-local.sh stop' to stop all services"
+            ;;
         "deploy")
             check_docker
             check_docker_compose
@@ -255,21 +316,42 @@ main() {
             ;;
         "stop")
             print_status "Stopping all services..."
-            docker compose -f deploy/environments/local/docker-compose.yml down
+            docker compose -f deploy/environments/local/docker-compose.yml down 2>/dev/null || true
+            docker compose -f deploy/environments/local/docker-compose.dev.yml down 2>/dev/null || true
             print_success "All services stopped"
             ;;
         "restart")
             print_status "Restarting all services..."
-            docker compose -f deploy/environments/local/docker-compose.yml restart
-            wait_for_services
-            show_status
+            # Check which mode is running
+            if docker compose -f deploy/environments/local/docker-compose.dev.yml ps --quiet 2>/dev/null | grep -q .; then
+                print_status "Detected development mode, restarting in dev mode..."
+                docker compose -f deploy/environments/local/docker-compose.dev.yml restart
+                show_dev_status
+            else
+                print_status "Detected production mode, restarting in production mode..."
+                docker compose -f deploy/environments/local/docker-compose.yml restart
+                wait_for_services
+                show_status
+            fi
             print_success "All services restarted"
             ;;
         "status")
-            show_status
+            # Check which mode is running
+            if docker compose -f deploy/environments/local/docker-compose.dev.yml ps --quiet 2>/dev/null | grep -q .; then
+                show_dev_status
+            else
+                show_status
+            fi
             ;;
         "logs")
-            show_logs
+            # Check which mode is running and show appropriate logs
+            if docker compose -f deploy/environments/local/docker-compose.dev.yml ps --quiet 2>/dev/null | grep -q .; then
+                print_status "Development mode logs:"
+                docker compose -f deploy/environments/local/docker-compose.dev.yml logs --tail=50 -f
+            else
+                print_status "Production mode logs:"
+                docker compose -f deploy/environments/local/docker-compose.yml logs --tail=50 -f
+            fi
             ;;
         "test")
             run_tests
@@ -279,16 +361,21 @@ main() {
             print_success "Cleanup completed"
             ;;
         *)
-            echo "Usage: $0 [deploy|stop|restart|status|logs|test|clean]"
+            echo "Usage: $0 [dev|deploy|stop|restart|status|logs|test|clean]"
             echo ""
             echo "Commands:"
-            echo "  deploy   - Build and deploy the complete stack (default)"
-            echo "  stop     - Stop all services"
-            echo "  restart  - Restart all services"
+            echo "  dev      - Start in DEVELOPMENT mode with hot-reload (fast iteration)"
+            echo "  deploy   - Build and deploy in PRODUCTION mode (final testing)"
+            echo "  stop     - Stop all services (both dev and production)"
+            echo "  restart  - Restart services (auto-detects current mode)"
             echo "  status   - Show service status and URLs"
-            echo "  logs     - Show recent logs from all services"
+            echo "  logs     - Show and follow logs from all services"
             echo "  test     - Run basic connectivity tests"
             echo "  clean    - Clean up containers and images"
+            echo ""
+            echo "Quick Start:"
+            echo "  For development:  ./deploy-local.sh dev"
+            echo "  For testing:      ./deploy-local.sh deploy"
             exit 1
             ;;
     esac

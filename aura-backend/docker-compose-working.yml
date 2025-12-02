@@ -4,8 +4,8 @@ services:
   # API Gateway
   api-gateway:
     build:
-      context: ./api-gateway
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: api-gateway/Dockerfile
     ports:
       - "8000:8000"
     environment:
@@ -21,8 +21,8 @@ services:
   # Service Desk Microservice
   service-desk-host:
     build:
-      context: ./service-desk-host
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: service-desk-host/Dockerfile
     ports:
       - "8001:8001"
     environment:
@@ -35,12 +35,8 @@ services:
       - postgres
       - mongo
       - redis
-      - rabbitmq
     networks:
       - aura-network
-    volumes:
-      - ./service-desk-host:/app
-      - /app/__pycache__
 
   # PostgreSQL Database
   postgres:

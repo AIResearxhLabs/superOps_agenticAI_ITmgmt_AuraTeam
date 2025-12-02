@@ -1,0 +1,233 @@
+{
+  "family": "aura-app-unified",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "2048",
+  "memory": "4096",
+  "executionRoleArn": "arn:aws:iam::753353727891:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::753353727891:role/ecsTaskRole",
+  "containerDefinitions": [
+    {
+      "name": "databases",
+      "image": "753353727891.dkr.ecr.us-east-2.amazonaws.com/aura-databases:latest",
+      "cpu": 512,
+      "memory": 1024,
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 5432,
+          "protocol": "tcp",
+          "name": "postgres"
+        },
+        {
+          "containerPort": 6379,
+          "protocol": "tcp",
+          "name": "redis"
+        },
+        {
+          "containerPort": 27017,
+          "protocol": "tcp",
+          "name": "mongodb"
+        }
+      ],
+      "environment": [
+        {
+          "name": "POSTGRES_USER",
+          "value": "aura_user"
+        },
+        {
+          "name": "POSTGRES_PASSWORD",
+          "value": "aura_password"
+        },
+        {
+          "name": "POSTGRES_MULTIPLE_DATABASES",
+          "value": "aura_servicedesk,aura_infratalent,aura_threatintel"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/aura-app-unified",
+          "awslogs-region": "us-east-2",
+          "awslogs-stream-prefix": "databases"
+        }
+      },
+      "healthCheck": {
+        "command": [
+          "CMD-SHELL",
+          "pg_isready -h localhost -p 5432 -U aura_user && redis-cli -h localhost -p 6379 ping && mongosh --host localhost:27017 --eval \"db.adminCommand('ping')\" || exit 1"
+        ],
+        "interval": 30,
+        "timeout": 10,
+        "retries": 3,
+        "startPeriod": 60
+      }
+    },
+    {
+      "name": "aura-service",
+      "image": "753353727891.dkr.ecr.us-east-2.amazonaws.com/aura-unified-service:latest",
+      "cpu": 1024,
+      "memory": 2048,
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 8000,
+          "protocol": "tcp",
+          "name": "api"
+        }
+      ],
+      "environment": [
+        {
+          "name": "HOST",
+          "value": "0.0.0.0"
+        },
+        {
+          "name": "PORT",
+          "value": "8000"
+        },
+        {
+          "name": "ENVIRONMENT",
+          "value": "aws-production"
+        },
+        {
+          "name": "DEBUG",
+          "value": "false"
+        },
+        {
+          "name": "LOG_LEVEL",
+          "value": "INFO"
+        },
+        {
+          "name": "DATABASE_URL",
+          "value": "postgresql://aura_user:aura_password@localhost:5432/aura_servicedesk"
+        },
+        {
+          "name": "POSTGRES_HOST",
+          "value": "localhost"
+        },
+        {
+          "name": "POSTGRES_PORT",
+          "value": "5432"
+        },
+        {
+          "name": "POSTGRES_USER",
+          "value": "aura_user"
+        },
+        {
+          "name": "POSTGRES_PASSWORD",
+          "value": "aura_password"
+        },
+        {
+          "name": "MONGODB_URL",
+          "value": "mongodb://localhost:27017/aura_servicedesk"
+        },
+        {
+          "name": "MONGO_HOST",
+          "value": "localhost"
+        },
+        {
+          "name": "MONGO_PORT",
+          "value": "27017"
+        },
+        {
+          "name": "REDIS_URL",
+          "value": "redis://localhost:6379"
+        },
+        {
+          "name": "REDIS_HOST",
+          "value": "localhost"
+        },
+        {
+          "name": "REDIS_PORT",
+          "value": "6379"
+        },
+        {
+          "name": "INIT_DB",
+          "value": "true"
+        },
+        {
+          "name": "POPULATE_DATA",
+          "value": "true"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "OPENAI_API_KEY",
+          "valueFrom": "arn:aws:ssm:us-east-2:753353727891:parameter/aura/dev/openai-api-key"
+        }
+      ],
+      "dependsOn": [
+        {
+          "containerName": "databases",
+          "condition": "HEALTHY"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/aura-app-unified",
+          "awslogs-region": "us-east-2",
+          "awslogs-stream-prefix": "aura-service"
+        }
+      },
+      "healthCheck": {
+        "command": [
+          "CMD-SHELL",
+          "curl -f http://localhost:8000/health || exit 1"
+        ],
+        "interval": 30,
+        "timeout": 10,
+        "retries": 3,
+        "startPeriod": 60
+      }
+    },
+    {
+      "name": "frontend",
+      "image": "753353727891.dkr.ecr.us-east-2.amazonaws.com/aura-frontend:latest",
+      "cpu": 512,
+      "memory": 1024,
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "protocol": "tcp",
+          "name": "frontend"
+        }
+      ],
+      "environment": [
+        {
+          "name": "REACT_APP_API_URL",
+          "value": "http://localhost:8000"
+        },
+        {
+          "name": "REACT_APP_ENVIRONMENT",
+          "value": "production"
+        }
+      ],
+      "dependsOn": [
+        {
+          "containerName": "aura-service",
+          "condition": "HEALTHY"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/aura-app-unified",
+          "awslogs-region": "us-east-2",
+          "awslogs-stream-prefix": "frontend"
+        }
+      },
+      "healthCheck": {
+        "command": [
+          "CMD-SHELL",
+          "curl -f http://localhost:80 || exit 1"
+        ],
+        "interval": 30,
+        "timeout": 10,
+        "retries": 3,
+        "startPeriod": 30
+      }
+    }
+  ]
+}

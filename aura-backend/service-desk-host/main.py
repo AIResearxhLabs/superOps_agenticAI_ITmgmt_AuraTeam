@@ -958,10 +958,14 @@ async def analyze_ticket(ticket_id: str):
             
             logger.info(f"AI analysis completed for ticket {ticket_id}")
             
-            # Return analysis data directly for frontend compatibility
+            # Return analysis data in the expected format
             return {
-                "ticket_id": ticket_id,
-                "analysis": analysis_data
+                "success": True,
+                "message": "Ticket analysis completed successfully",
+                "data": {
+                    "ticket_id": ticket_id,
+                    "analysis": analysis_data
+                }
             }
             
         except Exception as e:
@@ -986,13 +990,14 @@ async def analyze_ticket(ticket_id: str):
                 "ai_analysis_text": "Fallback analysis provided due to AI service unavailability"
             }
             
-            return BaseResponse(
-                message="Ticket analysis completed with fallback data",
-                data={
+            return {
+                "success": True,
+                "message": "Ticket analysis completed with fallback data",
+                "data": {
                     "ticket_id": ticket_id,
                     "analysis": fallback_analysis
                 }
-            )
+            }
         
     except HTTPException:
         raise
@@ -1045,6 +1050,110 @@ async def get_kb_articles(
     """Get knowledge base articles with filters"""
     
     try:
+        if not app.state.kb_repo:
+            # Fallback mock data when MongoDB is not available
+            logger.warning("MongoDB not available - returning mock KB articles")
+            
+            mock_articles = [
+                {
+                    "_id": "kb_001",
+                    "title": "How to Reset Your Windows Password",
+                    "content": "Step-by-step guide to reset your Windows password using various methods including security questions, admin account, and command prompt...",
+                    "category": "Account Management",
+                    "tags": ["password", "reset", "windows", "login", "security"],
+                    "author": "IT Support Team",
+                    "views": 145,
+                    "helpful_votes": 23,
+                    "unhelpful_votes": 2,
+                    "created_at": datetime.utcnow(),
+                    "updated_at": datetime.utcnow()
+                },
+                {
+                    "_id": "kb_002",
+                    "title": "VPN Connection Setup Guide",
+                    "content": "Complete instructions for setting up VPN on Windows and macOS, including troubleshooting steps and security notes...",
+                    "category": "Network",
+                    "tags": ["vpn", "remote", "connection", "security", "setup"],
+                    "author": "Network Team",
+                    "views": 98,
+                    "helpful_votes": 18,
+                    "unhelpful_votes": 1,
+                    "created_at": datetime.utcnow(),
+                    "updated_at": datetime.utcnow()
+                },
+                {
+                    "_id": "kb_003",
+                    "title": "Email Configuration for Outlook",
+                    "content": "Comprehensive guide for configuring Outlook email with IMAP and SMTP settings, troubleshooting common issues...",
+                    "category": "Email",
+                    "tags": ["outlook", "email", "configuration", "imap", "smtp"],
+                    "author": "IT Support Team",
+                    "views": 132,
+                    "helpful_votes": 29,
+                    "unhelpful_votes": 3,
+                    "created_at": datetime.utcnow(),
+                    "updated_at": datetime.utcnow()
+                },
+                {
+                    "_id": "kb_004",
+                    "title": "Printer Setup and Troubleshooting",
+                    "content": "Guide for adding network printers, troubleshooting common printer issues, and accessing printer resources...",
+                    "category": "Hardware",
+                    "tags": ["printer", "setup", "troubleshooting", "network", "drivers"],
+                    "author": "IT Support Team",
+                    "views": 87,
+                    "helpful_votes": 15,
+                    "unhelpful_votes": 2,
+                    "created_at": datetime.utcnow(),
+                    "updated_at": datetime.utcnow()
+                },
+                {
+                    "_id": "kb_005",
+                    "title": "Multi-Factor Authentication (MFA) Setup",
+                    "content": "Step-by-step instructions for setting up MFA using Microsoft Authenticator, SMS, or phone calls for enhanced security...",
+                    "category": "Security",
+                    "tags": ["mfa", "authentication", "security", "microsoft", "2fa"],
+                    "author": "IT Security Team",
+                    "views": 210,
+                    "helpful_votes": 42,
+                    "unhelpful_votes": 1,
+                    "created_at": datetime.utcnow(),
+                    "updated_at": datetime.utcnow()
+                }
+            ]
+            
+            # Apply filters to mock data
+            filtered_articles = mock_articles
+            if category:
+                filtered_articles = [a for a in filtered_articles if a["category"].lower() == category.lower()]
+            if search:
+                search_lower = search.lower()
+                filtered_articles = [
+                    a for a in filtered_articles 
+                    if search_lower in a["title"].lower() or search_lower in a["content"].lower()
+                ]
+            
+            # Apply pagination
+            total = len(filtered_articles)
+            start_idx = pagination.offset
+            end_idx = start_idx + pagination.limit
+            articles = filtered_articles[start_idx:end_idx]
+            
+            # Calculate pagination info
+            pages = (total + pagination.limit - 1) // pagination.limit
+            has_next = pagination.page < pages
+            has_prev = pagination.page > 1
+            
+            return PaginatedResponse(
+                items=articles,
+                total=total,
+                page=pagination.page,
+                limit=pagination.limit,
+                pages=pages,
+                has_next=has_next,
+                has_prev=has_prev
+            )
+        
         # Build filter
         filter_dict = {}
         if category:
@@ -2051,6 +2160,630 @@ async def get_kb_suggestions_analytics():
     except Exception as e:
         logger.error(f"Error getting KB suggestions analytics: {e}")
         raise HTTPException(status_code=500, detail="Failed to get KB suggestions analytics")
+
+
+# ======================================================================
+# MODULE 2: INFRASTRUCTURE & TALENT MANAGEMENT APIs
+# ======================================================================
+
+@app.get("/api/v1/infrastructure/agents/performance")
+async def get_agents_performance(
+    timeframe: str = Query("week", description="Timeframe: today, week, month, quarter"),
+    agent_id: Optional[str] = Query(None, description="Filter by specific agent")
+):
+    """Get agent performance metrics"""
+    
+    try:
+        # Load infrastructure data from JSON file
+        import json
+        data_file = "infrastructure_data.json"
+        
+        try:
+            with open(data_file, 'r') as f:
+                infra_data = json.load(f)
+            
+            agents = infra_data.get("agents", [])
+            performance_metrics = infra_data.get("performance_metrics", {})
+            team_stats = infra_data.get("team_statistics", {})
+            
+            # Filter by agent if specified
+            if agent_id:
+                agents = [a for a in agents if a["agent_id"] == agent_id]
+                if not agents:
+                    raise HTTPException(status_code=404, detail="Agent not found")
+            
+            # Combine agent profiles with their metrics
+            agents_with_metrics = []
+            for agent in agents:
+                agent_metrics = performance_metrics.get(agent["agent_id"], {})
+                agents_with_metrics.append({
+                    **agent,
+                    "metrics": agent_metrics
+                })
+            
+            response_data = {
+                "agents": agents_with_metrics,
+                "team_average": team_stats,
+                "timeframe": timeframe
+            }
+            
+            logger.info(f"Agent performance data retrieved for timeframe: {timeframe}")
+            return response_data
+            
+        except FileNotFoundError:
+            logger.warning(f"Infrastructure data file not found: {data_file}")
+            # Return minimal mock data
+            return {
+                "agents": [],
+                "team_average": {
+                    "team_size": 0,
+                    "total_active_tickets": 0,
+                    "team_avg_satisfaction": 0,
+                    "team_avg_resolution_time": 0
+                },
+                "timeframe": timeframe,
+                "message": "Data not yet generated. Run populate_all_data.sh to generate data."
+            }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error retrieving agent performance: {e}")
+        raise HTTPException(status_code=500, detail="Failed to retrieve agent performance data")
+
+
+@app.get("/api/v1/infrastructure/workload/heatmap")
+async def get_workload_heatmap(
+    start_date: Optional[str] = Query(None, description="Start date (YYYY-MM-DD)"),
+    end_date: Optional[str] = Query(None, description="End date (YYYY-MM-DD)")
+):
+    """Get workload heatmap data"""
+    
+    try:
+        # Load infrastructure data from JSON file
+        import json
+        data_file = "infrastructure_data.json"
+        
+        try:
+            with open(data_file, 'r') as f:
+                infra_data = json.load(f)
+            
+            heatmap_data = infra_data.get("workload_heatmap", [])
+            
+            # Filter by date range if specified
+            if start_date and end_date:
+                heatmap_data = [
+                    day for day in heatmap_data
+                    if start_date <= day["date"] <= end_date
+                ]
+            
+            # Get current day's data for quick summary
+            current_data = heatmap_data[-1] if heatmap_data else None
+            
+            response_data = {
+                "heatmap": heatmap_data,
+                "current_summary": current_data["summary"] if current_data else None,
+                "date_range": {
+                    "start": heatmap_data[0]["date"] if heatmap_data else None,
+                    "end": heatmap_data[-1]["date"] if heatmap_data else None
+                }
+            }
+            
+            logger.info(f"Workload heatmap data retrieved for {len(heatmap_data)} days")
+            return response_data
+            
+        except FileNotFoundError:
+            logger.warning(f"Infrastructure data file not found: {data_file}")
+            return {
+                "heatmap": [],
+                "current_summary": None,
+                "date_range": {"start": None, "end": None},
+                "message": "Data not yet generated. Run populate_all_data.sh to generate data."
+            }
+        
+    except Exception as e:
+        logger.error(f"Error retrieving workload heatmap: {e}")
+        raise HTTPException(status_code=500, detail="Failed to retrieve workload heatmap data")
+
+
+@app.post("/api/v1/infrastructure/tickets/{ticket_id}/reassign")
+async def reassign_ticket(
+    ticket_id: str,
+    reassign_data: dict
+):
+    """Reassign ticket to different agent for workload balancing"""
+    
+    try:
+        new_agent_id = reassign_data.get("new_agent_id")
+        reason = reassign_data.get("reason", "Workload balancing")
+        
+        if not new_agent_id:
+            raise HTTPException(status_code=400, detail="new_agent_id is required")
+        
+        if not app.state.tickets_repo:
+            raise HTTPException(status_code=503, detail="Ticket repository not available")
+        
+        # Get ticket
+        ticket = await app.state.tickets_repo.find_by_id(ticket_id)
+        if not ticket:
+            raise HTTPException(status_code=404, detail="Ticket not found")
+        
+        # Get agent name from infrastructure data
+        try:
+            import json
+            with open("infrastructure_data.json", 'r') as f:
+                infra_data = json.load(f)
+            
+            agents = infra_data.get("agents", [])
+            new_agent = next((a for a in agents if a["agent_id"] == new_agent_id), None)
+            
+            if not new_agent:
+                raise HTTPException(status_code=404, detail="Agent not found")
+            
+            new_agent_name = new_agent["name"]
+            
+        except Exception as e:
+            logger.warning(f"Could not load agent data: {e}")
+            new_agent_name = new_agent_id  # Fallback to ID
+        
+        # Update ticket assignment
+        update_dict = {
+            "assigned_to": new_agent_name,
+            "updated_at": datetime.utcnow(),
+            "reassignment_reason": reason
+        }
+        
+        success = await app.state.tickets_repo.update_by_id(ticket_id, update_dict)
+        if not success:
+            raise HTTPException(status_code=500, detail="Failed to reassign ticket")
+        
+        # Clear cache
+        if app.state.cache:
+            await app.state.cache.delete(f"ticket:{ticket_id}")
+        
+        logger.info(f"Ticket {ticket_id} reassigned to {new_agent_name}")
+        
+        return {
+            "success": True,
+            "message": "Ticket reassigned successfully",
+            "data": {
+                "ticket_id": ticket_id,
+                "new_agent": new_agent_name,
+                "reason": reason
+            }
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error reassigning ticket: {e}")
+        raise HTTPException(status_code=500, detail="Failed to reassign ticket")
+
+
+# ======================================================================
+# MODULE 3: SECURITY & THREAT INTELLIGENCE APIs
+# ======================================================================
+
+@app.get("/api/v1/security/dashboard")
+async def get_security_dashboard():
+    """Get security dashboard overview data"""
+    
+    try:
+        # Load security data from JSON file
+        import json
+        data_file = "security_data.json"
+        
+        try:
+            with open(data_file, 'r') as f:
+                security_data = json.load(f)
+            
+            # Extract dashboard data
+            dashboard_data = {
+                "overall_score": security_data.get("current_security_score", 0),
+                "score_trend": security_data.get("score_trend", "stable"),
+                "last_updated": security_data.get("generated_at"),
+                "category_scores": security_data.get("category_scores", {}),
+                "recent_incidents": security_data.get("incidents", [])[:5],  # Top 5 recent
+                "active_alerts": security_data.get("active_alerts", []),
+                "threat_summary": security_data.get("threat_summary", {}),
+                "score_history": security_data.get("score_history", [])[-30:]  # Last 30 days
+            }
+            
+            logger.info("Security dashboard data retrieved successfully")
+            return dashboard_data
+            
+        except FileNotFoundError:
+            logger.warning(f"Security data file not found: {data_file}")
+            return {
+                "overall_score": 0,
+                "score_trend": "unknown",
+                "last_updated": datetime.utcnow().isoformat(),
+                "category_scores": {},
+                "recent_incidents": [],
+                "active_alerts": [],
+                "threat_summary": {},
+                "score_history": [],
+                "message": "Data not yet generated. Run populate_all_data.sh to generate data."
+            }
+        
+    except Exception as e:
+        logger.error(f"Error retrieving security dashboard: {e}")
+        raise HTTPException(status_code=500, detail="Failed to retrieve security dashboard data")
+
+
+@app.get("/api/v1/security/incidents")
+async def get_security_incidents(
+    severity: Optional[str] = Query(None, description="Filter by severity"),
+    status: Optional[str] = Query(None, description="Filter by status"),
+    incident_type: Optional[str] = Query(None, description="Filter by incident type"),
+    limit: int = Query(50, description="Maximum number of incidents to return")
+):
+    """Get security incidents with filters"""
+    
+    try:
+        # Load security data from JSON file
+        import json
+        data_file = "security_data.json"
+        
+        try:
+            with open(data_file, 'r') as f:
+                security_data = json.load(f)
+            
+            incidents = security_data.get("incidents", [])
+            
+            # Apply filters
+            if severity:
+                incidents = [i for i in incidents if i.get("severity", "").lower() == severity.lower()]
+            if status:
+                incidents = [i for i in incidents if i.get("status", "").lower() == status.lower()]
+            if incident_type:
+                incidents = [i for i in incidents if i.get("type", "").lower() == incident_type.lower()]
+            
+            # Sort by timestamp (most recent first)
+            incidents.sort(key=lambda x: x.get("timestamp", ""), reverse=True)
+            
+            # Limit results
+            incidents = incidents[:limit]
+            
+            response_data = {
+                "incidents": incidents,
+                "total": len(incidents),
+                "filters_applied": {
+                    "severity": severity,
+                    "status": status,
+                    "incident_type": incident_type
+                }
+            }
+            
+            logger.info(f"Security incidents retrieved: {len(incidents)} incidents")
+            return response_data
+            
+        except FileNotFoundError:
+            logger.warning(f"Security data file not found: {data_file}")
+            return {
+                "incidents": [],
+                "total": 0,
+                "message": "Data not yet generated. Run populate_all_data.sh to generate data."
+            }
+        
+    except Exception as e:
+        logger.error(f"Error retrieving security incidents: {e}")
+        raise HTTPException(status_code=500, detail="Failed to retrieve security incidents")
+
+
+@app.post("/api/v1/security/incidents/report")
+async def report_security_incident(incident_data: dict):
+    """Report a new security incident"""
+    
+    try:
+        # Validate required fields
+        required_fields = ["incident_type", "severity", "title", "description", "reporter_name", "reporter_email"]
+        for field in required_fields:
+            if field not in incident_data or not incident_data[field]:
+                raise HTTPException(status_code=400, detail=f"Missing required field: {field}")
+        
+        # Create incident document
+        incident_doc = {
+            "incident_id": f"INC-{datetime.utcnow().strftime('%Y%m%d%H%M%S')}",
+            "type": incident_data["incident_type"],
+            "severity": incident_data["severity"],
+            "title": incident_data["title"],
+            "description": incident_data["description"],
+            "affected_systems": incident_data.get("affected_systems", ""),
+            "detected_time": incident_data.get("detected_time", datetime.utcnow().isoformat()),
+            "reporter_name": incident_data["reporter_name"],
+            "reporter_email": incident_data["reporter_email"],
+            "status": "open",
+            "timestamp": datetime.utcnow().isoformat(),
+            "updated_at": datetime.utcnow().isoformat()
+        }
+        
+        # In production, this would save to a security incidents database
+        # For now, we'll just log it and return success
+        
+        logger.info(f"Security incident reported: {incident_doc['incident_id']}")
+        
+        return {
+            "success": True,
+            "message": "Security incident reported successfully",
+            "data": {
+                "incident_id": incident_doc["incident_id"],
+                "status": "open",
+                "timestamp": incident_doc["timestamp"]
+            }
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error reporting security incident: {e}")
+        raise HTTPException(status_code=500, detail="Failed to report security incident")
+
+
+@app.get("/api/v1/security/threats/active")
+async def get_active_threats():
+    """Get currently active security threats"""
+    
+    try:
+        # Load security data from JSON file
+        import json
+        data_file = "security_data.json"
+        
+        try:
+            with open(data_file, 'r') as f:
+                security_data = json.load(f)
+            
+            # Get active threats from threat summary
+            threat_summary = security_data.get("threat_summary", {})
+            active_threats_count = threat_summary.get("active_threats", 0)
+            
+            # Get open incidents as active threats
+            incidents = security_data.get("incidents", [])
+            active_threats = [
+                i for i in incidents 
+                if i.get("status", "").lower() in ["open", "investigating"]
+            ]
+            
+            # Sort by severity
+            severity_order = {"critical": 0, "high": 1, "medium": 2, "low": 3}
+            active_threats.sort(key=lambda x: severity_order.get(x.get("severity", "low").lower(), 4))
+            
+            response_data = {
+                "active_threats": active_threats,
+                "total_active": len(active_threats),
+                "threat_summary": threat_summary,
+                "last_updated": security_data.get("generated_at")
+            }
+            
+            logger.info(f"Active threats retrieved: {len(active_threats)} threats")
+            return response_data
+            
+        except FileNotFoundError:
+            logger.warning(f"Security data file not found: {data_file}")
+            return {
+                "active_threats": [],
+                "total_active": 0,
+                "threat_summary": {},
+                "message": "Data not yet generated. Run populate_all_data.sh to generate data."
+            }
+        
+    except Exception as e:
+        logger.error(f"Error retrieving active threats: {e}")
+        raise HTTPException(status_code=500, detail="Failed to retrieve active threats")
+
+
+@app.get("/api/v1/security/score/history")
+async def get_security_score_history(days: int = Query(30, description="Number of days of history")):
+    """Get security score history"""
+    
+    try:
+        # Load security data from JSON file
+        import json
+        data_file = "security_data.json"
+        
+        try:
+            with open(data_file, 'r') as f:
+                security_data = json.load(f)
+            
+            score_history = security_data.get("score_history", [])
+            
+            # Limit to requested days
+            score_history = score_history[-days:] if days < len(score_history) else score_history
+            
+            response_data = {
+                "history": score_history,
+                "current_score": security_data.get("current_security_score", 0),
+                "trend": security_data.get("score_trend", "stable"),
+                "days": len(score_history)
+            }
+            
+            logger.info(f"Security score history retrieved: {len(score_history)} days")
+            return response_data
+            
+        except FileNotFoundError:
+            logger.warning(f"Security data file not found: {data_file}")
+            return {
+                "history": [],
+                "current_score": 0,
+                "trend": "unknown",
+                "days": 0,
+                "message": "Data not yet generated. Run populate_all_data.sh to generate data."
+            }
+        
+    except Exception as e:
+        logger.error(f"Error retrieving security score history: {e}")
+        raise HTTPException(status_code=500, detail="Failed to retrieve security score history")
+
+
+# ======================================================================
+# MODULE 3 ENHANCEMENT: EXTERNAL THREAT INTELLIGENCE APIs
+# ======================================================================
+
+# Initialize threat manager as None (lazy loading)
+threat_manager = None
+
+
+def get_threat_intel_manager():
+    """Get or initialize threat intelligence manager"""
+    global threat_manager
+    if threat_manager is None:
+        # Add threat-intelligence-agent to path
+        import sys
+        
+        # Check if running in Docker container or locally
+        threat_agent_path = "/app/threat-intelligence-agent"  # Docker path
+        if not os.path.exists(threat_agent_path):
+            # Local development path
+            threat_agent_path = os.path.join(os.path.dirname(__file__), "..", "threat-intelligence-agent")
+        
+        sys.path.insert(0, threat_agent_path)
+        
+        from threat_manager import get_threat_manager
+        threat_manager = get_threat_manager(os.getenv("OPENAI_API_KEY"))
+    
+    return threat_manager
+
+
+@app.get("/api/v1/security/threat-intel/feeds")
+async def get_threat_intelligence_feeds(
+    source: Optional[str] = Query(None, description="Filter by source (CISA, CERT-IN, FBI, BleepingComputer)"),
+    severity: Optional[str] = Query(None, description="Filter by severity (critical, high, medium, low)"),
+    limit: int = Query(50, description="Maximum number of threats to return"),
+    use_ai: bool = Query(True, description="Whether to include AI-generated summaries")
+):
+    """Get external threat intelligence feeds"""
+    
+    try:
+        manager = get_threat_intel_manager()
+        
+        if source:
+            # Fetch from specific source
+            threats = await manager.fetch_threats_by_source(source, limit=limit, use_ai=use_ai)
+        else:
+            # Fetch from all sources
+            threats = await manager.fetch_all_threats(limit_per_source=limit//4, use_ai=use_ai)
+        
+        # Apply severity filter if specified
+        if severity:
+            threats = [t for t in threats if t.get('severity', '').lower() == severity.lower()]
+        
+        # Limit total results
+        threats = threats[:limit]
+        
+        logger.info(f"Retrieved {len(threats)} threat intelligence feeds")
+        
+        return {
+            "success": True,
+            "threats": threats,
+            "total": len(threats),
+            "filters": {
+                "source": source,
+                "severity": severity,
+                "use_ai": use_ai
+            }
+        }
+        
+    except Exception as e:
+        logger.error(f"Error fetching threat intelligence feeds: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch threat intelligence feeds")
+
+
+@app.get("/api/v1/security/threat-intel/feed/{feed_id}")
+async def get_threat_feed_detail(feed_id: str):
+    """Get detailed information about a specific threat"""
+    
+    try:
+        manager = get_threat_intel_manager()
+        
+        # Fetch all threats and find the specific one
+        all_threats = await manager.fetch_all_threats()
+        
+        threat = next((t for t in all_threats if t.get('feed_id') == feed_id), None)
+        
+        if not threat:
+            raise HTTPException(status_code=404, detail="Threat feed not found")
+        
+        logger.info(f"Retrieved threat feed detail: {feed_id}")
+        
+        return {
+            "success": True,
+            "threat": threat
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching threat feed detail: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch threat feed detail")
+
+
+@app.get("/api/v1/security/threat-intel/summary")
+async def get_threat_intelligence_summary():
+    """Get summary statistics of threat intelligence"""
+    
+    try:
+        manager = get_threat_intel_manager()
+        
+        summary = await manager.get_threat_summary()
+        
+        logger.info("Retrieved threat intelligence summary")
+        
+        return {
+            "success": True,
+            "summary": summary
+        }
+        
+    except Exception as e:
+        logger.error(f"Error fetching threat intelligence summary: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch threat intelligence summary")
+
+
+@app.post("/api/v1/security/threat-intel/refresh")
+async def refresh_threat_intelligence(use_ai: bool = Query(True, description="Whether to use AI enrichment")):
+    """Force refresh of threat intelligence cache"""
+    
+    try:
+        manager = get_threat_intel_manager()
+        
+        threats = await manager.force_refresh(use_ai=use_ai)
+        
+        logger.info(f"Force refreshed threat intelligence: {len(threats)} threats")
+        
+        return {
+            "success": True,
+            "message": "Threat intelligence refreshed successfully",
+            "total_threats": len(threats)
+        }
+        
+    except Exception as e:
+        logger.error(f"Error refreshing threat intelligence: {e}")
+        raise HTTPException(status_code=500, detail="Failed to refresh threat intelligence")
+
+
+@app.get("/api/v1/security/threat-intel/search")
+async def search_threat_intelligence(
+    query: str = Query(..., description="Search query"),
+    severity: Optional[str] = Query(None, description="Filter by severity")
+):
+    """Search threat intelligence by keywords"""
+    
+    try:
+        manager = get_threat_intel_manager()
+        
+        results = await manager.search_threats(query, severity=severity)
+        
+        logger.info(f"Threat intelligence search for '{query}' returned {len(results)} results")
+        
+        return {
+            "success": True,
+            "query": query,
+            "results": results,
+            "total": len(results)
+        }
+        
+    except Exception as e:
+        logger.error(f"Error searching threat intelligence: {e}")
+        raise HTTPException(status_code=500, detail="Failed to search threat intelligence")
 
 
 if __name__ == "__main__":

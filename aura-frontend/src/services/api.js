@@ -317,6 +317,107 @@ export const dashboardAPI = {
   },
 };
 
+// Module 2: Infrastructure & Talent Management API endpoints
+export const infrastructureAPI = {
+  // Get agent performance metrics
+  getAgentsPerformance: async (timeframe = 'week', agentId = null) => {
+    const params = { timeframe };
+    if (agentId) params.agent_id = agentId;
+    const response = await api.get('/api/v1/infrastructure/agents/performance', { params });
+    return response.data;
+  },
+
+  // Get workload heatmap data
+  getWorkloadHeatmap: async (startDate = null, endDate = null) => {
+    const params = {};
+    if (startDate) params.start_date = startDate;
+    if (endDate) params.end_date = endDate;
+    const response = await api.get('/api/v1/infrastructure/workload/heatmap', { params });
+    return response.data;
+  },
+
+  // Reassign ticket for workload balancing
+  reassignTicket: async (ticketId, newAgentId, reason = 'Workload balancing') => {
+    const response = await api.post(`/api/v1/infrastructure/tickets/${ticketId}/reassign`, {
+      new_agent_id: newAgentId,
+      reason,
+    });
+    return response.data;
+  },
+};
+
+// Module 3: Security & Threat Intelligence API endpoints
+export const securityAPI = {
+  // Get security dashboard overview
+  getDashboard: async () => {
+    const response = await api.get('/api/v1/security/dashboard');
+    return response.data;
+  },
+
+  // Get security incidents with filters
+  getIncidents: async (severity = null, status = null, incidentType = null, limit = 50) => {
+    const params = { limit };
+    if (severity) params.severity = severity;
+    if (status) params.status = status;
+    if (incidentType) params.incident_type = incidentType;
+    const response = await api.get('/api/v1/security/incidents', { params });
+    return response.data;
+  },
+
+  // Report a new security incident
+  reportIncident: async (incidentData) => {
+    const response = await api.post('/api/v1/security/incidents/report', incidentData);
+    return response.data;
+  },
+
+  // Get active security threats
+  getActiveThreats: async () => {
+    const response = await api.get('/api/v1/security/threats/active');
+    return response.data;
+  },
+
+  // Get security score history
+  getScoreHistory: async (days = 30) => {
+    const response = await api.get('/api/v1/security/score/history', {
+      params: { days },
+    });
+    return response.data;
+  },
+
+  // External Threat Intelligence APIs
+  getThreatIntelFeeds: async (source = null, severity = null, limit = 50, useAI = true) => {
+    const params = { limit, use_ai: useAI };
+    if (source) params.source = source;
+    if (severity) params.severity = severity;
+    const response = await api.get('/api/v1/security/threat-intel/feeds', { params });
+    return response.data;
+  },
+
+  getThreatFeedDetail: async (feedId) => {
+    const response = await api.get(`/api/v1/security/threat-intel/feed/${feedId}`);
+    return response.data;
+  },
+
+  getThreatIntelSummary: async () => {
+    const response = await api.get('/api/v1/security/threat-intel/summary');
+    return response.data;
+  },
+
+  refreshThreatIntel: async (useAI = true) => {
+    const response = await api.post('/api/v1/security/threat-intel/refresh', null, {
+      params: { use_ai: useAI }
+    });
+    return response.data;
+  },
+
+  searchThreatIntel: async (query, severity = null) => {
+    const params = { query };
+    if (severity) params.severity = severity;
+    const response = await api.get('/api/v1/security/threat-intel/search', { params });
+    return response.data;
+  },
+};
+
 // Mock data generators for development (when backend is not available)
 export const mockData = {
   tickets: [
@@ -467,9 +568,13 @@ export const apiWithFallback = {
     try {
       const response = await knowledgeBaseAPI.getArticles(params);
       // The API returns 'items' but frontend expects 'articles'
+      // Handle both direct array response and paginated response
+      if (Array.isArray(response)) {
+        return { articles: response, total: response.length };
+      }
       return { 
         articles: response.items || response.articles || [], 
-        total: response.total || 0 
+        total: response.total || (response.items || response.articles || []).length
       };
     } catch (error) {
       // Enhanced error logging for knowledge base issues

@@ -1,6 +1,6 @@
 # Multi-Database Container for Cost Optimization
 # Combines PostgreSQL, MongoDB, and Redis in a single container
-FROM ubuntu:22.04
+FROM --platform=linux/amd64 ubuntu:22.04
 
 # Avoid interactive prompts during installation
 ENV DEBIAN_FRONTEND=noninteractive

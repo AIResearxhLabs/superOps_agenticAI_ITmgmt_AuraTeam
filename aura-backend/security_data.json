@@ -1,0 +1,3523 @@
+{
+  "incidents": [
+    {
+      "incident_id": "SEC-00015",
+      "incident_type": "Unauthorized Access Attempt",
+      "severity": "critical",
+      "status": "investigating",
+      "title": "Unauthorized Access Attempt - 2025-11-22",
+      "description": "Unauthorized access attempt to administrative console from unknown IP.",
+      "affected_systems": [
+        "db-39.white.com"
+      ],
+      "affected_users": [
+        "jeffbradley@example.org",
+        "tiffanycoleman@example.org",
+        "mmartinez@example.com",
+        "samuelhudson@example.org",
+        "cgardner@example.net"
+      ],
+      "reported_by": "ronaldwade@example.com",
+      "assigned_to": "security_team",
+      "created_at": "2025-11-22T08:44:37.015628",
+      "updated_at": "2025-11-23T13:44:37.015628",
+      "resolved_at": null,
+      "resolution_notes": null,
+      "tags": [
+        "unauthorized access attempt",
+        "critical"
+      ],
+      "ticket_id": "TKT-7066"
+    },
+    {
+      "incident_id": "SEC-00005",
+      "incident_type": "Malware Detection",
+      "severity": "medium",
+      "status": "open",
+      "title": "Malware Detection - 2025-11-17",
+      "description": "Endpoint protection detected and quarantined ransomware on workstation.",
+      "affected_systems": [
+        "db-88.hooper.org"
+      ],
+      "affected_users": [
+        "stephaniehill@example.org",
+        "bcruz@example.net"
+      ],
+      "reported_by": "chasesmith@example.org",
+      "assigned_to": "security_team",
+      "created_at": "2025-11-17T00:44:37.012258",
+      "updated_at": "2025-11-18T18:44:37.012258",
+      "resolved_at": null,
+      "resolution_notes": null,
+      "tags": [
+        "malware detection",
+        "medium"
+      ],
+      "ticket_id": null
+    },
+    {
+      "incident_id": "SEC-00004",
+      "incident_type": "Unauthorized Access Attempt",
+      "severity": "high",
+      "status": "resolved",
+      "title": "Unauthorized Access Attempt - 2025-11-16",
+      "description": "Suspicious authentication pattern detected for privileged account.",
+      "affected_systems": [
+        "srv-86.leblanc.com",
+        "desktop-64.rios.com",
+        "web-57.weber.com",
+        "web-99.morrison-carter.biz"
+      ],
+      "affected_users": [
+        "dcole@example.com",
+        "scottcaroline@example.org",
+        "ricechristopher@example.net"
+      ],
+      "reported_by": "wlong@example.org",
+      "assigned_to": "security_team",
+      "created_at": "2025-11-16T23:44:37.011808",
+      "updated_at": "2025-11-18T21:44:37.011808",
+      "resolved_at": "2025-11-18T21:44:37.011808",
+      "resolution_notes": "Incident resolved. No further action required.",
+      "tags": [
+        "unauthorized access attempt",
+        "high"
+      ],
+      "ticket_id": "TKT-2368"
+    },
+    {
+      "incident_id": "SEC-00014",
+      "incident_type": "Suspicious Email/Phishing",
+      "severity": "medium",
+      "status": "investigating",
+      "title": "Suspicious Email/Phishing - 2025-11-13",
+      "description": "Phishing attempt detected with spoofed sender address mimicking executive email.",
+      "affected_systems": [
+        "email-19.shaw-sullivan.net"
+      ],
+      "affected_users": [
+        "weaverjennifer@example.net"
+      ],
+      "reported_by": "collinsjeffery@example.org",
+      "assigned_to": "security_team",
+      "created_at": "2025-11-13T08:44:37.015423",
+      "updated_at": "2025-11-15T06:44:37.015423",
+      "resolved_at": null,
+      "resolution_notes": null,
+      "tags": [
+        "suspicious email",
+        "medium"
+      ],
+      "ticket_id": "TKT-9863"
+    },
+    {
+      "incident_id": "SEC-00017",
+      "incident_type": "Suspicious Email/Phishing",
+      "severity": "medium",
+      "status": "investigating",
+      "title": "Suspicious Email/Phishing - 2025-11-10",
+      "description": "User clicked suspicious link in email, triggering security alert.",
+      "affected_systems": [
+        "srv-46.donaldson-nelson.com",
+        "email-53.rangel-warren.com"
+      ],
+      "affected_users": [
+        "cynthiaford@example.org"
+      ],
+      "reported_by": "choilaura@example.org",
+      "assigned_to": "security_team",
+      "created_at": "2025-11-10T23:44:37.016218",
+      "updated_at": "2025-11-11T13:44:37.016218",
+      "resolved_at": null,
+      "resolution_notes": null,
+      "tags": [
+        "suspicious email",
+        "medium"
+      ],
+      "ticket_id": "TKT-9602"
+    },
+    {
+      "incident_id": "SEC-00001",
+      "incident_type": "Unauthorized Access Attempt",
+      "severity": "medium",
+      "status": "investigating",
+      "title": "Unauthorized Access Attempt - 2025-11-08",
+      "description": "Brute force attack detected on VPN gateway.",
+      "affected_systems": [
+        "web-45.davis.net"
+      ],
+      "affected_users": [
+        "kristinaclay@example.com",
+        "brittanymorgan@example.com",
+        "jim81@example.org"
+      ],
+      "reported_by": "jerryturner@example.org",
+      "assigned_to": "security_team",
+      "created_at": "2025-11-08T16:44:37.010787",
+      "updated_at": "2025-11-09T10:44:37.010787",
+      "resolved_at": null,
+      "resolution_notes": null,
+      "tags": [
+        "unauthorized access attempt",
+        "medium"
+      ],
+      "ticket_id": "TKT-1513"
+    },
+    {
+      "incident_id": "SEC-00010",
+      "incident_type": "Unauthorized Access Attempt",
+      "severity": "medium",
+      "status": "investigating",
+      "title": "Unauthorized Access Attempt - 2025-11-06",
+      "description": "Unauthorized access attempt to administrative console from unknown IP.",
+      "affected_systems": [
+        "laptop-78.clark.com"
+      ],
+      "affected_users": [
+        "wallsanna@example.com",
+        "msmith@example.com"
+      ],
+      "reported_by": "shall@example.org",
+      "assigned_to": "security_team",
+      "created_at": "2025-11-06T15:44:37.013953",
+      "updated_at": "2025-11-07T16:44:37.013953",
+      "resolved_at": null,
+      "resolution_notes": null,
+      "tags": [
+        "unauthorized access attempt",
+        "medium"
+      ],
+      "ticket_id": "TKT-2347"
+    },
+    {
+      "incident_id": "SEC-00011",
+      "incident_type": "Unauthorized Access Attempt",
+      "severity": "high",
+      "status": "investigating",
+      "title": "Unauthorized Access Attempt - 2025-11-04",
+      "description": "Brute force attack detected on VPN gateway.",
+      "affected_systems": [
+        "web-19.stone.biz",
+        "db-17.mcclure.info",
+        "laptop-51.williams.com",
+        "lt-33.russell.com",
+        "desktop-86.ruiz-alexander.info"
+      ],
+      "affected_users": [
+        "shawgregory@example.org"
+      ],
+      "reported_by": "christopher61@example.com",
+      "assigned_to": "security_team",
+      "created_at": "2025-11-04T22:44:37.014199",
+      "updated_at": "2025-11-05T14:44:37.014199",
+      "resolved_at": null,
+      "resolution_notes": null,
+      "tags": [
+        "unauthorized access attempt",
+        "high"
+      ],
+      "ticket_id": "TKT-7200"
+    },
+    {
+      "incident_id": "SEC-00007",
+      "incident_type": "Unauthorized Access Attempt",
+      "severity": "high",
+      "status": "resolved",
+      "title": "Unauthorized Access Attempt - 2025-11-04",
+      "description": "Unauthorized access attempt to administrative console from unknown IP.",
+      "affected_systems": [
+        "email-33.atkins.info",
+        "lt-26.ruiz-davis.org",
+        "laptop-50.burgess.com",
+        "db-67.avila-wilson.com"
+      ],
+      "affected_users": [
+        "victoria08@example.org",
+        "harpernoah@example.com"
+      ],
+      "reported_by": "eric74@example.net",
+      "assigned_to": "security_team",
+      "created_at": "2025-11-04T17:44:37.013007",
+      "updated_at": "2025-11-06T13:44:37.013007",
+      "resolved_at": "2025-11-06T13:44:37.013007",
+      "resolution_notes": "Incident resolved. No further action required.",
+      "tags": [
+        "unauthorized access attempt",
+        "high"
+      ],
+      "ticket_id": "TKT-5977"
+    },
+    {
+      "incident_id": "SEC-00008",
+      "incident_type": "Suspicious Email/Phishing",
+      "severity": "low",
+      "status": "resolved",
+      "title": "Suspicious Email/Phishing - 2025-11-02",
+      "description": "Multiple users reported receiving suspicious emails claiming to be from IT department requesting password reset.",
+      "affected_systems": [
+        "laptop-75.foster.com",
+        "lt-84.roberts.com"
+      ],
+      "affected_users": [
+        "harmondeborah@example.com",
+        "scottevelyn@example.com"
+      ],
+      "reported_by": "xvillegas@example.org",
+      "assigned_to": "security_team",
+      "created_at": "2025-11-02T16:44:37.013409",
+      "updated_at": "2025-11-04T02:44:37.013409",
+      "resolved_at": "2025-11-04T02:44:37.013409",
+      "resolution_notes": "Incident resolved. No further action required.",
+      "tags": [
+        "suspicious email",
+        "low"
+      ],
+      "ticket_id": "TKT-6405"
+    },
+    {
+      "incident_id": "SEC-00012",
+      "incident_type": "Suspicious Email/Phishing",
+      "severity": "low",
+      "status": "investigating",
+      "title": "Suspicious Email/Phishing - 2025-10-30",
+      "description": "User clicked suspicious link in email, triggering security alert.",
+      "affected_systems": [
+        "email-25.stone.com",
+        "desktop-15.molina.com"
+      ],
+      "affected_users": [
+        "fhubbard@example.net",
+        "payneaaron@example.com",
+        "sgray@example.org"
+      ],
+      "reported_by": "adamscarolyn@example.com",
+      "assigned_to": "security_team",
+      "created_at": "2025-10-30T03:44:37.014736",
+      "updated_at": "2025-10-31T23:44:37.014736",
+      "resolved_at": null,
+      "resolution_notes": null,
+      "tags": [
+        "suspicious email",
+        "low"
+      ],
+      "ticket_id": "TKT-4457"
+    },
+    {
+      "incident_id": "SEC-00016",
+      "incident_type": "Suspicious Email/Phishing",
+      "severity": "low",
+      "status": "investigating",
+      "title": "Suspicious Email/Phishing - 2025-10-27",
+      "description": "Email with malicious attachment identified by security filters.",
+      "affected_systems": [
+        "lt-16.smith.com",
+        "laptop-07.coleman.com"
+      ],
+      "affected_users": [
+        "christopher31@example.org"
+      ],
+      "reported_by": "antoniomurphy@example.com",
+      "assigned_to": "security_team",
+      "created_at": "2025-10-27T13:44:37.015984",
+      "updated_at": "2025-10-28T12:44:37.015984",
+      "resolved_at": null,
+      "resolution_notes": null,
+      "tags": [
+        "suspicious email",
+        "low"
+      ],
+      "ticket_id": "TKT-2278"
+    },
+    {
+      "incident_id": "SEC-00006",
+      "incident_type": "Unauthorized Access Attempt",
+      "severity": "critical",
+      "status": "investigating",
+      "title": "Unauthorized Access Attempt - 2025-10-25",
+      "description": "Unauthorized access attempt to administrative console from unknown IP.",
+      "affected_systems": [
+        "srv-92.garcia-patterson.com",
+        "web-81.cherry.com",
+        "db-36.mclean.info"
+      ],
+      "affected_users": [
+        "spencekimberly@example.com",
+        "michaelpierce@example.net",
+        "udelgado@example.net",
+        "kimsuarez@example.org"
+      ],
+      "reported_by": "blackburnkevin@example.org",
+      "assigned_to": "security_team",
+      "created_at": "2025-10-25T07:44:37.012521",
+      "updated_at": "2025-10-26T09:44:37.012521",
+      "resolved_at": null,
+      "resolution_notes": null,
+      "tags": [
+        "unauthorized access attempt",
+        "critical"
+      ],
+      "ticket_id": "TKT-8320"
+    },
+    {
+      "incident_id": "SEC-00013",
+      "incident_type": "Policy Violation",
+      "severity": "high",
+      "status": "investigating",
+      "title": "Policy Violation - 2025-10-25",
+      "description": "Unauthorized software installation detected on company device.",
+      "affected_systems": [
+        "db-28.barnett.biz",
+        "srv-06.bullock.com"
+      ],
+      "affected_users": [
+        "waltonbrian@example.org",
+        "ulopez@example.org",
+        "lpineda@example.net"
+      ],
+      "reported_by": "nsalazar@example.com",
+      "assigned_to": "security_team",
+      "created_at": "2025-10-25T05:44:37.015094",
+      "updated_at": "2025-10-25T22:44:37.015094",
+      "resolved_at": null,
+      "resolution_notes": null,
+      "tags": [
+        "policy violation",
+        "high"
+      ],
+      "ticket_id": "TKT-6332"
+    },
+    {
+      "incident_id": "SEC-00019",
+      "incident_type": "Suspicious Email/Phishing",
+      "severity": "critical",
+      "status": "investigating",
+      "title": "Suspicious Email/Phishing - 2025-10-23",
+      "description": "Multiple users reported receiving suspicious emails claiming to be from IT department requesting password reset.",
+      "affected_systems": [
+        "email-52.johnson-foster.com",
+        "laptop-62.robinson-johnson.biz",
+        "laptop-72.cruz.net"
+      ],
+      "affected_users": [
+        "nicholasaguilar@example.org",
+        "ryankatelyn@example.com",
+        "llee@example.org",
+        "wbooker@example.com",
+        "david71@example.net",
+        "mitchellcatherine@example.com",
+        "lwalker@example.com"
+      ],
+      "reported_by": "vrobinson@example.net",
+      "assigned_to": "security_team",
+      "created_at": "2025-10-23T23:44:37.016817",
+      "updated_at": "2025-10-24T01:44:37.016817",
+      "resolved_at": null,
+      "resolution_notes": null,
+      "tags": [
+        "suspicious email",
+        "critical"
+      ],
+      "ticket_id": "TKT-8600"
+    },
+    {
+      "incident_id": "SEC-00002",
+      "incident_type": "Suspicious Email/Phishing",
+      "severity": "medium",
+      "status": "resolved",
+      "title": "Suspicious Email/Phishing - 2025-10-19",
+      "description": "Email with malicious attachment identified by security filters.",
+      "affected_systems": [
+        "email-06.martinez.com"
+      ],
+      "affected_users": [
+        "hebertsteven@example.com",
+        "uobrien@example.com",
+        "zadams@example.com"
+      ],
+      "reported_by": "jorge44@example.net",
+      "assigned_to": "security_team",
+      "created_at": "2025-10-19T05:44:37.011254",
+      "updated_at": "2025-10-22T17:44:37.011254",
+      "resolved_at": "2025-10-22T17:44:37.011254",
+      "resolution_notes": "Incident resolved. No further action required.",
+      "tags": [
+        "suspicious email",
+        "medium"
+      ],
+      "ticket_id": "TKT-3321"
+    },
+    {
+      "incident_id": "SEC-00018",
+      "incident_type": "Unauthorized Access Attempt",
+      "severity": "critical",
+      "status": "resolved",
+      "title": "Unauthorized Access Attempt - 2025-10-16",
+      "description": "Unauthorized access attempt to administrative console from unknown IP.",
+      "affected_systems": [
+        "lt-63.white-carr.com",
+        "email-31.jones.net",
+        "lt-95.edwards-foster.org"
+      ],
+      "affected_users": [
+        "david07@example.com",
+        "ericyoung@example.org"
+      ],
+      "reported_by": "deborahgray@example.org",
+      "assigned_to": "security_team",
+      "created_at": "2025-10-16T15:44:37.016484",
+      "updated_at": "2025-10-17T14:44:37.016484",
+      "resolved_at": "2025-10-17T14:44:37.016484",
+      "resolution_notes": "Incident resolved. No further action required.",
+      "tags": [
+        "unauthorized access attempt",
+        "critical"
+      ],
+      "ticket_id": "TKT-1578"
+    },
+    {
+      "incident_id": "SEC-00003",
+      "incident_type": "Unauthorized Access Attempt",
+      "severity": "medium",
+      "status": "resolved",
+      "title": "Unauthorized Access Attempt - 2025-10-16",
+      "description": "Suspicious authentication pattern detected for privileged account.",
+      "affected_systems": [
+        "email-81.warren-burton.com",
+        "email-87.myers.com"
+      ],
+      "affected_users": [
+        "robertdiaz@example.net",
+        "kimberly59@example.net"
+      ],
+      "reported_by": "jeffersoncole@example.net",
+      "assigned_to": "security_team",
+      "created_at": "2025-10-16T02:44:37.011474",
+      "updated_at": "2025-10-16T07:44:37.011474",
+      "resolved_at": "2025-10-16T07:44:37.011474",
+      "resolution_notes": "Incident resolved. No further action required.",
+      "tags": [
+        "unauthorized access attempt",
+        "medium"
+      ],
+      "ticket_id": "TKT-6251"
+    },
+    {
+      "incident_id": "SEC-00009",
+      "incident_type": "Suspicious Email/Phishing",
+      "severity": "medium",
+      "status": "resolved",
+      "title": "Suspicious Email/Phishing - 2025-10-07",
+      "description": "Phishing attempt detected with spoofed sender address mimicking executive email.",
+      "affected_systems": [
+        "laptop-73.ruiz.info",
+        "desktop-53.arroyo.com"
+      ],
+      "affected_users": [
+        "christophergallagher@example.net"
+      ],
+      "reported_by": "cindy40@example.org",
+      "assigned_to": "security_team",
+      "created_at": "2025-10-07T20:44:37.013649",
+      "updated_at": "2025-10-11T12:44:37.013649",
+      "resolved_at": "2025-10-11T12:44:37.013649",
+      "resolution_notes": "Incident resolved. No further action required.",
+      "tags": [
+        "suspicious email",
+        "medium"
+      ],
+      "ticket_id": "TKT-8793"
+    },
+    {
+      "incident_id": "SEC-00020",
+      "incident_type": "Malware Detection",
+      "severity": "critical",
+      "status": "resolved",
+      "title": "Malware Detection - 2025-09-24",
+      "description": "Network scan detected malware communication attempt to external server.",
+      "affected_systems": [
+        "db-76.martin.com",
+        "srv-29.norris.biz"
+      ],
+      "affected_users": [
+        "armstrongashley@example.org",
+        "fosterkiara@example.net",
+        "jared86@example.org",
+        "davidbryant@example.net",
+        "schmidtrichard@example.net",
+        "hendersonnathan@example.com",
+        "tharris@example.org"
+      ],
+      "reported_by": "leslielee@example.com",
+      "assigned_to": "security_team",
+      "created_at": "2025-09-24T23:44:37.017425",
+      "updated_at": "2025-09-25T18:44:37.017425",
+      "resolved_at": "2025-09-25T18:44:37.017425",
+      "resolution_notes": "Incident resolved. No further action required.",
+      "tags": [
+        "malware detection",
+        "critical"
+      ],
+      "ticket_id": "TKT-6234"
+    }
+  ],
+  "current_security_score": {
+    "date": "2025-11-22",
+    "overall_score": 69.2,
+    "categories": {
+      "access_control": {
+        "score": 57,
+        "status": "critical",
+        "issues": 9
+      },
+      "threat_detection": {
+        "score": 75,
+        "status": "warning",
+        "issues": 7
+      },
+      "compliance": {
+        "score": 51,
+        "status": "critical",
+        "issues": 14
+      },
+      "data_protection": {
+        "score": 87,
+        "status": "good",
+        "issues": 3
+      },
+      "monitoring": {
+        "score": 76,
+        "status": "warning",
+        "issues": 6
+      }
+    }
+  },
+  "security_score_history": [
+    {
+      "date": "2025-08-24",
+      "overall_score": 83.0,
+      "categories": {
+        "access_control": {
+          "score": 86,
+          "status": "good",
+          "issues": 4
+        },
+        "threat_detection": {
+          "score": 80,
+          "status": "good",
+          "issues": 2
+        },
+        "compliance": {
+          "score": 74,
+          "status": "warning",
+          "issues": 6
+        },
+        "data_protection": {
+          "score": 86,
+          "status": "good",
+          "issues": 2
+        },
+        "monitoring": {
+          "score": 89,
+          "status": "good",
+          "issues": 3
+        }
+      }
+    },
+    {
+      "date": "2025-08-25",
+      "overall_score": 83.2,
+      "categories": {
+        "access_control": {
+          "score": 86,
+          "status": "good",
+          "issues": 1
+        },
+        "threat_detection": {
+          "score": 82,
+          "status": "good",
+          "issues": 4
+        },
+        "compliance": {
+          "score": 76,
+          "status": "warning",
+          "issues": 5
+        },
+        "data_protection": {
+          "score": 85,
+          "status": "good",
+          "issues": 4
+        },
+        "monitoring": {
+          "score": 87,
+          "status": "good",
+          "issues": 1
+        }
+      }
+    },
+    {
+      "date": "2025-08-26",
+      "overall_score": 82.8,
+      "categories": {
+        "access_control": {
+          "score": 87,
+          "status": "good",
+          "issues": 4
+        },
+        "threat_detection": {
+          "score": 83,
+          "status": "good",
+          "issues": 4
+        },
+        "compliance": {
+          "score": 77,
+          "status": "warning",
+          "issues": 6
+        },
+        "data_protection": {
+          "score": 82,
+          "status": "good",
+          "issues": 2
+        },
+        "monitoring": {
+          "score": 85,
+          "status": "good",
+          "issues": 3
+        }
+      }
+    },
+    {
+      "date": "2025-08-27",
+      "overall_score": 82.0,
+      "categories": {
+        "access_control": {
+          "score": 84,
+          "status": "good",
+          "issues": 2
+        },
+        "threat_detection": {
+          "score": 85,
+          "status": "good",
+          "issues": 4
+        },
+        "compliance": {
+          "score": 75,
+          "status": "warning",
+          "issues": 4
+        },
+        "data_protection": {
+          "score": 82,
+          "status": "good",
+          "issues": 3
+        },
+        "monitoring": {
+          "score": 84,
+          "status": "good",
+          "issues": 4
+        }
+      }
+    },
+    {
+      "date": "2025-08-28",
+      "overall_score": 80.8,
+      "categories": {
+        "access_control": {
+          "score": 81,
+          "status": "good",
+          "issues": 3
+        },
+        "threat_detection": {
+          "score": 85,
+          "status": "good",
+          "issues": 1
+        },
+        "compliance": {
+          "score": 73,
+          "status": "warning",
+          "issues": 8
+        },
+        "data_protection": {
+          "score": 84,
+          "status": "good",
+          "issues": 1
+        },
+        "monitoring": {
+          "score": 81,
+          "status": "good",
+          "issues": 4
+        }
+      }
+    },
+    {
+      "date": "2025-08-29",
+      "overall_score": 81.8,
+      "categories": {
+        "access_control": {
+          "score": 82,
+          "status": "good",
+          "issues": 2
+        },
+        "threat_detection": {
+          "score": 86,
+          "status": "good",
+          "issues": 1
+        },
+        "compliance": {
+          "score": 75,
+          "status": "warning",
+          "issues": 8
+        },
+        "data_protection": {
+          "score": 84,
+          "status": "good",
+          "issues": 4
+        },
+        "monitoring": {
+          "score": 82,
+          "status": "good",
+          "issues": 1
+        }
+      }
+    },
+    {
+      "date": "2025-08-30",
+      "overall_score": 82.0,
+      "categories": {
+        "access_control": {
+          "score": 80,
+          "status": "good",
+          "issues": 1
+        },
+        "threat_detection": {
+          "score": 89,
+          "status": "good",
+          "issues": 3
+        },
+        "compliance": {
+          "score": 75,
+          "status": "warning",
+          "issues": 4
+        },
+        "data_protection": {
+          "score": 87,
+          "status": "good",
+          "issues": 1
+        },
+        "monitoring": {
+          "score": 79,
+          "status": "warning",
+          "issues": 5
+        }
+      }
+    },
+    {
+      "date": "2025-08-31",
+      "overall_score": 81.2,
+      "categories": {
+        "access_control": {
+          "score": 77,
+          "status": "warning",
+          "issues": 6
+        },
+        "threat_detection": {
+          "score": 88,
+          "status": "good",
+          "issues": 4
+        },
+        "compliance": {
+          "score": 72,
+          "status": "warning",
+          "issues": 7
+        },
+        "data_protection": {
+          "score": 87,
+          "status": "good",
+          "issues": 2
+        },
+        "monitoring": {
+          "score": 82,
+          "status": "good",
+          "issues": 3
+        }
+      }
+    },
+    {
+      "date": "2025-09-01",
+      "overall_score": 81.6,
+      "categories": {
+        "access_control": {
+          "score": 78,
+          "status": "warning",
+          "issues": 6
+        },
+        "threat_detection": {
+          "score": 89,
+          "status": "good",
+          "issues": 2
+        },
+        "compliance": {
+          "score": 73,
+          "status": "warning",
+          "issues": 7
+        },
+        "data_protection": {
+          "score": 89,
+          "status": "good",
+          "issues": 2
+        },
+        "monitoring": {
+          "score": 79,
+          "status": "warning",
+          "issues": 5
+        }
+      }
+    },
+    {
+      "date": "2025-09-02",
+      "overall_score": 83.4,
+      "categories": {
+        "access_control": {
+          "score": 79,
+          "status": "warning",
+          "issues": 5
+        },
+        "threat_detection": {
+          "score": 90,
+          "status": "excellent",
+          "issues": 1
+        },
+        "compliance": {
+          "score": 76,
+          "status": "warning",
+          "issues": 5
+        },
+        "data_protection": {
+          "score": 91,
+          "status": "excellent",
+          "issues": 2
+        },
+        "monitoring": {
+          "score": 81,
+          "status": "good",
+          "issues": 4
+        }
+      }
+    },
+    {
+      "date": "2025-09-03",
+      "overall_score": 82.0,
+      "categories": {
+        "access_control": {
+          "score": 78,
+          "status": "warning",
+          "issues": 8
+        },
+        "threat_detection": {
+          "score": 88,
+          "status": "good",
+          "issues": 3
+        },
+        "compliance": {
+          "score": 74,
+          "status": "warning",
+          "issues": 5
+        },
+        "data_protection": {
+          "score": 90,
+          "status": "excellent",
+          "issues": 2
+        },
+        "monitoring": {
+          "score": 80,
+          "status": "good",
+          "issues": 3
+        }
+      }
+    },
+    {
+      "date": "2025-09-04",
+      "overall_score": 82.0,
+      "categories": {
+        "access_control": {
+          "score": 78,
+          "status": "warning",
+          "issues": 7
+        },
+        "threat_detection": {
+          "score": 86,
+          "status": "good",
+          "issues": 3
+        },
+        "compliance": {
+          "score": 76,
+          "status": "warning",
+          "issues": 7
+        },
+        "data_protection": {
+          "score": 92,
+          "status": "excellent",
+          "issues": 2
+        },
+        "monitoring": {
+          "score": 78,
+          "status": "warning",
+          "issues": 4
+        }
+      }
+    },
+    {
+      "date": "2025-09-05",
+      "overall_score": 82.4,
+      "categories": {
+        "access_control": {
+          "score": 76,
+          "status": "warning",
+          "issues": 6
+        },
+        "threat_detection": {
+          "score": 85,
+          "status": "good",
+          "issues": 3
+        },
+        "compliance": {
+          "score": 78,
+          "status": "warning",
+          "issues": 6
+        },
+        "data_protection": {
+          "score": 92,
+          "status": "excellent",
+          "issues": 1
+        },
+        "monitoring": {
+          "score": 81,
+          "status": "good",
+          "issues": 3
+        }
+      }
+    },
+    {
+      "date": "2025-09-06",
+      "overall_score": 83.8,
+      "categories": {
+        "access_control": {
+          "score": 79,
+          "status": "warning",
+          "issues": 8
+        },
+        "threat_detection": {
+          "score": 83,
+          "status": "good",
+          "issues": 1
+        },
+        "compliance": {
+          "score": 80,
+          "status": "good",
+          "issues": 4
+        },
+        "data_protection": {
+          "score": 95,
+          "status": "excellent",
+          "issues": 2
+        },
+        "monitoring": {
+          "score": 82,
+          "status": "good",
+          "issues": 2
+        }
+      }
+    },
+    {
+      "date": "2025-09-07",
+      "overall_score": 82.8,
+      "categories": {
+        "access_control": {
+          "score": 77,
+          "status": "warning",
+          "issues": 8
+        },
+        "threat_detection": {
+          "score": 83,
+          "status": "good",
+          "issues": 2
+        },
+        "compliance": {
+          "score": 82,
+          "status": "good",
+          "issues": 4
+        },
+        "data_protection": {
+          "score": 92,
+          "status": "excellent",
+          "issues": 2
+        },
+        "monitoring": {
+          "score": 80,
+          "status": "good",
+          "issues": 1
+        }
+      }
+    },
+    {
+      "date": "2025-09-08",
+      "overall_score": 81.4,
+      "categories": {
+        "access_control": {
+          "score": 77,
+          "status": "warning",
+          "issues": 6
+        },
+        "threat_detection": {
+          "score": 81,
+          "status": "good",
+          "issues": 3
+        },
+        "compliance": {
+          "score": 80,
+          "status": "good",
+          "issues": 1
+        },
+        "data_protection": {
+          "score": 92,
+          "status": "excellent",
+          "issues": 2
+        },
+        "monitoring": {
+          "score": 77,
+          "status": "warning",
+          "issues": 5
+        }
+      }
+    },
+    {
+      "date": "2025-09-09",
+      "overall_score": 82.0,
+      "categories": {
+        "access_control": {
+          "score": 79,
+          "status": "warning",
+          "issues": 7
+        },
+        "threat_detection": {
+          "score": 80,
+          "status": "good",
+          "issues": 3
+        },
+        "compliance": {
+          "score": 77,
+          "status": "warning",
+          "issues": 7
+        },
+        "data_protection": {
+          "score": 94,
+          "status": "excellent",
+          "issues": 1
+        },
+        "monitoring": {
+          "score": 80,
+          "status": "good",
+          "issues": 3
+        }
+      }
+    },
+    {
+      "date": "2025-09-10",
+      "overall_score": 82.2,
+      "categories": {
+        "access_control": {
+          "score": 81,
+          "status": "good",
+          "issues": 3
+        },
+        "threat_detection": {
+          "score": 79,
+          "status": "warning",
+          "issues": 6
+        },
+        "compliance": {
+          "score": 76,
+          "status": "warning",
+          "issues": 5
+        },
+        "data_protection": {
+          "score": 93,
+          "status": "excellent",
+          "issues": 2
+        },
+        "monitoring": {
+          "score": 82,
+          "status": "good",
+          "issues": 1
+        }
+      }
+    },
+    {
+      "date": "2025-09-11",
+      "overall_score": 82.6,
+      "categories": {
+        "access_control": {
+          "score": 83,
+          "status": "good",
+          "issues": 1
+        },
+        "threat_detection": {
+          "score": 80,
+          "status": "good",
+          "issues": 4
+        },
+        "compliance": {
+          "score": 74,
+          "status": "warning",
+          "issues": 5
+        },
+        "data_protection": {
+          "score": 95,
+          "status": "excellent",
+          "issues": 1
+        },
+        "monitoring": {
+          "score": 81,
+          "status": "good",
+          "issues": 4
+        }
+      }
+    },
+    {
+      "date": "2025-09-12",
+      "overall_score": 83.8,
+      "categories": {
+        "access_control": {
+          "score": 85,
+          "status": "good",
+          "issues": 4
+        },
+        "threat_detection": {
+          "score": 78,
+          "status": "warning",
+          "issues": 7
+        },
+        "compliance": {
+          "score": 77,
+          "status": "warning",
+          "issues": 8
+        },
+        "data_protection": {
+          "score": 95,
+          "status": "excellent",
+          "issues": 0
+        },
+        "monitoring": {
+          "score": 84,
+          "status": "good",
+          "issues": 4
+        }
+      }
+    },
+    {
+      "date": "2025-09-13",
+      "overall_score": 81.2,
+      "categories": {
+        "access_control": {
+          "score": 83,
+          "status": "good",
+          "issues": 1
+        },
+        "threat_detection": {
+          "score": 75,
+          "status": "warning",
+          "issues": 7
+        },
+        "compliance": {
+          "score": 74,
+          "status": "warning",
+          "issues": 7
+        },
+        "data_protection": {
+          "score": 92,
+          "status": "excellent",
+          "issues": 0
+        },
+        "monitoring": {
+          "score": 82,
+          "status": "good",
+          "issues": 1
+        }
+      }
+    },
+    {
+      "date": "2025-09-14",
+      "overall_score": 81.4,
+      "categories": {
+        "access_control": {
+          "score": 84,
+          "status": "good",
+          "issues": 2
+        },
+        "threat_detection": {
+          "score": 76,
+          "status": "warning",
+          "issues": 7
+        },
+        "compliance": {
+          "score": 71,
+          "status": "warning",
+          "issues": 6
+        },
+        "data_protection": {
+          "score": 93,
+          "status": "excellent",
+          "issues": 0
+        },
+        "monitoring": {
+          "score": 83,
+          "status": "good",
+          "issues": 3
+        }
+      }
+    },
+    {
+      "date": "2025-09-15",
+      "overall_score": 81.0,
+      "categories": {
+        "access_control": {
+          "score": 85,
+          "status": "good",
+          "issues": 4
+        },
+        "threat_detection": {
+          "score": 73,
+          "status": "warning",
+          "issues": 6
+        },
+        "compliance": {
+          "score": 70,
+          "status": "warning",
+          "issues": 8
+        },
+        "data_protection": {
+          "score": 95,
+          "status": "excellent",
+          "issues": 0
+        },
+        "monitoring": {
+          "score": 82,
+          "status": "good",
+          "issues": 1
+        }
+      }
+    },
+    {
+      "date": "2025-09-16",
+      "overall_score": 81.0,
+      "categories": {
+        "access_control": {
+          "score": 86,
+          "status": "good",
+          "issues": 4
+        },
+        "threat_detection": {
+          "score": 74,
+          "status": "warning",
+          "issues": 6
+        },
+        "compliance": {
+          "score": 69,
+          "status": "critical",
+          "issues": 14
+        },
+        "data_protection": {
+          "score": 95,
+          "status": "excellent",
+          "issues": 0
+        },
+        "monitoring": {
+          "score": 81,
+          "status": "good",
+          "issues": 3
+        }
+      }
+    },
+    {
+      "date": "2025-09-17",
+      "overall_score": 81.4,
+      "categories": {
+        "access_control": {
+          "score": 85,
+          "status": "good",
+          "issues": 3
+        },
+        "threat_detection": {
+          "score": 75,
+          "status": "warning",
+          "issues": 6
+        },
+        "compliance": {
+          "score": 69,
+          "status": "critical",
+          "issues": 13
+        },
+        "data_protection": {
+          "score": 95,
+          "status": "excellent",
+          "issues": 2
+        },
+        "monitoring": {
+          "score": 83,
+          "status": "good",
+          "issues": 4
+        }
+      }
+    },
+    {
+      "date": "2025-09-18",
+      "overall_score": 82.6,
+      "categories": {
+        "access_control": {
+          "score": 88,
+          "status": "good",
+          "issues": 3
+        },
+        "threat_detection": {
+          "score": 78,
+          "status": "warning",
+          "issues": 8
+        },
+        "compliance": {
+          "score": 68,
+          "status": "critical",
+          "issues": 11
+        },
+        "data_protection": {
+          "score": 97,
+          "status": "excellent",
+          "issues": 1
+        },
+        "monitoring": {
+          "score": 82,
+          "status": "good",
+          "issues": 1
+        }
+      }
+    },
+    {
+      "date": "2025-09-19",
+      "overall_score": 83.8,
+      "categories": {
+        "access_control": {
+          "score": 90,
+          "status": "excellent",
+          "issues": 2
+        },
+        "threat_detection": {
+          "score": 80,
+          "status": "good",
+          "issues": 1
+        },
+        "compliance": {
+          "score": 71,
+          "status": "warning",
+          "issues": 4
+        },
+        "data_protection": {
+          "score": 99,
+          "status": "excellent",
+          "issues": 1
+        },
+        "monitoring": {
+          "score": 79,
+          "status": "warning",
+          "issues": 5
+        }
+      }
+    },
+    {
+      "date": "2025-09-20",
+      "overall_score": 84.4,
+      "categories": {
+        "access_control": {
+          "score": 90,
+          "status": "excellent",
+          "issues": 0
+        },
+        "threat_detection": {
+          "score": 82,
+          "status": "good",
+          "issues": 4
+        },
+        "compliance": {
+          "score": 72,
+          "status": "warning",
+          "issues": 4
+        },
+        "data_protection": {
+          "score": 100,
+          "status": "excellent",
+          "issues": 2
+        },
+        "monitoring": {
+          "score": 78,
+          "status": "warning",
+          "issues": 8
+        }
+      }
+    },
+    {
+      "date": "2025-09-21",
+      "overall_score": 83.8,
+      "categories": {
+        "access_control": {
+          "score": 89,
+          "status": "good",
+          "issues": 2
+        },
+        "threat_detection": {
+          "score": 79,
+          "status": "warning",
+          "issues": 7
+        },
+        "compliance": {
+          "score": 70,
+          "status": "warning",
+          "issues": 4
+        },
+        "data_protection": {
+          "score": 100,
+          "status": "excellent",
+          "issues": 0
+        },
+        "monitoring": {
+          "score": 81,
+          "status": "good",
+          "issues": 2
+        }
+      }
+    },
+    {
+      "date": "2025-09-22",
+      "overall_score": 83.4,
+      "categories": {
+        "access_control": {
+          "score": 88,
+          "status": "good",
+          "issues": 4
+        },
+        "threat_detection": {
+          "score": 82,
+          "status": "good",
+          "issues": 3
+        },
+        "compliance": {
+          "score": 67,
+          "status": "critical",
+          "issues": 14
+        },
+        "data_protection": {
+          "score": 100,
+          "status": "excellent",
+          "issues": 0
+        },
+        "monitoring": {
+          "score": 80,
+          "status": "good",
+          "issues": 4
+        }
+      }
+    },
+    {
+      "date": "2025-09-23",
+      "overall_score": 82.6,
+      "categories": {
+        "access_control": {
+          "score": 85,
+          "status": "good",
+          "issues": 4
+        },
+        "threat_detection": {
+          "score": 85,
+          "status": "good",
+          "issues": 1
+        },
+        "compliance": {
+          "score": 64,
+          "status": "critical",
+          "issues": 15
+        },
+        "data_protection": {
+          "score": 100,
+          "status": "excellent",
+          "issues": 0
+        },
+        "monitoring": {
+          "score": 79,
+          "status": "warning",
+          "issues": 7
+        }
+      }
+    },
+    {
+      "date": "2025-09-24",
+      "overall_score": 81.0,
+      "categories": {
+        "access_control": {
+          "score": 84,
+          "status": "good",
+          "issues": 4
+        },
+        "threat_detection": {
+          "score": 87,
+          "status": "good",
+          "issues": 4
+        },
+        "compliance": {
+          "score": 61,
+          "status": "critical",
+          "issues": 13
+        },
+        "data_protection": {
+          "score": 97,
+          "status": "excellent",
+          "issues": 0
+        },
+        "monitoring": {
+          "score": 76,
+          "status": "warning",
+          "issues": 7
+        }
+      }
+    },
+    {
+      "date": "2025-09-25",
+      "overall_score": 79.6,
+      "categories": {
+        "access_control": {
+          "score": 82,
+          "status": "good",
+          "issues": 4
+        },
+        "threat_detection": {
+          "score": 87,
+          "status": "good",
+          "issues": 3
+        },
+        "compliance": {
+          "score": 62,
+          "status": "critical",
+          "issues": 11
+        },
+        "data_protection": {
+          "score": 94,
+          "status": "excellent",
+          "issues": 2
+        },
+        "monitoring": {
+          "score": 73,
+          "status": "warning",
+          "issues": 6
+        }
+      }
+    },
+    {
+      "date": "2025-09-26",
+      "overall_score": 79.8,
+      "categories": {
+        "access_control": {
+          "score": 82,
+          "status": "good",
+          "issues": 3
+        },
+        "threat_detection": {
+          "score": 89,
+          "status": "good",
+          "issues": 4
+        },
+        "compliance": {
+          "score": 63,
+          "status": "critical",
+          "issues": 14
+        },
+        "data_protection": {
+          "score": 91,
+          "status": "excellent",
+          "issues": 0
+        },
+        "monitoring": {
+          "score": 74,
+          "status": "warning",
+          "issues": 4
+        }
+      }
+    },
+    {
+      "date": "2025-09-27",
+      "overall_score": 80.8,
+      "categories": {
+        "access_control": {
+          "score": 85,
+          "status": "good",
+          "issues": 1
+        },
+        "threat_detection": {
+          "score": 92,
+          "status": "excellent",
+          "issues": 1
+        },
+        "compliance": {
+          "score": 60,
+          "status": "critical",
+          "issues": 13
+        },
+        "data_protection": {
+          "score": 90,
+          "status": "excellent",
+          "issues": 0
+        },
+        "monitoring": {
+          "score": 77,
+          "status": "warning",
+          "issues": 5
+        }
+      }
+    },
+    {
+      "date": "2025-09-28",
+      "overall_score": 80.6,
+      "categories": {
+        "access_control": {
+          "score": 88,
+          "status": "good",
+          "issues": 1
+        },
+        "threat_detection": {
+          "score": 89,
+          "status": "good",
+          "issues": 3
+        },
+        "compliance": {
+          "score": 57,
+          "status": "critical",
+          "issues": 10
+        },
+        "data_protection": {
+          "score": 93,
+          "status": "excellent",
+          "issues": 2
+        },
+        "monitoring": {
+          "score": 76,
+          "status": "warning",
+          "issues": 8
+        }
+      }
+    },
+    {
+      "date": "2025-09-29",
+      "overall_score": 81.4,
+      "categories": {
+        "access_control": {
+          "score": 88,
+          "status": "good",
+          "issues": 4
+        },
+        "threat_detection": {
+          "score": 92,
+          "status": "excellent",
+          "issues": 1
+        },
+        "compliance": {
+          "score": 57,
+          "status": "critical",
+          "issues": 9
+        },
+        "data_protection": {
+          "score": 93,
+          "status": "excellent",
+          "issues": 1
+        },
+        "monitoring": {
+          "score": 77,
+          "status": "warning",
+          "issues": 8
+        }
+      }
+    },
+    {
+      "date": "2025-09-30",
+      "overall_score": 81.6,
+      "categories": {
+        "access_control": {
+          "score": 89,
+          "status": "good",
+          "issues": 1
+        },
+        "threat_detection": {
+          "score": 89,
+          "status": "good",
+          "issues": 1
+        },
+        "compliance": {
+          "score": 58,
+          "status": "critical",
+          "issues": 14
+        },
+        "data_protection": {
+          "score": 96,
+          "status": "excellent",
+          "issues": 0
+        },
+        "monitoring": {
+          "score": 76,
+          "status": "warning",
+          "issues": 5
+        }
+      }
+    },
+    {
+      "date": "2025-10-01",
+      "overall_score": 81.6,
+      "categories": {
+        "access_control": {
+          "score": 91,
+          "status": "excellent",
+          "issues": 2
+        },
+        "threat_detection": {
+          "score": 89,
+          "status": "good",
+          "issues": 2
+        },
+        "compliance": {
+          "score": 56,
+          "status": "critical",
+          "issues": 15
+        },
+        "data_protection": {
+          "score": 96,
+          "status": "excellent",
+          "issues": 2
+        },
+        "monitoring": {
+          "score": 76,
+          "status": "warning",
+          "issues": 5
+        }
+      }
+    },
+    {
+      "date": "2025-10-02",
+      "overall_score": 81.4,
+      "categories": {
+        "access_control": {
+          "score": 90,
+          "status": "excellent",
+          "issues": 0
+        },
+        "threat_detection": {
+          "score": 87,
+          "status": "good",
+          "issues": 2
+        },
+        "compliance": {
+          "score": 55,
+          "status": "critical",
+          "issues": 13
+        },
+        "data_protection": {
+          "score": 98,
+          "status": "excellent",
+          "issues": 1
+        },
+        "monitoring": {
+          "score": 77,
+          "status": "warning",
+          "issues": 4
+        }
+      }
+    },
+    {
+      "date": "2025-10-03",
+      "overall_score": 81.8,
+      "categories": {
+        "access_control": {
+          "score": 91,
+          "status": "excellent",
+          "issues": 1
+        },
+        "threat_detection": {
+          "score": 87,
+          "status": "good",
+          "issues": 1
+        },
+        "compliance": {
+          "score": 56,
+          "status": "critical",
+          "issues": 11
+        },
+        "data_protection": {
+          "score": 96,
+          "status": "excellent",
+          "issues": 1
+        },
+        "monitoring": {
+          "score": 79,
+          "status": "warning",
+          "issues": 8
+        }
+      }
+    },
+    {
+      "date": "2025-10-04",
+      "overall_score": 82.0,
+      "categories": {
+        "access_control": {
+          "score": 88,
+          "status": "good",
+          "issues": 1
+        },
+        "threat_detection": {
+          "score": 85,
+          "status": "good",
+          "issues": 1
+        },
+        "compliance": {
+          "score": 59,
+          "status": "critical",
+          "issues": 14
+        },
+        "data_protection": {
+          "score": 99,
+          "status": "excellent",
+          "issues": 1
+        },
+        "monitoring": {
+          "score": 79,
+          "status": "warning",
+          "issues": 6
+        }
+      }
+    },
+    {
+      "date": "2025-10-05",
+      "overall_score": 81.4,
+      "categories": {
+        "access_control": {
+          "score": 90,
+          "status": "excellent",
+          "issues": 1
+        },
+        "threat_detection": {
+          "score": 85,
+          "status": "good",
+          "issues": 2
+        },
+        "compliance": {
+          "score": 56,
+          "status": "critical",
+          "issues": 10
+        },
+        "data_protection": {
+          "score": 98,
+          "status": "excellent",
+          "issues": 0
+        },
+        "monitoring": {
+          "score": 78,
+          "status": "warning",
+          "issues": 5
+        }
+      }
+    },
+    {
+      "date": "2025-10-06",
+      "overall_score": 81.4,
+      "categories": {
+        "access_control": {
+          "score": 87,
+          "status": "good",
+          "issues": 1
+        },
+        "threat_detection": {
+          "score": 82,
+          "status": "good",
+          "issues": 1
+        },
+        "compliance": {
+          "score": 58,
+          "status": "critical",
+          "issues": 12
+        },
+        "data_protection": {
+          "score": 99,
+          "status": "excellent",
+          "issues": 1
+        },
+        "monitoring": {
+          "score": 81,
+          "status": "good",
+          "issues": 4
+        }
+      }
+    },
+    {
+      "date": "2025-10-07",
+      "overall_score": 80.4,
+      "categories": {
+        "access_control": {
+          "score": 85,
+          "status": "good",
+          "issues": 3
+        },
+        "threat_detection": {
+          "score": 79,
+          "status": "warning",
+          "issues": 7
+        },
+        "compliance": {
+          "score": 58,
+          "status": "critical",
+          "issues": 11
+        },
+        "data_protection": {
+          "score": 97,
+          "status": "excellent",
+          "issues": 2
+        },
+        "monitoring": {
+          "score": 83,
+          "status": "good",
+          "issues": 1
+        }
+      }
+    },
+    {
+      "date": "2025-10-08",
+      "overall_score": 81.2,
+      "categories": {
+        "access_control": {
+          "score": 85,
+          "status": "good",
+          "issues": 2
+        },
+        "threat_detection": {
+          "score": 80,
+          "status": "good",
+          "issues": 1
+        },
+        "compliance": {
+          "score": 61,
+          "status": "critical",
+          "issues": 13
+        },
+        "data_protection": {
+          "score": 96,
+          "status": "excellent",
+          "issues": 2
+        },
+        "monitoring": {
+          "score": 84,
+          "status": "good",
+          "issues": 2
+        }
+      }
+    },
+    {
+      "date": "2025-10-09",
+      "overall_score": 81.0,
+      "categories": {
+        "access_control": {
+          "score": 85,
+          "status": "good",
+          "issues": 2
+        },
+        "threat_detection": {
+          "score": 77,
+          "status": "warning",
+          "issues": 7
+        },
+        "compliance": {
+          "score": 62,
+          "status": "critical",
+          "issues": 14
+        },
+        "data_protection": {
+          "score": 94,
+          "status": "excellent",
+          "issues": 1
+        },
+        "monitoring": {
+          "score": 87,
+          "status": "good",
+          "issues": 1
+        }
+      }
+    },
+    {
+      "date": "2025-10-10",
+      "overall_score": 81.0,
+      "categories": {
+        "access_control": {
+          "score": 88,
+          "status": "good",
+          "issues": 1
+        },
+        "threat_detection": {
+          "score": 76,
+          "status": "warning",
+          "issues": 4
+        },
+        "compliance": {
+          "score": 59,
+          "status": "critical",
+          "issues": 14
+        },
+        "data_protection": {
+          "score": 92,
+          "status": "excellent",
+          "issues": 0
+        },
+        "monitoring": {
+          "score": 90,
+          "status": "excellent",
+          "issues": 0
+        }
+      }
+    },
+    {
+      "date": "2025-10-11",
+      "overall_score": 79.4,
+      "categories": {
+        "access_control": {
+          "score": 86,
+          "status": "good",
+          "issues": 2
+        },
+        "threat_detection": {
+          "score": 75,
+          "status": "warning",
+          "issues": 6
+        },
+        "compliance": {
+          "score": 60,
+          "status": "critical",
+          "issues": 12
+        },
+        "data_protection": {
+          "score": 89,
+          "status": "good",
+          "issues": 3
+        },
+        "monitoring": {
+          "score": 87,
+          "status": "good",
+          "issues": 3
+        }
+      }
+    },
+    {
+      "date": "2025-10-12",
+      "overall_score": 79.0,
+      "categories": {
+        "access_control": {
+          "score": 83,
+          "status": "good",
+          "issues": 1
+        },
+        "threat_detection": {
+          "score": 77,
+          "status": "warning",
+          "issues": 5
+        },
+        "compliance": {
+          "score": 61,
+          "status": "critical",
+          "issues": 11
+        },
+        "data_protection": {
+          "score": 86,
+          "status": "good",
+          "issues": 1
+        },
+        "monitoring": {
+          "score": 88,
+          "status": "good",
+          "issues": 2
+        }
+      }
+    },
+    {
+      "date": "2025-10-13",
+      "overall_score": 79.4,
+      "categories": {
+        "access_control": {
+          "score": 82,
+          "status": "good",
+          "issues": 4
+        },
+        "threat_detection": {
+          "score": 79,
+          "status": "warning",
+          "issues": 8
+        },
+        "compliance": {
+          "score": 60,
+          "status": "critical",
+          "issues": 11
+        },
+        "data_protection": {
+          "score": 86,
+          "status": "good",
+          "issues": 4
+        },
+        "monitoring": {
+          "score": 90,
+          "status": "excellent",
+          "issues": 0
+        }
+      }
+    },
+    {
+      "date": "2025-10-14",
+      "overall_score": 79.4,
+      "categories": {
+        "access_control": {
+          "score": 82,
+          "status": "good",
+          "issues": 2
+        },
+        "threat_detection": {
+          "score": 82,
+          "status": "good",
+          "issues": 2
+        },
+        "compliance": {
+          "score": 57,
+          "status": "critical",
+          "issues": 15
+        },
+        "data_protection": {
+          "score": 88,
+          "status": "good",
+          "issues": 4
+        },
+        "monitoring": {
+          "score": 88,
+          "status": "good",
+          "issues": 1
+        }
+      }
+    },
+    {
+      "date": "2025-10-15",
+      "overall_score": 78.8,
+      "categories": {
+        "access_control": {
+          "score": 85,
+          "status": "good",
+          "issues": 4
+        },
+        "threat_detection": {
+          "score": 79,
+          "status": "warning",
+          "issues": 6
+        },
+        "compliance": {
+          "score": 56,
+          "status": "critical",
+          "issues": 12
+        },
+        "data_protection": {
+          "score": 89,
+          "status": "good",
+          "issues": 2
+        },
+        "monitoring": {
+          "score": 85,
+          "status": "good",
+          "issues": 4
+        }
+      }
+    },
+    {
+      "date": "2025-10-16",
+      "overall_score": 77.6,
+      "categories": {
+        "access_control": {
+          "score": 82,
+          "status": "good",
+          "issues": 3
+        },
+        "threat_detection": {
+          "score": 77,
+          "status": "warning",
+          "issues": 7
+        },
+        "compliance": {
+          "score": 56,
+          "status": "critical",
+          "issues": 13
+        },
+        "data_protection": {
+          "score": 91,
+          "status": "excellent",
+          "issues": 2
+        },
+        "monitoring": {
+          "score": 82,
+          "status": "good",
+          "issues": 1
+        }
+      }
+    },
+    {
+      "date": "2025-10-17",
+      "overall_score": 78.6,
+      "categories": {
+        "access_control": {
+          "score": 83,
+          "status": "good",
+          "issues": 1
+        },
+        "threat_detection": {
+          "score": 79,
+          "status": "warning",
+          "issues": 5
+        },
+        "compliance": {
+          "score": 57,
+          "status": "critical",
+          "issues": 10
+        },
+        "data_protection": {
+          "score": 89,
+          "status": "good",
+          "issues": 2
+        },
+        "monitoring": {
+          "score": 85,
+          "status": "good",
+          "issues": 1
+        }
+      }
+    },
+    {
+      "date": "2025-10-18",
+      "overall_score": 79.0,
+      "categories": {
+        "access_control": {
+          "score": 86,
+          "status": "good",
+          "issues": 2
+        },
+        "threat_detection": {
+          "score": 80,
+          "status": "good",
+          "issues": 4
+        },
+        "compliance": {
+          "score": 55,
+          "status": "critical",
+          "issues": 8
+        },
+        "data_protection": {
+          "score": 90,
+          "status": "excellent",
+          "issues": 1
+        },
+        "monitoring": {
+          "score": 84,
+          "status": "good",
+          "issues": 3
+        }
+      }
+    },
+    {
+      "date": "2025-10-19",
+      "overall_score": 78.0,
+      "categories": {
+        "access_control": {
+          "score": 86,
+          "status": "good",
+          "issues": 4
+        },
+        "threat_detection": {
+          "score": 77,
+          "status": "warning",
+          "issues": 7
+        },
+        "compliance": {
+          "score": 57,
+          "status": "critical",
+          "issues": 12
+        },
+        "data_protection": {
+          "score": 87,
+          "status": "good",
+          "issues": 2
+        },
+        "monitoring": {
+          "score": 83,
+          "status": "good",
+          "issues": 4
+        }
+      }
+    },
+    {
+      "date": "2025-10-20",
+      "overall_score": 77.6,
+      "categories": {
+        "access_control": {
+          "score": 89,
+          "status": "good",
+          "issues": 3
+        },
+        "threat_detection": {
+          "score": 77,
+          "status": "warning",
+          "issues": 7
+        },
+        "compliance": {
+          "score": 54,
+          "status": "critical",
+          "issues": 12
+        },
+        "data_protection": {
+          "score": 87,
+          "status": "good",
+          "issues": 3
+        },
+        "monitoring": {
+          "score": 81,
+          "status": "good",
+          "issues": 4
+        }
+      }
+    },
+    {
+      "date": "2025-10-21",
+      "overall_score": 77.8,
+      "categories": {
+        "access_control": {
+          "score": 88,
+          "status": "good",
+          "issues": 4
+        },
+        "threat_detection": {
+          "score": 79,
+          "status": "warning",
+          "issues": 6
+        },
+        "compliance": {
+          "score": 53,
+          "status": "critical",
+          "issues": 11
+        },
+        "data_protection": {
+          "score": 88,
+          "status": "good",
+          "issues": 1
+        },
+        "monitoring": {
+          "score": 81,
+          "status": "good",
+          "issues": 2
+        }
+      }
+    },
+    {
+      "date": "2025-10-22",
+      "overall_score": 78.2,
+      "categories": {
+        "access_control": {
+          "score": 86,
+          "status": "good",
+          "issues": 1
+        },
+        "threat_detection": {
+          "score": 80,
+          "status": "good",
+          "issues": 2
+        },
+        "compliance": {
+          "score": 53,
+          "status": "critical",
+          "issues": 9
+        },
+        "data_protection": {
+          "score": 89,
+          "status": "good",
+          "issues": 1
+        },
+        "monitoring": {
+          "score": 83,
+          "status": "good",
+          "issues": 2
+        }
+      }
+    },
+    {
+      "date": "2025-10-23",
+      "overall_score": 78.8,
+      "categories": {
+        "access_control": {
+          "score": 89,
+          "status": "good",
+          "issues": 3
+        },
+        "threat_detection": {
+          "score": 82,
+          "status": "good",
+          "issues": 4
+        },
+        "compliance": {
+          "score": 53,
+          "status": "critical",
+          "issues": 11
+        },
+        "data_protection": {
+          "score": 86,
+          "status": "good",
+          "issues": 4
+        },
+        "monitoring": {
+          "score": 84,
+          "status": "good",
+          "issues": 2
+        }
+      }
+    },
+    {
+      "date": "2025-10-24",
+      "overall_score": 78.4,
+      "categories": {
+        "access_control": {
+          "score": 89,
+          "status": "good",
+          "issues": 1
+        },
+        "threat_detection": {
+          "score": 81,
+          "status": "good",
+          "issues": 3
+        },
+        "compliance": {
+          "score": 53,
+          "status": "critical",
+          "issues": 10
+        },
+        "data_protection": {
+          "score": 87,
+          "status": "good",
+          "issues": 4
+        },
+        "monitoring": {
+          "score": 82,
+          "status": "good",
+          "issues": 3
+        }
+      }
+    },
+    {
+      "date": "2025-10-25",
+      "overall_score": 78.0,
+      "categories": {
+        "access_control": {
+          "score": 88,
+          "status": "good",
+          "issues": 3
+        },
+        "threat_detection": {
+          "score": 80,
+          "status": "good",
+          "issues": 3
+        },
+        "compliance": {
+          "score": 52,
+          "status": "critical",
+          "issues": 15
+        },
+        "data_protection": {
+          "score": 88,
+          "status": "good",
+          "issues": 1
+        },
+        "monitoring": {
+          "score": 82,
+          "status": "good",
+          "issues": 4
+        }
+      }
+    },
+    {
+      "date": "2025-10-26",
+      "overall_score": 78.2,
+      "categories": {
+        "access_control": {
+          "score": 87,
+          "status": "good",
+          "issues": 2
+        },
+        "threat_detection": {
+          "score": 82,
+          "status": "good",
+          "issues": 1
+        },
+        "compliance": {
+          "score": 51,
+          "status": "critical",
+          "issues": 15
+        },
+        "data_protection": {
+          "score": 88,
+          "status": "good",
+          "issues": 4
+        },
+        "monitoring": {
+          "score": 83,
+          "status": "good",
+          "issues": 4
+        }
+      }
+    },
+    {
+      "date": "2025-10-27",
+      "overall_score": 77.6,
+      "categories": {
+        "access_control": {
+          "score": 88,
+          "status": "good",
+          "issues": 4
+        },
+        "threat_detection": {
+          "score": 83,
+          "status": "good",
+          "issues": 3
+        },
+        "compliance": {
+          "score": 51,
+          "status": "critical",
+          "issues": 11
+        },
+        "data_protection": {
+          "score": 85,
+          "status": "good",
+          "issues": 2
+        },
+        "monitoring": {
+          "score": 81,
+          "status": "good",
+          "issues": 2
+        }
+      }
+    },
+    {
+      "date": "2025-10-28",
+      "overall_score": 78.0,
+      "categories": {
+        "access_control": {
+          "score": 86,
+          "status": "good",
+          "issues": 1
+        },
+        "threat_detection": {
+          "score": 84,
+          "status": "good",
+          "issues": 3
+        },
+        "compliance": {
+          "score": 54,
+          "status": "critical",
+          "issues": 12
+        },
+        "data_protection": {
+          "score": 82,
+          "status": "good",
+          "issues": 4
+        },
+        "monitoring": {
+          "score": 84,
+          "status": "good",
+          "issues": 4
+        }
+      }
+    },
+    {
+      "date": "2025-10-29",
+      "overall_score": 77.8,
+      "categories": {
+        "access_control": {
+          "score": 86,
+          "status": "good",
+          "issues": 4
+        },
+        "threat_detection": {
+          "score": 83,
+          "status": "good",
+          "issues": 2
+        },
+        "compliance": {
+          "score": 52,
+          "status": "critical",
+          "issues": 14
+        },
+        "data_protection": {
+          "score": 85,
+          "status": "good",
+          "issues": 4
+        },
+        "monitoring": {
+          "score": 83,
+          "status": "good",
+          "issues": 4
+        }
+      }
+    },
+    {
+      "date": "2025-10-30",
+      "overall_score": 78.4,
+      "categories": {
+        "access_control": {
+          "score": 87,
+          "status": "good",
+          "issues": 4
+        },
+        "threat_detection": {
+          "score": 82,
+          "status": "good",
+          "issues": 4
+        },
+        "compliance": {
+          "score": 55,
+          "status": "critical",
+          "issues": 8
+        },
+        "data_protection": {
+          "score": 83,
+          "status": "good",
+          "issues": 4
+        },
+        "monitoring": {
+          "score": 85,
+          "status": "good",
+          "issues": 4
+        }
+      }
+    },
+    {
+      "date": "2025-10-31",
+      "overall_score": 77.8,
+      "categories": {
+        "access_control": {
+          "score": 86,
+          "status": "good",
+          "issues": 4
+        },
+        "threat_detection": {
+          "score": 83,
+          "status": "good",
+          "issues": 2
+        },
+        "compliance": {
+          "score": 56,
+          "status": "critical",
+          "issues": 11
+        },
+        "data_protection": {
+          "score": 80,
+          "status": "good",
+          "issues": 1
+        },
+        "monitoring": {
+          "score": 84,
+          "status": "good",
+          "issues": 2
+        }
+      }
+    },
+    {
+      "date": "2025-11-01",
+      "overall_score": 76.0,
+      "categories": {
+        "access_control": {
+          "score": 83,
+          "status": "good",
+          "issues": 1
+        },
+        "threat_detection": {
+          "score": 80,
+          "status": "good",
+          "issues": 1
+        },
+        "compliance": {
+          "score": 54,
+          "status": "critical",
+          "issues": 12
+        },
+        "data_protection": {
+          "score": 82,
+          "status": "good",
+          "issues": 3
+        },
+        "monitoring": {
+          "score": 81,
+          "status": "good",
+          "issues": 2
+        }
+      }
+    },
+    {
+      "date": "2025-11-02",
+      "overall_score": 75.2,
+      "categories": {
+        "access_control": {
+          "score": 84,
+          "status": "good",
+          "issues": 1
+        },
+        "threat_detection": {
+          "score": 79,
+          "status": "warning",
+          "issues": 6
+        },
+        "compliance": {
+          "score": 51,
+          "status": "critical",
+          "issues": 9
+        },
+        "data_protection": {
+          "score": 82,
+          "status": "good",
+          "issues": 3
+        },
+        "monitoring": {
+          "score": 80,
+          "status": "good",
+          "issues": 3
+        }
+      }
+    },
+    {
+      "date": "2025-11-03",
+      "overall_score": 73.4,
+      "categories": {
+        "access_control": {
+          "score": 83,
+          "status": "good",
+          "issues": 1
+        },
+        "threat_detection": {
+          "score": 76,
+          "status": "warning",
+          "issues": 4
+        },
+        "compliance": {
+          "score": 51,
+          "status": "critical",
+          "issues": 13
+        },
+        "data_protection": {
+          "score": 79,
+          "status": "warning",
+          "issues": 8
+        },
+        "monitoring": {
+          "score": 78,
+          "status": "warning",
+          "issues": 6
+        }
+      }
+    },
+    {
+      "date": "2025-11-04",
+      "overall_score": 72.4,
+      "categories": {
+        "access_control": {
+          "score": 81,
+          "status": "good",
+          "issues": 2
+        },
+        "threat_detection": {
+          "score": 77,
+          "status": "warning",
+          "issues": 7
+        },
+        "compliance": {
+          "score": 50,
+          "status": "critical",
+          "issues": 15
+        },
+        "data_protection": {
+          "score": 78,
+          "status": "warning",
+          "issues": 7
+        },
+        "monitoring": {
+          "score": 76,
+          "status": "warning",
+          "issues": 6
+        }
+      }
+    },
+    {
+      "date": "2025-11-05",
+      "overall_score": 72.0,
+      "categories": {
+        "access_control": {
+          "score": 82,
+          "status": "good",
+          "issues": 2
+        },
+        "threat_detection": {
+          "score": 77,
+          "status": "warning",
+          "issues": 4
+        },
+        "compliance": {
+          "score": 47,
+          "status": "critical",
+          "issues": 15
+        },
+        "data_protection": {
+          "score": 76,
+          "status": "warning",
+          "issues": 7
+        },
+        "monitoring": {
+          "score": 78,
+          "status": "warning",
+          "issues": 5
+        }
+      }
+    },
+    {
+      "date": "2025-11-06",
+      "overall_score": 71.2,
+      "categories": {
+        "access_control": {
+          "score": 80,
+          "status": "good",
+          "issues": 1
+        },
+        "threat_detection": {
+          "score": 75,
+          "status": "warning",
+          "issues": 4
+        },
+        "compliance": {
+          "score": 48,
+          "status": "critical",
+          "issues": 12
+        },
+        "data_protection": {
+          "score": 75,
+          "status": "warning",
+          "issues": 6
+        },
+        "monitoring": {
+          "score": 78,
+          "status": "warning",
+          "issues": 5
+        }
+      }
+    },
+    {
+      "date": "2025-11-07",
+      "overall_score": 71.0,
+      "categories": {
+        "access_control": {
+          "score": 77,
+          "status": "warning",
+          "issues": 6
+        },
+        "threat_detection": {
+          "score": 76,
+          "status": "warning",
+          "issues": 4
+        },
+        "compliance": {
+          "score": 48,
+          "status": "critical",
+          "issues": 8
+        },
+        "data_protection": {
+          "score": 75,
+          "status": "warning",
+          "issues": 7
+        },
+        "monitoring": {
+          "score": 79,
+          "status": "warning",
+          "issues": 8
+        }
+      }
+    },
+    {
+      "date": "2025-11-08",
+      "overall_score": 72.0,
+      "categories": {
+        "access_control": {
+          "score": 75,
+          "status": "warning",
+          "issues": 7
+        },
+        "threat_detection": {
+          "score": 78,
+          "status": "warning",
+          "issues": 8
+        },
+        "compliance": {
+          "score": 51,
+          "status": "critical",
+          "issues": 9
+        },
+        "data_protection": {
+          "score": 75,
+          "status": "warning",
+          "issues": 8
+        },
+        "monitoring": {
+          "score": 81,
+          "status": "good",
+          "issues": 4
+        }
+      }
+    },
+    {
+      "date": "2025-11-09",
+      "overall_score": 73.4,
+      "categories": {
+        "access_control": {
+          "score": 75,
+          "status": "warning",
+          "issues": 5
+        },
+        "threat_detection": {
+          "score": 80,
+          "status": "good",
+          "issues": 3
+        },
+        "compliance": {
+          "score": 52,
+          "status": "critical",
+          "issues": 13
+        },
+        "data_protection": {
+          "score": 77,
+          "status": "warning",
+          "issues": 4
+        },
+        "monitoring": {
+          "score": 83,
+          "status": "good",
+          "issues": 3
+        }
+      }
+    },
+    {
+      "date": "2025-11-10",
+      "overall_score": 73.0,
+      "categories": {
+        "access_control": {
+          "score": 72,
+          "status": "warning",
+          "issues": 6
+        },
+        "threat_detection": {
+          "score": 83,
+          "status": "good",
+          "issues": 3
+        },
+        "compliance": {
+          "score": 53,
+          "status": "critical",
+          "issues": 11
+        },
+        "data_protection": {
+          "score": 77,
+          "status": "warning",
+          "issues": 6
+        },
+        "monitoring": {
+          "score": 80,
+          "status": "good",
+          "issues": 3
+        }
+      }
+    },
+    {
+      "date": "2025-11-11",
+      "overall_score": 73.0,
+      "categories": {
+        "access_control": {
+          "score": 70,
+          "status": "warning",
+          "issues": 6
+        },
+        "threat_detection": {
+          "score": 84,
+          "status": "good",
+          "issues": 2
+        },
+        "compliance": {
+          "score": 53,
+          "status": "critical",
+          "issues": 11
+        },
+        "data_protection": {
+          "score": 79,
+          "status": "warning",
+          "issues": 8
+        },
+        "monitoring": {
+          "score": 79,
+          "status": "warning",
+          "issues": 6
+        }
+      }
+    },
+    {
+      "date": "2025-11-12",
+      "overall_score": 73.0,
+      "categories": {
+        "access_control": {
+          "score": 68,
+          "status": "critical",
+          "issues": 12
+        },
+        "threat_detection": {
+          "score": 83,
+          "status": "good",
+          "issues": 3
+        },
+        "compliance": {
+          "score": 56,
+          "status": "critical",
+          "issues": 9
+        },
+        "data_protection": {
+          "score": 80,
+          "status": "good",
+          "issues": 2
+        },
+        "monitoring": {
+          "score": 78,
+          "status": "warning",
+          "issues": 6
+        }
+      }
+    },
+    {
+      "date": "2025-11-13",
+      "overall_score": 72.4,
+      "categories": {
+        "access_control": {
+          "score": 66,
+          "status": "critical",
+          "issues": 14
+        },
+        "threat_detection": {
+          "score": 80,
+          "status": "good",
+          "issues": 2
+        },
+        "compliance": {
+          "score": 57,
+          "status": "critical",
+          "issues": 14
+        },
+        "data_protection": {
+          "score": 81,
+          "status": "good",
+          "issues": 1
+        },
+        "monitoring": {
+          "score": 78,
+          "status": "warning",
+          "issues": 5
+        }
+      }
+    },
+    {
+      "date": "2025-11-14",
+      "overall_score": 74.2,
+      "categories": {
+        "access_control": {
+          "score": 66,
+          "status": "critical",
+          "issues": 13
+        },
+        "threat_detection": {
+          "score": 83,
+          "status": "good",
+          "issues": 2
+        },
+        "compliance": {
+          "score": 60,
+          "status": "critical",
+          "issues": 13
+        },
+        "data_protection": {
+          "score": 83,
+          "status": "good",
+          "issues": 4
+        },
+        "monitoring": {
+          "score": 79,
+          "status": "warning",
+          "issues": 5
+        }
+      }
+    },
+    {
+      "date": "2025-11-15",
+      "overall_score": 73.8,
+      "categories": {
+        "access_control": {
+          "score": 65,
+          "status": "critical",
+          "issues": 10
+        },
+        "threat_detection": {
+          "score": 85,
+          "status": "good",
+          "issues": 1
+        },
+        "compliance": {
+          "score": 57,
+          "status": "critical",
+          "issues": 13
+        },
+        "data_protection": {
+          "score": 83,
+          "status": "good",
+          "issues": 4
+        },
+        "monitoring": {
+          "score": 79,
+          "status": "warning",
+          "issues": 8
+        }
+      }
+    },
+    {
+      "date": "2025-11-16",
+      "overall_score": 73.2,
+      "categories": {
+        "access_control": {
+          "score": 65,
+          "status": "critical",
+          "issues": 10
+        },
+        "threat_detection": {
+          "score": 84,
+          "status": "good",
+          "issues": 1
+        },
+        "compliance": {
+          "score": 55,
+          "status": "critical",
+          "issues": 8
+        },
+        "data_protection": {
+          "score": 86,
+          "status": "good",
+          "issues": 2
+        },
+        "monitoring": {
+          "score": 76,
+          "status": "warning",
+          "issues": 8
+        }
+      }
+    },
+    {
+      "date": "2025-11-17",
+      "overall_score": 71.6,
+      "categories": {
+        "access_control": {
+          "score": 62,
+          "status": "critical",
+          "issues": 12
+        },
+        "threat_detection": {
+          "score": 81,
+          "status": "good",
+          "issues": 3
+        },
+        "compliance": {
+          "score": 53,
+          "status": "critical",
+          "issues": 12
+        },
+        "data_protection": {
+          "score": 89,
+          "status": "good",
+          "issues": 2
+        },
+        "monitoring": {
+          "score": 73,
+          "status": "warning",
+          "issues": 4
+        }
+      }
+    },
+    {
+      "date": "2025-11-18",
+      "overall_score": 71.4,
+      "categories": {
+        "access_control": {
+          "score": 59,
+          "status": "critical",
+          "issues": 15
+        },
+        "threat_detection": {
+          "score": 83,
+          "status": "good",
+          "issues": 1
+        },
+        "compliance": {
+          "score": 54,
+          "status": "critical",
+          "issues": 9
+        },
+        "data_protection": {
+          "score": 87,
+          "status": "good",
+          "issues": 2
+        },
+        "monitoring": {
+          "score": 74,
+          "status": "warning",
+          "issues": 7
+        }
+      }
+    },
+    {
+      "date": "2025-11-19",
+      "overall_score": 69.0,
+      "categories": {
+        "access_control": {
+          "score": 57,
+          "status": "critical",
+          "issues": 10
+        },
+        "threat_detection": {
+          "score": 80,
+          "status": "good",
+          "issues": 2
+        },
+        "compliance": {
+          "score": 52,
+          "status": "critical",
+          "issues": 14
+        },
+        "data_protection": {
+          "score": 84,
+          "status": "good",
+          "issues": 2
+        },
+        "monitoring": {
+          "score": 72,
+          "status": "warning",
+          "issues": 7
+        }
+      }
+    },
+    {
+      "date": "2025-11-20",
+      "overall_score": 69.4,
+      "categories": {
+        "access_control": {
+          "score": 57,
+          "status": "critical",
+          "issues": 10
+        },
+        "threat_detection": {
+          "score": 80,
+          "status": "good",
+          "issues": 4
+        },
+        "compliance": {
+          "score": 51,
+          "status": "critical",
+          "issues": 8
+        },
+        "data_protection": {
+          "score": 84,
+          "status": "good",
+          "issues": 4
+        },
+        "monitoring": {
+          "score": 75,
+          "status": "warning",
+          "issues": 4
+        }
+      }
+    },
+    {
+      "date": "2025-11-21",
+      "overall_score": 69.0,
+      "categories": {
+        "access_control": {
+          "score": 60,
+          "status": "critical",
+          "issues": 10
+        },
+        "threat_detection": {
+          "score": 77,
+          "status": "warning",
+          "issues": 7
+        },
+        "compliance": {
+          "score": 48,
+          "status": "critical",
+          "issues": 9
+        },
+        "data_protection": {
+          "score": 87,
+          "status": "good",
+          "issues": 2
+        },
+        "monitoring": {
+          "score": 73,
+          "status": "warning",
+          "issues": 4
+        }
+      }
+    },
+    {
+      "date": "2025-11-22",
+      "overall_score": 69.2,
+      "categories": {
+        "access_control": {
+          "score": 57,
+          "status": "critical",
+          "issues": 9
+        },
+        "threat_detection": {
+          "score": 75,
+          "status": "warning",
+          "issues": 7
+        },
+        "compliance": {
+          "score": 51,
+          "status": "critical",
+          "issues": 14
+        },
+        "data_protection": {
+          "score": 87,
+          "status": "good",
+          "issues": 3
+        },
+        "monitoring": {
+          "score": 76,
+          "status": "warning",
+          "issues": 6
+        }
+      }
+    }
+  ],
+  "active_alerts": [
+    {
+      "alert_id": "ALT-0004",
+      "type": "Policy Violation",
+      "severity": "low",
+      "message": "Policy Violation detected - requires attention",
+      "source": "Access Control",
+      "timestamp": "2025-11-22T00:44:37.019038",
+      "status": "acknowledged",
+      "affected_resource": "desktop-94.munoz.net"
+    },
+    {
+      "alert_id": "ALT-0002",
+      "type": "Failed Authentication",
+      "severity": "medium",
+      "message": "Failed Authentication detected - requires attention",
+      "source": "Endpoint Protection",
+      "timestamp": "2025-11-22T00:44:37.018882",
+      "status": "investigating",
+      "affected_resource": "laptop-38.long.com"
+    },
+    {
+      "alert_id": "ALT-0006",
+      "type": "Configuration Change",
+      "severity": "low",
+      "message": "Configuration Change detected - requires attention",
+      "source": "IDS",
+      "timestamp": "2025-11-21T15:44:37.019219",
+      "status": "investigating",
+      "affected_resource": "email-99.barber-davis.com"
+    },
+    {
+      "alert_id": "ALT-0005",
+      "type": "Configuration Change",
+      "severity": "medium",
+      "message": "Configuration Change detected - requires attention",
+      "source": "Access Control",
+      "timestamp": "2025-11-21T10:44:37.019145",
+      "status": "acknowledged",
+      "affected_resource": "laptop-50.green-davenport.com"
+    },
+    {
+      "alert_id": "ALT-0003",
+      "type": "Failed Authentication",
+      "severity": "medium",
+      "message": "Failed Authentication detected - requires attention",
+      "source": "Access Control",
+      "timestamp": "2025-11-21T05:44:37.018993",
+      "status": "acknowledged",
+      "affected_resource": "db-95.hardin.com"
+    },
+    {
+      "alert_id": "ALT-0001",
+      "type": "Data Access Anomaly",
+      "severity": "low",
+      "message": "Data Access Anomaly detected - requires attention",
+      "source": "IDS",
+      "timestamp": "2025-11-21T03:44:37.018789",
+      "status": "active",
+      "affected_resource": "laptop-95.jenkins-moyer.com"
+    },
+    {
+      "alert_id": "ALT-0007",
+      "type": "Privilege Escalation Attempt",
+      "severity": "critical",
+      "message": "Privilege Escalation Attempt detected - requires attention",
+      "source": "Endpoint Protection",
+      "timestamp": "2025-11-20T19:44:37.019293",
+      "status": "investigating",
+      "affected_resource": "laptop-11.washington.org"
+    }
+  ],
+  "threat_intelligence": {
+    "active_threats": 6,
+    "blocked_attempts_today": 198,
+    "blocked_attempts_week": 746,
+    "threats_mitigated_today": 9,
+    "threats_mitigated_week": 45,
+    "high_risk_assets": 5,
+    "vulnerabilities_found": 19,
+    "vulnerabilities_patched": 38,
+    "compliance_score": 90.0,
+    "last_scan": "2025-11-22T12:44:37.019409"
+  },
+  "summary": {
+    "total_incidents": 20,
+    "by_severity": {
+      "critical": 5,
+      "high": 4,
+      "medium": 8,
+      "low": 3
+    },
+    "by_status": {
+      "open": 1,
+      "investigating": 11,
+      "resolved": 8
+    },
+    "resolution_rate": 40.0,
+    "avg_resolution_time_hours": 39.3,
+    "active_alerts_count": 7
+  },
+  "generated_at": "2025-11-22T18:44:37.019421",
+  "data_period": {
+    "incidents_days": 60,
+    "score_history_days": 90
+  }
+}

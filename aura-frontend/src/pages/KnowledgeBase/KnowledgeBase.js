@@ -179,7 +179,7 @@ const KnowledgeBase = () => {
       {/* Main Content */}
       <Grid container spacing={3}>
         {/* Article List */}
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={5}>
           <Card sx={{ height: 'calc(100vh - 300px)', overflow: 'hidden' }}>
             <CardContent sx={{ p: 0 }}>
               <Box sx={{ p: 2, borderBottom: `1px solid ${theme.palette.divider}` }}>
@@ -238,6 +238,9 @@ const KnowledgeBase = () => {
                             </Box>
                           </Box>
                         }
+                        secondaryTypographyProps={{
+                          component: 'div'
+                        }}
                       />
                     </ListItemButton>
                     {index < filteredArticles.length - 1 && <Divider />}
@@ -261,8 +264,8 @@ const KnowledgeBase = () => {
         </Grid>
 
         {/* Article Content */}
-        <Grid item xs={12} md={8}>
-          <Card sx={{ height: 'calc(100vh - 300px)' }}>
+        <Grid item xs={12} md={7}>
+          <Card sx={{ height: 'calc(100vh - 300px)', maxWidth: '100%' }}>
             {selectedArticle ? (
               <CardContent sx={{ height: '100%', overflow: 'auto' }}>
                 {/* Article Header */}

@@ -29,6 +29,13 @@ import {
   Search as SearchIcon,
   Article as ArticleIcon,
   SmartToy as BotIcon,
+  People as PeopleIcon,
+  Work as WorkIcon,
+  Timeline as TimelineIcon,
+  Report as ReportIcon,
+  Warning as WarningIcon,
+  Shield as ShieldIcon,
+  Assessment as AssessmentIcon,
 } from '@mui/icons-material';
 
 const Sidebar = ({ open, collapsed, isMobile, onClose, currentPath }) => {
@@ -56,82 +63,120 @@ const Sidebar = ({ open, collapsed, isMobile, onClose, currentPath }) => {
       path: '/dashboard',
       badge: null,
     },
-    {
-      title: 'Service Desk',
-      icon: <TicketIcon />,
-      path: null,
-      badge: 12,
-      children: [
-        {
-          title: 'All Tickets',
-          icon: <AssignmentIcon />,
-          path: '/tickets',
-          badge: 8,
-        },
-        {
-          title: 'Create Ticket',
-          icon: <AddIcon />,
-          path: '/tickets/create',
-          badge: null,
-        },
-      ],
-    },
-    {
-      title: 'Knowledge Base',
-      icon: <KnowledgeBaseIcon />,
-      path: null,
-      badge: null,
-      children: [
-        {
-          title: 'Search Articles',
-          icon: <SearchIcon />,
-          path: '/knowledge-base',
-          badge: null,
-        },
-        {
-          title: 'Browse Articles',
-          icon: <ArticleIcon />,
-          path: '/knowledge-base',
-          badge: null,
-        },
-        {
-          title: 'AI Suggestions',
-          icon: <BotIcon />,
-          path: '/knowledge-base/suggestions',
-          badge: 3,
-        },
-      ],
-    },
-    {
-      title: 'AI Chatbot',
-      icon: <ChatIcon />,
-      path: '/chatbot',
-      badge: null,
-    },
   ];
 
-  const secondaryMenuItems = [
-    {
-      title: 'Analytics',
-      icon: <AnalyticsIcon />,
-      path: '/analytics',
-      badge: null,
-      disabled: true,
-    },
-    {
-      title: 'Infrastructure',
-      icon: <InfrastructureIcon />,
-      path: '/infrastructure',
-      badge: null,
-      disabled: true,
-    },
-    {
-      title: 'Security',
-      icon: <SecurityIcon />,
-      path: '/security',
-      badge: 3,
-      disabled: true,
-    },
+  // MODULE 1: SERVICE DESK
+  const serviceDeskItems = {
+    title: 'MODULE 1: SERVICE DESK',
+    moduleHeader: true,
+    icon: <TicketIcon />,
+    badge: 12,
+    children: [
+      {
+        title: 'All Tickets',
+        icon: <AssignmentIcon />,
+        path: '/tickets',
+        badge: 8,
+      },
+      {
+        title: 'Create Ticket',
+        icon: <AddIcon />,
+        path: '/tickets/create',
+        badge: null,
+      },
+    ],
+  };
+
+  const knowledgeBaseItems = {
+    title: 'Knowledge Base',
+    icon: <KnowledgeBaseIcon />,
+    badge: null,
+    children: [
+      {
+        title: 'Browse Articles',
+        icon: <ArticleIcon />,
+        path: '/knowledge-base',
+        badge: null,
+      },
+      {
+        title: 'AI Suggestions',
+        icon: <BotIcon />,
+        path: '/knowledge-base/suggestions',
+        badge: 3,
+      },
+    ],
+  };
+
+  const chatbotItem = {
+    title: 'AI Chatbot',
+    icon: <ChatIcon />,
+    path: '/chatbot',
+    badge: null,
+  };
+
+  // MODULE 2: INFRASTRUCTURE & TALENT MANAGEMENT
+  const infrastructureItems = {
+    title: 'MODULE 2: INFRASTRUCTURE',
+    moduleHeader: true,
+    icon: <InfrastructureIcon />,
+    badge: null,
+    children: [
+      {
+        title: 'Agent Performance',
+        icon: <PeopleIcon />,
+        path: '/infrastructure/performance',
+        badge: null,
+      },
+      {
+        title: 'Workload Management',
+        icon: <WorkIcon />,
+        path: '/infrastructure/workload',
+        badge: null,
+      },
+      {
+        title: 'Team Analytics',
+        icon: <TimelineIcon />,
+        path: '/infrastructure/analytics',
+        badge: null,
+      },
+    ],
+  };
+
+  // MODULE 3: THREAT INTELLIGENCE
+  const securityItems = {
+    title: 'MODULE 3: SECURITY',
+    moduleHeader: true,
+    icon: <SecurityIcon />,
+    badge: 7,
+    children: [
+      {
+        title: 'Security Dashboard',
+        icon: <ShieldIcon />,
+        path: '/security/dashboard',
+        badge: null,
+      },
+      {
+        title: 'Report Incident',
+        icon: <ReportIcon />,
+        path: '/security/report',
+        badge: null,
+      },
+      {
+        title: 'Active Threats',
+        icon: <WarningIcon />,
+        path: '/security/threats',
+        badge: 3,
+      },
+    ],
+  };
+
+  const allMenuSections = [
+    ...menuItems,
+    serviceDeskItems,
+    knowledgeBaseItems,
+    chatbotItem,
+    infrastructureItems,
+    securityItems,
   ];
 
   const isActive = (path) => {
@@ -139,7 +184,45 @@ const Sidebar = ({ open, collapsed, isMobile, onClose, currentPath }) => {
     return currentPath === path || currentPath.startsWith(path + '/');
   };
 
+  const renderModuleHeader = (item) => {
+    if (collapsed) return null;
+    
+    return (
+      <ListItem key={item.title} sx={{ px: 2, py: 1, mt: 2 }}>
+        <Typography
+          variant="overline"
+          sx={{
+            color: 'rgba(255, 255, 255, 0.9)',
+            fontSize: '0.7rem',
+            fontWeight: 700,
+            letterSpacing: '0.08em',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+          }}
+        >
+          {item.icon}
+          {item.title}
+        </Typography>
+      </ListItem>
+    );
+  };
+
   const renderMenuItem = (item, isChild = false) => {
+    // Render module header
+    if (item.moduleHeader) {
+      return (
+        <React.Fragment key={item.title}>
+          {renderModuleHeader(item)}
+          {item.children && (
+            <List component="div" disablePadding>
+              {item.children.map((child) => renderMenuItem(child, true))}
+            </List>
+          )}
+        </React.Fragment>
+      );
+    }
+
     const active = isActive(item.path);
     
     return (
@@ -288,12 +371,12 @@ const Sidebar = ({ open, collapsed, isMobile, onClose, currentPath }) => {
       {/* Main Navigation */}
       <Box sx={{ flex: 1, overflow: 'auto' }}>
         <List sx={{ px: 1 }}>
-          {menuItems.map((item) => (
+          {allMenuSections.map((item) => (
             <React.Fragment key={item.title}>
               {renderMenuItem(item)}
               
-              {/* Collapsible children */}
-              {item.children && !collapsed && (
+              {/* Collapsible children for non-module items */}
+              {item.children && !item.moduleHeader && !collapsed && (
                 <Collapse in={expandedSection === item.title} timeout="auto" unmountOnExit>
                   <List component="div" disablePadding>
                     {item.children.map((child) => renderMenuItem(child, true))}
@@ -302,33 +385,6 @@ const Sidebar = ({ open, collapsed, isMobile, onClose, currentPath }) => {
               )}
             </React.Fragment>
           ))}
-        </List>
-
-        {/* Divider */}
-        {!collapsed && (
-          <Divider sx={{ mx: 2, my: 2, borderColor: 'rgba(255, 255, 255, 0.2)' }} />
-        )}
-
-        {/* Secondary Navigation */}
-        <List sx={{ px: 1 }}>
-          {!collapsed && (
-            <ListItem>
-              <Typography
-                variant="overline"
-                sx={{
-                  color: '#ffffff',
-                  fontSize: '0.75rem',
-                  fontWeight: 600,
-                  letterSpacing: '0.1em',
-                  px: 1,
-                }}
-              >
-                ADVANCED FEATURES
-              </Typography>
-            </ListItem>
-          )}
-          
-          {secondaryMenuItems.map((item) => renderMenuItem(item))}
         </List>
       </Box>
 

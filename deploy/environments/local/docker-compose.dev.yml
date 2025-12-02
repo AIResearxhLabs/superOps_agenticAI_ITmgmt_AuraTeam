@@ -1,0 +1,200 @@
+# Development Environment Configuration with Hot-Reload
+# Use this for active development to see changes instantly without rebuilding
+version: '3.8'
+
+services:
+  # Frontend React Application (Development Mode with Hot-Reload)
+  frontend:
+    image: node:20-alpine
+    working_dir: /app
+    command: sh -c "npm install && npm start"
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000
+      - REACT_APP_ENVIRONMENT=local
+      - CHOKIDAR_USEPOLLING=true  # Enable hot-reload in Docker
+      - WATCHPACK_POLLING=true
+      - FAST_REFRESH=true
+    volumes:
+      # Mount source files for hot-reload
+      - ../../../aura-frontend/src:/app/src
+      - ../../../aura-frontend/public:/app/public
+      - ../../../aura-frontend/package.json:/app/package.json
+      - ../../../aura-frontend/package-lock.json:/app/package-lock.json
+      # Use named volume for node_modules to persist across restarts
+      - frontend_node_modules:/app/node_modules
+    depends_on:
+      - api-gateway
+    networks:
+      - aura-network
+    stdin_open: true
+    tty: true
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # API Gateway (with hot-reload via volumes)
+  api-gateway:
+    build:
+      context: ../../../aura-backend
+      dockerfile: api-gateway/Dockerfile
+      platforms:
+        - linux/amd64
+    ports:
+      - "8000:8000"
+    environment:
+      - SERVICE_DESK_URL=http://service-desk-host:8001
+      - INFRA_TALENT_URL=http://infra-talent-host:8002
+      - THREAT_INTEL_URL=http://threat-intel-host:8003
+      - REDIS_URL=redis://redis:6379
+      - ENVIRONMENT=local
+      - DEBUG=true
+      - CORS_ORIGINS=http://localhost:3000,http://frontend:3000
+    depends_on:
+      - redis
+      - service-desk-host
+    networks:
+      - aura-network
+    volumes:
+      - ../../../aura-backend/api-gateway:/app
+      - ../../../aura-backend/shared:/app/shared
+      - /app/__pycache__
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Service Desk Microservice (with hot-reload via volumes)
+  service-desk-host:
+    build:
+      context: ../../../aura-backend
+      dockerfile: service-desk-host/Dockerfile
+      platforms:
+        - linux/amd64
+    ports:
+      - "8001:8001"
+    environment:
+      - DATABASE_URL=postgresql://aura_user:aura_password@postgres:5432/aura_servicedesk
+      - MONGODB_URL=mongodb://mongo:27017/aura_servicedesk
+      - REDIS_URL=redis://redis:6379
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-your_openai_api_key_here}
+      - ENVIRONMENT=local
+      - DEBUG=true
+      - AI_CATEGORIZATION_ENABLED=true
+      - MCP_ORCHESTRATOR_URL=http://localhost:8080
+    depends_on:
+      - postgres
+      - mongo
+      - redis
+      - rabbitmq
+    networks:
+      - aura-network
+    volumes:
+      - ../../../aura-backend/service-desk-host:/app
+      - ../../../aura-backend/shared:/app/shared
+      - /app/__pycache__
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8001/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    platform: linux/amd64
+    environment:
+      - POSTGRES_USER=aura_user
+      - POSTGRES_PASSWORD=aura_password
+      - POSTGRES_MULTIPLE_DATABASES=aura_servicedesk,aura_infratalent,aura_threatintel
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ../../../aura-backend/shared/database/init-multiple-databases.sh:/docker-entrypoint-initdb.d/init-multiple-databases.sh
+    networks:
+      - aura-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aura_user -d aura_servicedesk"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # MongoDB Database
+  mongo:
+    image: mongo:7.0
+    platform: linux/amd64
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - aura-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    platform: linux/amd64
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - aura-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # RabbitMQ Message Queue
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    platform: linux/amd64
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_ERLANG_COOKIE=SWQOKODSQALRPCLNMEQGABCDEFGHIJKLMNOP
+      - RABBITMQ_NODE_TYPE=stats
+      - RABBITMQ_NODENAME=rabbit@rabbitmq
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - aura-network
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+volumes:
+  postgres_data:
+  mongo_data:
+  redis_data:
+  rabbitmq_data:
+  frontend_node_modules:
+
+networks:
+  aura-network:
+    driver: bridge

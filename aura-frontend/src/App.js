@@ -12,6 +12,12 @@ import CreateTicket from './pages/ServiceDesk/CreateTicket';
 import KnowledgeBase from './pages/KnowledgeBase/KnowledgeBase';
 import KBSuggestions from './pages/KnowledgeBase/KBSuggestions';
 import Chatbot from './pages/Chatbot/Chatbot';
+import AgentPerformance from './pages/Infrastructure/AgentPerformance';
+import WorkloadManagement from './pages/Infrastructure/WorkloadManagement';
+import TeamAnalytics from './pages/Infrastructure/TeamAnalytics';
+import SecurityDashboard from './pages/Security/SecurityDashboard';
+import ReportIncident from './pages/Security/ReportIncident';
+import ActiveThreats from './pages/Security/ActiveThreats';
 import './App.css';
 
 function App() {
@@ -46,10 +52,20 @@ function App() {
               {/* Chatbot Route */}
               <Route path="/chatbot" element={<Chatbot />} />
               
-              {/* Future Routes - Placeholder pages */}
+              {/* Module 2: Infrastructure & Talent Management Routes */}
+              <Route path="/infrastructure/performance" element={<AgentPerformance />} />
+              <Route path="/infrastructure/workload" element={<WorkloadManagement />} />
+              <Route path="/infrastructure/analytics" element={<TeamAnalytics />} />
+              
+              {/* Module 3: Security & Threat Intelligence Routes */}
+              <Route path="/security/dashboard" element={<SecurityDashboard />} />
+              <Route path="/security/report" element={<ReportIncident />} />
+              <Route path="/security/threats" element={<ActiveThreats />} />
+              
+              {/* Legacy/Fallback Routes */}
               <Route path="/analytics" element={<Dashboard />} />
-              <Route path="/infrastructure" element={<Dashboard />} />
-              <Route path="/security" element={<Dashboard />} />
+              <Route path="/infrastructure" element={<AgentPerformance />} />
+              <Route path="/security" element={<SecurityDashboard />} />
               
               {/* Fallback */}
               <Route path="*" element={<Dashboard />} />

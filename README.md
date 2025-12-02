@@ -17,12 +17,25 @@ Aura is a comprehensive AI-powered IT management suite designed to streamline se
 - 8GB+ RAM available
 - Ports 3000, 5432, 6379, 8000, 8001, 15672, 27017 available
 
-### One-Command Deployment
+### Development Mode (Hot-Reload) ⚡ **RECOMMENDED for Active Coding**
 
 ```bash
-# Clone and deploy the complete system
+# Clone and start with instant hot-reload
 git clone https://github.com/bijjula/superOps_agenticAI_ITmgmt_AuraTeam.git
 cd superOps_agenticAI_ITmgmt_AuraTeam
+./deploy-local.sh dev
+```
+
+**✨ What's Hot-Reload?**
+- Edit code → Save → See changes instantly (1-2 seconds)!
+- No container rebuilds needed
+- 10x faster development cycle
+- Full React dev server with error overlay
+
+### Production Mode (Build & Test) 🏗️ **Use Before Cloud Deployment**
+
+```bash
+# Deploy with production build
 ./deploy-local.sh deploy
 ```
 
@@ -180,24 +193,68 @@ GET /api/v1/kb/recommendations?ticket_id={id}
 
 ## 🔧 Development
 
-### Local Development Setup
+### Development Modes
+
+Aura supports **two deployment modes** for optimal development experience:
+
+#### 🔥 Development Mode (Hot-Reload)
+**Use for:** Active coding and rapid iteration
 
 ```bash
-# Start development environment
+# Start with hot-reload
+./deploy-local.sh dev
+
+# Edit any file in aura-frontend/src/ or aura-backend/
+# → Save → Browser auto-refreshes in 1-2 seconds! ✨
+# → No rebuild needed!
+```
+
+**Features:**
+- ⚡ Instant hot-reload for frontend and backend
+- 🔍 React dev server with error overlay
+- 📝 Source maps for easier debugging
+- 🎯 Fast iteration cycle
+
+#### 🏗️ Production Mode (Final Testing)
+**Use for:** Testing production build before cloud deployment
+
+```bash
+# Build and deploy production version
+./deploy-local.sh deploy
+```
+
+**Features:**
+- ✅ Production-optimized build
+- ✅ Nginx static file serving
+- ✅ Minified and tree-shaken code
+- ✅ Same configuration as cloud
+
+### Common Commands
+
+```bash
+# Start development mode (hot-reload)
+./deploy-local.sh dev
+
+# Start production mode
 ./deploy-local.sh deploy
 
 # View logs
-docker compose -f deploy/environments/local/docker-compose.yml logs -f
+./deploy-local.sh logs
+
+# Check status
+./deploy-local.sh status
 
 # Stop services
 ./deploy-local.sh stop
 
-# Restart services
+# Restart services (auto-detects mode)
 ./deploy-local.sh restart
-
-# Check status
-./deploy-local.sh status
 ```
+
+### 📚 Development Guides
+- **[Hot-Reload Quick Start](docs/Hot_Reload_Development_Guide.md)** - Get started with instant feedback
+- **[Development Workflow Guide](docs/Development_Workflow_Guide.md)** - Complete workflow documentation
+- **[Deployment Guide](docs/AWS_Deployment_Guide.md)** - Cloud deployment instructions
 
 ### Environment Configuration
 

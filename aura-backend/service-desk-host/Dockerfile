@@ -17,8 +17,11 @@ RUN apt-get update && apt-get install -y \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy shared modules first (for better caching)
+# Copy shared modules first
 COPY shared /app/shared
+
+# Copy threat intelligence agent module
+COPY threat-intelligence-agent /app/threat-intelligence-agent
 
 # Copy requirements and install Python dependencies
 COPY service-desk-host/requirements.txt .
